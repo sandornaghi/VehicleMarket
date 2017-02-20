@@ -21,7 +21,7 @@ public class VehicleServiceTest {
 	VSEService vseService;
 	
 	@GET
-	@Path("/{country},{vehicleCategory}")
+	@Path("/{country}/{vehicleCategory}")
 	public String getVehicles(@PathParam("country") @NotEmpty String country, @PathParam("vehicleCategory") @NotEmpty String vehicleCategory) {
 		
 		Vehicles vehicles = null;
