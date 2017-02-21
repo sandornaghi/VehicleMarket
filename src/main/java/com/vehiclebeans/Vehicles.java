@@ -13,40 +13,41 @@ public class Vehicles {
 
 	@XmlElement(name = "country")
 	private int countryCode;
-	
+
 	@XmlElement
 	private String vehicleCategory;
-	
+
 	@XmlElement(name = "vseVehicle")
-	private List<Vehicle> vehicle;
-	
-	public Vehicles() {
-		
-	}
+	private List<Vehicle> vehicleList;
 
 	public int getCountryCode() {
 		return countryCode;
 	}
+
 	public void setCountryCode(int countryCode) {
 		this.countryCode = countryCode;
 	}
+
 	public String getVehicleCategory() {
 		return vehicleCategory;
 	}
+
 	public void setVehicleCategory(String vehicleCategory) {
 		this.vehicleCategory = vehicleCategory;
 	}
-	public List<Vehicle> getVehicle() {
-		return vehicle;
+
+	public List<Vehicle> getVehicleList() {
+		return vehicleList;
 	}
-	public void setVehicle(List<Vehicle> vehicle) {
-		this.vehicle = vehicle;
+
+	public void setVehicleList(List<Vehicle> vehicleList) {
+		this.vehicleList = vehicleList;
 	}
 
 	@Override
 	public String toString() {
-		return "Vehicles [countryCode=" + countryCode + ", vehicleCategory=" + vehicleCategory + ", vehicle=" + vehicle
-				+ "]";
+		return "Vehicles [countryCode=" + countryCode + ", vehicleCategory=" + vehicleCategory + ", vehicleList="
+				+ vehicleList + "]";
 	}
 
 	@Override
@@ -54,8 +55,8 @@ public class Vehicles {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + countryCode;
-		result = prime * result + ((vehicle == null) ? 0 : vehicle.hashCode());
 		result = prime * result + ((vehicleCategory == null) ? 0 : vehicleCategory.hashCode());
+		result = prime * result + ((vehicleList == null) ? 0 : vehicleList.hashCode());
 		return result;
 	}
 
@@ -70,16 +71,17 @@ public class Vehicles {
 		Vehicles other = (Vehicles) obj;
 		if (countryCode != other.countryCode)
 			return false;
-		if (vehicle == null) {
-			if (other.vehicle != null)
-				return false;
-		} else if (!vehicle.equals(other.vehicle))
-			return false;
 		if (vehicleCategory == null) {
 			if (other.vehicleCategory != null)
 				return false;
 		} else if (!vehicleCategory.equals(other.vehicleCategory))
 			return false;
+		if (vehicleList == null) {
+			if (other.vehicleList != null)
+				return false;
+		} else if (!vehicleList.equals(other.vehicleList))
+			return false;
 		return true;
 	}
+
 }

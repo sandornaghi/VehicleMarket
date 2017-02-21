@@ -11,20 +11,19 @@ public class Equipment {
 	private String code;
 	@XmlElement
 	private String description;
-	
-	public Equipment() {
-		
-	}
 
 	public String getCode() {
 		return code;
 	}
+
 	public void setCode(String code) {
 		this.code = code;
 	}
+
 	public String getDescription() {
 		return description;
 	}
+
 	public void setDescription(String description) {
 		this.description = description;
 	}
@@ -64,6 +63,5 @@ public class Equipment {
 			return false;
 		return true;
 	}
-	
-	
+
 }

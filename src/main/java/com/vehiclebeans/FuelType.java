@@ -6,7 +6,7 @@ import java.util.Map;
 public class FuelType {
 
 	private Map<Integer, String> fuelType;
-	
+
 	public FuelType() {
 		fuelType = new HashMap<>();
 		fuelType.put(1, "Electric");
@@ -15,17 +15,17 @@ public class FuelType {
 		fuelType.put(4, "Petrol");
 		fuelType.put(5, "Diesel");
 	}
-	
+
 	public String getFuelType(int code) {
 		String result = fuelType.get(code);
-		
+
 		if (result == null) {
 			result = "Unknown!";
 		}
-		
+
 		return result;
 	}
-	
+
 	public void addFuelType(Integer key, String value) {
 		fuelType.putIfAbsent(key, value);
 	}
@@ -59,5 +59,5 @@ public class FuelType {
 			return false;
 		return true;
 	}
-	
+
 }

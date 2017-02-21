@@ -11,20 +11,19 @@ public class Paint {
 	private int code;
 	@XmlElement
 	private int groupCode;
-	
-	public Paint() {
-		
-	}
 
 	public int getCode() {
 		return code;
 	}
+
 	public void setCode(int code) {
 		this.code = code;
 	}
+
 	public int getGroupCode() {
 		return groupCode;
 	}
+
 	public void setGroupCode(int groupCode) {
 		this.groupCode = groupCode;
 	}
@@ -57,5 +56,5 @@ public class Paint {
 		if (groupCode != other.groupCode)
 			return false;
 		return true;
-	}	
+	}
 }

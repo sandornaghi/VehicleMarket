@@ -11,20 +11,19 @@ public class Price {
 	private long basePrice;
 	@XmlElement
 	private String currency;
-	
-	public Price() {
-		
-	}
 
 	public long getBasePrice() {
 		return basePrice;
 	}
+
 	public void setBasePrice(long basePrice) {
 		this.basePrice = basePrice;
 	}
+
 	public String getCurrency() {
 		return currency;
 	}
+
 	public void setCurrency(String currency) {
 		this.currency = currency;
 	}

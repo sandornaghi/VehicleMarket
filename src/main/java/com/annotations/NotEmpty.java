@@ -17,8 +17,8 @@ import javax.validation.constraints.Size;
 @Constraint(validatedBy = {})
 public @interface NotEmpty {
 	String message() default "Not a valid input.";
-	
+
 	Class<?>[] groups() default {};
-	
-	Class<? extends Payload>[] payload() default { };
+
+	Class<? extends Payload>[] payload() default {};
 }

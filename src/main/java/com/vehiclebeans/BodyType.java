@@ -6,7 +6,7 @@ import java.util.Map;
 public class BodyType {
 
 	private Map<Integer, String> bodyType;
-	
+
 	public BodyType() {
 		bodyType = new HashMap<>();
 		bodyType.put(1, "Limousine");
@@ -17,16 +17,16 @@ public class BodyType {
 		bodyType.put(6, "SUV");
 		bodyType.put(7, "Roadster");
 	}
-	
+
 	public String getBodyType(int code) {
 		String result = bodyType.get(code);
 		if (result == null) {
 			result = "Car";
 		}
-		
+
 		return result;
 	}
-	
+
 	public void addBodyType(int key, String value) {
 		bodyType.putIfAbsent(key, value);
 	}
@@ -60,5 +60,5 @@ public class BodyType {
 			return false;
 		return true;
 	}
-	
+
 }

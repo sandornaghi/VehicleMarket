@@ -12,87 +12,100 @@ public class Vehicle {
 
 	@XmlElement
 	private String id;
-		
+
 	@XmlElement
 	private Price priceInformation;
-	
+
 	@XmlElement
 	private int bodyType;
-	
+
 	@XmlElement
 	private Paint paint;
-	
+
 	@XmlElement
 	private int fuelType;
-	
+
 	@XmlElement
 	private int transmission;
-	
+
 	@XmlElement
 	private VehicleLocation vehicleLocation;
-	
+
 	@XmlElementWrapper(name = "vseEquipments")
 	@XmlElement(name = "vseEquipment")
 	private List<Equipment> equipment;
-	
+
 	@XmlElement
 	private int firstRegistrationDate;
-	
-	public Vehicle() {
-		
-	}
 
 	public String getId() {
 		return id;
 	}
+
 	public void setId(String id) {
 		this.id = id;
 	}
+
 	public Price getPriceInformation() {
 		return priceInformation;
 	}
+
 	public void setPriceInformation(Price priceInformation) {
 		this.priceInformation = priceInformation;
 	}
+
 	public int getBodyType() {
 		return bodyType;
 	}
+
 	public void setBodyType(int bodyType) {
 		this.bodyType = bodyType;
 	}
+
 	public Paint getPaint() {
 		return paint;
 	}
+
 	public void setPaint(Paint paint) {
 		this.paint = paint;
 	}
+
 	public int getFuelType() {
 		return fuelType;
 	}
+
 	public void setFuelType(int fuelType) {
 		this.fuelType = fuelType;
 	}
+
 	public int getTransmission() {
 		return transmission;
 	}
+
 	public void setTransmission(int transmission) {
 		this.transmission = transmission;
 	}
+
 	public VehicleLocation getVehicleLocation() {
 		return vehicleLocation;
 	}
+
 	public void setVehicleLocation(VehicleLocation vehicleLocation) {
 		this.vehicleLocation = vehicleLocation;
 	}
+
 	public List<Equipment> getEquipment() {
 		return equipment;
 	}
+
 	public void setEquipment(List<Equipment> equipment) {
 		this.equipment = equipment;
 	}
+
 	public int getFirstRegistrationDate() {
 		return firstRegistrationDate;
 	}
+
 	public void setFirstRegistrationDate(int firstRegistrationDate) {
 		this.firstRegistrationDate = firstRegistrationDate;
 	}
@@ -165,6 +178,5 @@ public class Vehicle {
 			return false;
 		return true;
 	}
-	
-	
+
 }

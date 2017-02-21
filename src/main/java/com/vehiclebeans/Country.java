@@ -6,14 +6,14 @@ import java.util.Map;
 public class Country {
 
 	private Map<Integer, String> country;
-	
+
 	public Country() {
 		country = new HashMap<>();
 		country.put(571, "CH");
 		country.put(572, "DE");
 		country.put(573, "FR");
 	}
-	
+
 	public String getCountry(int code) {
 		String result = country.get(code);
 		if (result == null) {
@@ -21,7 +21,7 @@ public class Country {
 		}
 		return result;
 	}
-	
+
 	public void addCountry(Integer key, String value) {
 		country.putIfAbsent(key, value);
 	}
@@ -55,5 +55,5 @@ public class Country {
 			return false;
 		return true;
 	}
-	
+
 }

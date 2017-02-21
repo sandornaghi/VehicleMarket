@@ -11,20 +11,19 @@ public class VehicleLocation {
 	private String postalCode;
 	@XmlElement
 	private Location location;
-	
-	public VehicleLocation() {
-		
-	}
 
 	public String getPostalCode() {
 		return postalCode;
 	}
+
 	public void setPostalCode(String postalCode) {
 		this.postalCode = postalCode;
 	}
+
 	public Location getLocation() {
 		return location;
 	}
+
 	public void setLocation(Location location) {
 		this.location = location;
 	}
@@ -64,6 +63,5 @@ public class VehicleLocation {
 			return false;
 		return true;
 	}
-	
-	
+
 }

@@ -6,24 +6,24 @@ import java.util.Map;
 public class Transmission {
 
 	private Map<Integer, String> transmission;
-	
+
 	public Transmission() {
 		transmission = new HashMap<>();
 		transmission.put(1, "Manual");
 		transmission.put(1, "Semi automatic");
 		transmission.put(1, "Automatic");
 	}
-	
+
 	public String getTransmissionType(int code) {
 		String result = transmission.get(code);
-		
+
 		if (result == null) {
 			result = "Unknown!";
 		}
-		
+
 		return result;
 	}
-	
+
 	public void addTransmissionType(int key, String value) {
 		transmission.putIfAbsent(key, value);
 	}
@@ -57,5 +57,5 @@ public class Transmission {
 			return false;
 		return true;
 	}
-	
+
 }

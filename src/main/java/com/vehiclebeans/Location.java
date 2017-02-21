@@ -6,25 +6,24 @@ import javax.xml.bind.annotation.XmlElement;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Location {
-	
+
 	@XmlElement
 	private double latitude;
 	@XmlElement
 	private double longitude;
-	
-	public Location() {
-		
-	}
 
 	public double getLatitude() {
 		return latitude;
 	}
+
 	public void setLatitude(double latitude) {
 		this.latitude = latitude;
 	}
+
 	public double getLongitude() {
 		return longitude;
 	}
+
 	public void setLongitude(double longitude) {
 		this.longitude = longitude;
 	}
@@ -62,4 +61,3 @@ public class Location {
 		return true;
 	}
 }
-
