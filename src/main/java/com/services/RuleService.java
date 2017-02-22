@@ -1,24 +1,19 @@
 package com.services;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
+import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
 
 import com.rulebeans.Configurations;
 
+@Transactional
 public class RuleService {
 
-	private EntityManagerFactory emf = Persistence.createEntityManagerFactory("vehicle-rules");
-
-	private EntityManager em = emf.createEntityManager();
-
-	private EntityTransaction tx = em.getTransaction();
+	@PersistenceContext(unitName = "vehicle-rules")
+	private EntityManager em ;
 
 	public void persistRule(Configurations sysConfig) {
 
-		tx.begin();
 		em.persist(sysConfig);
-		tx.commit();
 	}
 }

@@ -9,17 +9,21 @@ import javax.persistence.Table;
 public class Configurations {
 
 	@Id
-	private int id;
+	private long id;
 	private String country;
 	private String vehicleCategory;
 	private String code;
 	private String value;
 
-	public int getId() {
+	public Configurations() {
+
+	}
+
+	public long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 

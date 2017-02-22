@@ -22,7 +22,10 @@ public class VehicleServiceTest {
 	private static final Logger LOGGER = Logger.getLogger(VehicleServiceTest.class.getName());
 
 	@Inject
-	VSEService vseService;
+	private VSEService vseService;
+	
+	@Inject
+	private RuleService ruleService;
 
 	@GET
 	@Path("/{country}/{vehicleCategory}")
@@ -39,16 +42,13 @@ public class VehicleServiceTest {
 		}
 
 		Configurations sysConf = new Configurations();
-		sysConf.setId(3);
 		sysConf.setCountry("de");
 		sysConf.setVehicleCategory("new");
 		sysConf.setCode("acceptedLanguages");
-		sysConf.setValue("hu");
+		sysConf.setValue("gr");
+
+		ruleService.persistRule(sysConf);
 		
-		RuleService rs = new RuleService();
-		
-		rs.persistRule(sysConf);
-				
 		if (vehicles == null) {
 			return Response.ok("Invalid parameters!!").build();
 		} else {

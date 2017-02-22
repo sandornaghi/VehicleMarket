@@ -9,7 +9,7 @@ import javax.persistence.Table;
 public class TranslationsAndCorrections {
 
 	@Id
-	private int id;
+	private long id;
 	private String country;
 	private String vehicleCategory;
 	private String language;
@@ -17,11 +17,15 @@ public class TranslationsAndCorrections {
 	private String code;
 	private String value;
 
-	public int getId() {
+	public TranslationsAndCorrections() {
+
+	}
+
+	public long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
@@ -72,4 +76,5 @@ public class TranslationsAndCorrections {
 	public void setValue(String value) {
 		this.value = value;
 	}
+
 }
