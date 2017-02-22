@@ -33,7 +33,7 @@ public class Vehicle {
 
 	@XmlElementWrapper(name = "vseEquipments")
 	@XmlElement(name = "vseEquipment")
-	private List<Equipment> equipment;
+	private List<Equipment> equipmentList;
 
 	@XmlElement
 	private int firstRegistrationDate;
@@ -94,12 +94,12 @@ public class Vehicle {
 		this.vehicleLocation = vehicleLocation;
 	}
 
-	public List<Equipment> getEquipment() {
-		return equipment;
+	public List<Equipment> getEquipmentList() {
+		return equipmentList;
 	}
 
-	public void setEquipment(List<Equipment> equipment) {
-		this.equipment = equipment;
+	public void setEquipmentList(List<Equipment> equipment) {
+		this.equipmentList = equipment;
 	}
 
 	public int getFirstRegistrationDate() {
@@ -114,7 +114,7 @@ public class Vehicle {
 	public String toString() {
 		return "Vehicle [id=" + id + ", priceInformation=" + priceInformation + ", bodyType=" + bodyType + ", paint="
 				+ paint + ", fuelType=" + fuelType + ", transmission=" + transmission + ", vehicleLocation="
-				+ vehicleLocation + ", equipment=" + equipment + ", firstRegistrationDate=" + firstRegistrationDate
+				+ vehicleLocation + ", equipment=" + equipmentList + ", firstRegistrationDate=" + firstRegistrationDate
 				+ "]";
 	}
 
@@ -123,7 +123,7 @@ public class Vehicle {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + bodyType;
-		result = prime * result + ((equipment == null) ? 0 : equipment.hashCode());
+		result = prime * result + ((equipmentList == null) ? 0 : equipmentList.hashCode());
 		result = prime * result + firstRegistrationDate;
 		result = prime * result + fuelType;
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
@@ -145,10 +145,10 @@ public class Vehicle {
 		Vehicle other = (Vehicle) obj;
 		if (bodyType != other.bodyType)
 			return false;
-		if (equipment == null) {
-			if (other.equipment != null)
+		if (equipmentList == null) {
+			if (other.equipmentList != null)
 				return false;
-		} else if (!equipment.equals(other.equipment))
+		} else if (!equipmentList.equals(other.equipmentList))
 			return false;
 		if (firstRegistrationDate != other.firstRegistrationDate)
 			return false;

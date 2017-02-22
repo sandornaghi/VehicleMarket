@@ -11,21 +11,16 @@ import javax.ws.rs.core.Response;
 import javax.xml.bind.JAXBException;
 
 import com.annotations.NotEmpty;
-import com.rulebeans.Configurations;
-import com.services.RuleService;
 import com.services.VSEService;
 import com.vehiclebeans.Vehicles;
 
-@Path("/")
+@Path("/vehicle")
 public class VehicleServiceTest {
 
 	private static final Logger LOGGER = Logger.getLogger(VehicleServiceTest.class.getName());
 
 	@Inject
 	private VSEService vseService;
-	
-	@Inject
-	private RuleService ruleService;
 
 	@GET
 	@Path("/{country}/{vehicleCategory}")
@@ -41,14 +36,6 @@ public class VehicleServiceTest {
 			LOGGER.severe(e.getMessage());
 		}
 
-		Configurations sysConf = new Configurations();
-		sysConf.setCountry("de");
-		sysConf.setVehicleCategory("new");
-		sysConf.setCode("acceptedLanguages");
-		sysConf.setValue("gr");
-
-		ruleService.persistRule(sysConf);
-		
 		if (vehicles == null) {
 			return Response.ok("Invalid parameters!!").build();
 		} else {
