@@ -18,5 +18,3 @@
 
 bin/
 target/
-*.class
-*.log
