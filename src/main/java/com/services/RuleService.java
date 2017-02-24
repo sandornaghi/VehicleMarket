@@ -7,9 +7,8 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 
-import com.rulebeans.Configurations;
-import com.rulebeans.Corrections;
-import com.rulebeans.Rules;
+import com.rulebeans.Configuration;
+import com.rulebeans.Correction;
 
 @Transactional
 public class RuleService {
@@ -17,30 +16,26 @@ public class RuleService {
 	@PersistenceContext(unitName = "vehicle-rules")
 	private EntityManager em;
 
-	public void persistRule(Rules sysConfig) {
-
-		em.persist(sysConfig);
-	}
-
-	public List<Configurations> getConfigurationRules(String country, String vehicleCategory) {
-		List<Configurations> confList = null;
-
-		TypedQuery<Configurations> query = em.createNamedQuery("ConfigurationRules", Configurations.class);
+	public List<Configuration> getConfigurationRules(String country, String vehicleCategory) {
+		
+		TypedQuery<Configuration> query = em.createNamedQuery("ConfigurationRules", Configuration.class);
 		query.setParameter("country", country);
 		query.setParameter("vehicleCategory", vehicleCategory);
-		confList = query.getResultList();
+		
+		List<Configuration> confList = query.getResultList();
 
 		return confList;
 	}
 
-	public List<Corrections> getCorrectionRules(String country, String vehicleCategory) {
-		List<Corrections> corrList = null;
-
-		TypedQuery<Corrections> query = em.createNamedQuery("CorrectionRules", Corrections.class);
+	public List<Correction> getCorrectionRules(String country, String vehicleCategory) {
+		
+		TypedQuery<Correction> query = em.createNamedQuery("CorrectionRules", Correction.class);
 		query.setParameter("country", country);
 		query.setParameter("vehicleCategory", vehicleCategory);
-		corrList = query.getResultList();
+		
+		List<Correction> corrList = query.getResultList();
 
 		return corrList;
 	}
+
 }

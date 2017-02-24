@@ -26,7 +26,7 @@
                 <vseEquipments>
 					<vseEquipment>
                            <code>L23</code>
-                           <description>Auto climate control</description>
+                           <description>Auto climate controlll</description>
                         </vseEquipment>
                 </vseEquipments>   
                 <firstRegistrationDate>20150128</firstRegistrationDate>
@@ -35,15 +35,15 @@
         	<id>LD2134thg8</id>
                 <priceInformation> 
                     <basePrice>9208</basePrice>
-                    <currency>euro</currency> 
+                    <currency>dollar</currency> 
                 </priceInformation>
-                <bodyType>1</bodyType>
+                <bodyType>3</bodyType>
                 <paint> 
                     <code>2</code>
                     <groupCode>234</groupCode>
                 </paint>
-                <fuelType>1</fuelType>
-                <transmission>1</transmission>
+                <fuelType>2</fuelType>
+                <transmission>2</transmission>
                 <vehicleLocation>
                       <postalCode>DE1 4DU</postalCode>
                       <location>
@@ -54,7 +54,7 @@
                 <vseEquipments>
 					<vseEquipment>
                            <code>L23</code>
-                           <description>Auto climate control</description>
+                           <description>Auto climate controlll</description>
                         </vseEquipment>
                 </vseEquipments>   
                 <firstRegistrationDate>20150128</firstRegistrationDate>
@@ -63,15 +63,15 @@
         	<id>LD2134thg9</id>
                 <priceInformation> 
                     <basePrice>9209</basePrice>
-                    <currency>euro</currency> 
+                    <currency>gbp</currency> 
                 </priceInformation>
-                <bodyType>1</bodyType>
+                <bodyType>2</bodyType>
                 <paint> 
                     <code>2</code>
                     <groupCode>234</groupCode>
                 </paint>
-                <fuelType>1</fuelType>
-                <transmission>1</transmission>
+                <fuelType>4</fuelType>
+                <transmission>3</transmission>
                 <vehicleLocation>
                       <postalCode>DE1 4DU</postalCode>
                       <location>
@@ -81,8 +81,8 @@
                 </vehicleLocation>
                 <vseEquipments>
 					<vseEquipment>
-                           <code>L23</code>
-                           <description>Auto climate control</description>
+                           <code>L24</code>
+                           <description>Auto climate controlll</description>
                         </vseEquipment>
                 </vseEquipments>   
                 <firstRegistrationDate>20150128</firstRegistrationDate>

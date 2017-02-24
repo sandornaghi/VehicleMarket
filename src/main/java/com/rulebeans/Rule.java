@@ -4,7 +4,7 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
 @MappedSuperclass
-public class Rules {
+public class Rule {
 
 	@Id
 	private long id;
@@ -59,7 +59,7 @@ public class Rules {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Rules other = (Rules) obj;
+		Rule other = (Rule) obj;
 		if (country == null) {
 			if (other.country != null)
 				return false;

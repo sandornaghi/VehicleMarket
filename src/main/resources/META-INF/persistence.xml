@@ -6,8 +6,8 @@
 		transaction-type="JTA">
 		<provider>org.apache.openjpa.persistence.PersistenceProviderImpl</provider>
 		<jta-data-source>vehicleDataBase</jta-data-source>
-		<class>com.rulebeans.Configurations</class>
-		<class>com.rulebeans.Corrections</class>
-		<class>com.rulebeans.Rules</class>
+		<class>com.rulebeans.Configuration</class>
+		<class>com.rulebeans.Correction</class>
+		<class>com.rulebeans.Rule</class>
 		</persistence-unit>
 </persistence>

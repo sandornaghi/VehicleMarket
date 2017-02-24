@@ -17,16 +17,16 @@ public class Vehicle {
 	private Price priceInformation;
 
 	@XmlElement
-	private int bodyType;
+	private String bodyType;
 
 	@XmlElement
 	private Paint paint;
 
 	@XmlElement
-	private int fuelType;
+	private String fuelType;
 
 	@XmlElement
-	private int transmission;
+	private String transmission;
 
 	@XmlElement
 	private VehicleLocation vehicleLocation;
@@ -36,7 +36,15 @@ public class Vehicle {
 	private List<Equipment> equipmentList;
 
 	@XmlElement
-	private int firstRegistrationDate;
+	private String firstRegistrationDate;
+
+	@Override
+	public String toString() {
+		return "Vehicle [id=" + id + ", priceInformation=" + priceInformation + ", bodyType=" + bodyType + ", paint="
+				+ paint + ", fuelType=" + fuelType + ", transmission=" + transmission + ", vehicleLocation="
+				+ vehicleLocation + ", equipmentList=" + equipmentList + ", firstRegistrationDate="
+				+ firstRegistrationDate + "]";
+	}
 
 	public String getId() {
 		return id;
@@ -54,11 +62,11 @@ public class Vehicle {
 		this.priceInformation = priceInformation;
 	}
 
-	public int getBodyType() {
+	public String getBodyType() {
 		return bodyType;
 	}
 
-	public void setBodyType(int bodyType) {
+	public void setBodyType(String bodyType) {
 		this.bodyType = bodyType;
 	}
 
@@ -70,19 +78,19 @@ public class Vehicle {
 		this.paint = paint;
 	}
 
-	public int getFuelType() {
+	public String getFuelType() {
 		return fuelType;
 	}
 
-	public void setFuelType(int fuelType) {
+	public void setFuelType(String fuelType) {
 		this.fuelType = fuelType;
 	}
 
-	public int getTransmission() {
+	public String getTransmission() {
 		return transmission;
 	}
 
-	public void setTransmission(int transmission) {
+	public void setTransmission(String transmission) {
 		this.transmission = transmission;
 	}
 
@@ -98,38 +106,30 @@ public class Vehicle {
 		return equipmentList;
 	}
 
-	public void setEquipmentList(List<Equipment> equipment) {
-		this.equipmentList = equipment;
+	public void setEquipmentList(List<Equipment> equipmentList) {
+		this.equipmentList = equipmentList;
 	}
 
-	public int getFirstRegistrationDate() {
+	public String getFirstRegistrationDate() {
 		return firstRegistrationDate;
 	}
 
-	public void setFirstRegistrationDate(int firstRegistrationDate) {
+	public void setFirstRegistrationDate(String firstRegistrationDate) {
 		this.firstRegistrationDate = firstRegistrationDate;
-	}
-
-	@Override
-	public String toString() {
-		return "Vehicle [id=" + id + ", priceInformation=" + priceInformation + ", bodyType=" + bodyType + ", paint="
-				+ paint + ", fuelType=" + fuelType + ", transmission=" + transmission + ", vehicleLocation="
-				+ vehicleLocation + ", equipment=" + equipmentList + ", firstRegistrationDate=" + firstRegistrationDate
-				+ "]";
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + bodyType;
+		result = prime * result + ((bodyType == null) ? 0 : bodyType.hashCode());
 		result = prime * result + ((equipmentList == null) ? 0 : equipmentList.hashCode());
-		result = prime * result + firstRegistrationDate;
-		result = prime * result + fuelType;
+		result = prime * result + ((firstRegistrationDate == null) ? 0 : firstRegistrationDate.hashCode());
+		result = prime * result + ((fuelType == null) ? 0 : fuelType.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((paint == null) ? 0 : paint.hashCode());
 		result = prime * result + ((priceInformation == null) ? 0 : priceInformation.hashCode());
-		result = prime * result + transmission;
+		result = prime * result + ((transmission == null) ? 0 : transmission.hashCode());
 		result = prime * result + ((vehicleLocation == null) ? 0 : vehicleLocation.hashCode());
 		return result;
 	}
@@ -143,16 +143,25 @@ public class Vehicle {
 		if (getClass() != obj.getClass())
 			return false;
 		Vehicle other = (Vehicle) obj;
-		if (bodyType != other.bodyType)
+		if (bodyType == null) {
+			if (other.bodyType != null)
+				return false;
+		} else if (!bodyType.equals(other.bodyType))
 			return false;
 		if (equipmentList == null) {
 			if (other.equipmentList != null)
 				return false;
 		} else if (!equipmentList.equals(other.equipmentList))
 			return false;
-		if (firstRegistrationDate != other.firstRegistrationDate)
+		if (firstRegistrationDate == null) {
+			if (other.firstRegistrationDate != null)
+				return false;
+		} else if (!firstRegistrationDate.equals(other.firstRegistrationDate))
 			return false;
-		if (fuelType != other.fuelType)
+		if (fuelType == null) {
+			if (other.fuelType != null)
+				return false;
+		} else if (!fuelType.equals(other.fuelType))
 			return false;
 		if (id == null) {
 			if (other.id != null)
@@ -169,7 +178,10 @@ public class Vehicle {
 				return false;
 		} else if (!priceInformation.equals(other.priceInformation))
 			return false;
-		if (transmission != other.transmission)
+		if (transmission == null) {
+			if (other.transmission != null)
+				return false;
+		} else if (!transmission.equals(other.transmission))
 			return false;
 		if (vehicleLocation == null) {
 			if (other.vehicleLocation != null)
