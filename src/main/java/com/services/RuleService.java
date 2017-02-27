@@ -17,22 +17,22 @@ public class RuleService {
 	private EntityManager em;
 
 	public List<Configuration> getConfigurationRules(String country, String vehicleCategory) {
-		
+
 		TypedQuery<Configuration> query = em.createNamedQuery("ConfigurationRules", Configuration.class);
 		query.setParameter("country", country);
 		query.setParameter("vehicleCategory", vehicleCategory);
-		
+
 		List<Configuration> confList = query.getResultList();
 
 		return confList;
 	}
 
 	public List<Correction> getCorrectionRules(String country, String vehicleCategory) {
-		
+
 		TypedQuery<Correction> query = em.createNamedQuery("CorrectionRules", Correction.class);
 		query.setParameter("country", country);
 		query.setParameter("vehicleCategory", vehicleCategory);
-		
+
 		List<Correction> corrList = query.getResultList();
 
 		return corrList;

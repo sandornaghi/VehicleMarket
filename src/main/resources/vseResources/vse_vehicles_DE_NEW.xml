@@ -11,8 +11,8 @@
                 </priceInformation>
                 <bodyType>1</bodyType>
                 <paint> 
-                    <code>2</code>
-                    <groupCode>234</groupCode>
+                    <code>1</code>
+                    <groupCode>134</groupCode>
                 </paint>
                 <fuelType>1</fuelType>
                 <transmission>1</transmission>
@@ -67,8 +67,8 @@
                 </priceInformation>
                 <bodyType>2</bodyType>
                 <paint> 
-                    <code>2</code>
-                    <groupCode>234</groupCode>
+                    <code>3</code>
+                    <groupCode>334</groupCode>
                 </paint>
                 <fuelType>4</fuelType>
                 <transmission>3</transmission>

@@ -8,23 +8,23 @@ import javax.xml.bind.annotation.XmlElement;
 public class Paint {
 
 	@XmlElement
-	private int code;
+	private String code;
 	@XmlElement
-	private int groupCode;
+	private String groupCode;
 
-	public int getCode() {
+	public String getCode() {
 		return code;
 	}
 
-	public void setCode(int code) {
+	public void setCode(String code) {
 		this.code = code;
 	}
 
-	public int getGroupCode() {
+	public String getGroupCode() {
 		return groupCode;
 	}
 
-	public void setGroupCode(int groupCode) {
+	public void setGroupCode(String groupCode) {
 		this.groupCode = groupCode;
 	}
 
@@ -37,8 +37,8 @@ public class Paint {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + code;
-		result = prime * result + groupCode;
+		result = prime * result + ((code == null) ? 0 : code.hashCode());
+		result = prime * result + ((groupCode == null) ? 0 : groupCode.hashCode());
 		return result;
 	}
 
@@ -51,10 +51,17 @@ public class Paint {
 		if (getClass() != obj.getClass())
 			return false;
 		Paint other = (Paint) obj;
-		if (code != other.code)
+		if (code == null) {
+			if (other.code != null)
+				return false;
+		} else if (!code.equals(other.code))
 			return false;
-		if (groupCode != other.groupCode)
+		if (groupCode == null) {
+			if (other.groupCode != null)
+				return false;
+		} else if (!groupCode.equals(other.groupCode))
 			return false;
 		return true;
 	}
+
 }
