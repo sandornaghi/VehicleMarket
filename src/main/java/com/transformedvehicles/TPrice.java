@@ -1,16 +1,21 @@
-package com.vehiclebeans;
+package com.transformedvehicles;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
+import com.vsevehiclebeans.Price;
 
-@XmlAccessorType(XmlAccessType.FIELD)
-public class Price {
+public class TPrice {
 
-	@XmlElement
 	private long basePrice;
-	@XmlElement
+
 	private String currency;
+
+	public TPrice() {
+
+	}
+
+	public TPrice(Price price) {
+		this.basePrice = price.getBasePrice();
+		this.currency = price.getCurrency();
+	}
 
 	public long getBasePrice() {
 		return basePrice;
@@ -30,7 +35,7 @@ public class Price {
 
 	@Override
 	public String toString() {
-		return "Price [basePrice=" + basePrice + ", currency=" + currency + "]";
+		return "TPrice [basePrice=" + basePrice + ", currency=" + currency + "]";
 	}
 
 	@Override
@@ -50,7 +55,7 @@ public class Price {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Price other = (Price) obj;
+		TPrice other = (TPrice) obj;
 		if (basePrice != other.basePrice)
 			return false;
 		if (currency == null) {

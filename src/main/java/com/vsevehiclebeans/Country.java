@@ -1,4 +1,4 @@
-package com.vehiclebeans;
+package com.vsevehiclebeans;
 
 import java.util.HashMap;
 import java.util.Map;

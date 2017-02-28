@@ -4,88 +4,92 @@
 	<country>572</country>
 	<vehicleCategory>NEW</vehicleCategory>
 	<vseVehicle>
-        	<id>LD2134thg7</id>
-                <priceInformation> 
-                    <basePrice>9207</basePrice>
-                    <currency>euro</currency> 
-                </priceInformation>
-                <bodyType>1</bodyType>
-                <paint> 
-                    <code>1</code>
-                    <groupCode>134</groupCode>
-                </paint>
-                <fuelType>1</fuelType>
-                <transmission>1</transmission>
-                <vehicleLocation>
-                      <postalCode>DE1 4DU</postalCode>
-                      <location>
-                          <latitude>53.204575</latitude>
-                          <longitude>-2.901872</longitude>
-                      </location>
-                </vehicleLocation>
-                <vseEquipments>
-					<vseEquipment>
-                           <code>L23</code>
-                           <description>Auto climate controlll</description>
-                        </vseEquipment>
-                </vseEquipments>   
-                <firstRegistrationDate>20150128</firstRegistrationDate>
+		<id>LD2134thg7</id>
+		<priceInformation>
+			<basePrice>9207</basePrice>
+			<currency>euro</currency>
+		</priceInformation>
+		<bodyType>1</bodyType>
+		<paint>
+			<code>1</code>
+			<groupCode>134</groupCode>
+		</paint>
+		<fuelType>1</fuelType>
+		<transmission>1</transmission>
+		<vehicleLocation>
+			<postalCode>DE1 4DU</postalCode>
+			<location>
+				<latitude>53.204575</latitude>
+				<longitude>-2.901872</longitude>
+			</location>
+		</vehicleLocation>
+		<vseEquipments>
+			<vseEquipment>
+				<code>L23</code>
+				<description>Auto climate controlll</description>
+			</vseEquipment>
+			<vseEquipment>
+				<code>L5</code>
+				<description>Air conditioner</description>
+			</vseEquipment>
+		</vseEquipments>
+		<firstRegistrationDate>20150128</firstRegistrationDate>
 	</vseVehicle>
 	<vseVehicle>
-        	<id>LD2134thg8</id>
-                <priceInformation> 
-                    <basePrice>9208</basePrice>
-                    <currency>dollar</currency> 
-                </priceInformation>
-                <bodyType>3</bodyType>
-                <paint> 
-                    <code>2</code>
-                    <groupCode>234</groupCode>
-                </paint>
-                <fuelType>2</fuelType>
-                <transmission>2</transmission>
-                <vehicleLocation>
-                      <postalCode>DE1 4DU</postalCode>
-                      <location>
-                          <latitude>53.204575</latitude>
-                          <longitude>-2.901872</longitude>
-                      </location>
-                </vehicleLocation>
-                <vseEquipments>
-					<vseEquipment>
-                           <code>L23</code>
-                           <description>Auto climate controlll</description>
-                        </vseEquipment>
-                </vseEquipments>   
-                <firstRegistrationDate>20150128</firstRegistrationDate>
+		<id>LD2134thg8</id>
+		<priceInformation>
+			<basePrice>9208</basePrice>
+			<currency>dollar</currency>
+		</priceInformation>
+		<bodyType>3</bodyType>
+		<paint>
+			<code>2</code>
+			<groupCode>234</groupCode>
+		</paint>
+		<fuelType>2</fuelType>
+		<transmission>2</transmission>
+		<vehicleLocation>
+			<postalCode>DE1 4DU</postalCode>
+			<location>
+				<latitude>53.204575</latitude>
+				<longitude>-2.901872</longitude>
+			</location>
+		</vehicleLocation>
+		<vseEquipments>
+			<vseEquipment>
+				<code>L23</code>
+				<description>Auto climate controlll</description>
+			</vseEquipment>
+		</vseEquipments>
+		<firstRegistrationDate>20150128</firstRegistrationDate>
 	</vseVehicle>
-    <vseVehicle>
-        	<id>LD2134thg9</id>
-                <priceInformation> 
-                    <basePrice>9209</basePrice>
-                    <currency>gbp</currency> 
-                </priceInformation>
-                <bodyType>2</bodyType>
-                <paint> 
-                    <code>3</code>
-                    <groupCode>334</groupCode>
-                </paint>
-                <fuelType>4</fuelType>
-                <transmission>3</transmission>
-                <vehicleLocation>
-                      <postalCode>DE1 4DU</postalCode>
-                      <location>
-                          <latitude>53.204575</latitude>
-                          <longitude>-2.901872</longitude>
-                      </location>
-                </vehicleLocation>
-                <vseEquipments>
-					<vseEquipment>
-                           <code>L24</code>
-                           <description>Auto climate controlll</description>
-                        </vseEquipment>
-                </vseEquipments>   
-                <firstRegistrationDate>20150128</firstRegistrationDate>
+	<vseVehicle>
+		<id>LD2134thg9</id>
+		<priceInformation>
+			<basePrice>9209</basePrice>
+			<currency>gbp</currency>
+		</priceInformation>
+		<bodyType>2</bodyType>
+		<paint>
+			<code>3</code>
+			<groupCode>334</groupCode>
+		</paint>
+		<fuelType>4</fuelType>
+		<transmission>3</transmission>
+		<vehicleLocation>
+			<postalCode>DE1 4DU</postalCode>
+			<location>
+				<latitude>53.204575</latitude>
+				<longitude>-2.901872</longitude>
+			</location>
+		</vehicleLocation>
+		<vseEquipments>
+			<vseEquipment>
+				<code>L24</code>
+				<description>Auto climate controlll</description>
+			</vseEquipment>
+		</vseEquipments>
+		<firstRegistrationDate>20150128</firstRegistrationDate>
 	</vseVehicle>
 </vseVehicles>
 

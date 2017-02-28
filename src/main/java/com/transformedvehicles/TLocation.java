@@ -1,16 +1,21 @@
-package com.vehiclebeans;
+package com.transformedvehicles;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
+import com.vsevehiclebeans.Location;
 
-@XmlAccessorType(XmlAccessType.FIELD)
-public class Location {
+public class TLocation {
 
-	@XmlElement
 	private double latitude;
-	@XmlElement
+
 	private double longitude;
+
+	public TLocation() {
+
+	}
+
+	public TLocation(Location location) {
+		this.latitude = location.getLatitude();
+		this.longitude = location.getLongitude();
+	}
 
 	public double getLatitude() {
 		return latitude;
@@ -30,7 +35,7 @@ public class Location {
 
 	@Override
 	public String toString() {
-		return "Location [latitude=" + latitude + ", longitude=" + longitude + "]";
+		return "TLocation [latitude=" + latitude + ", longitude=" + longitude + "]";
 	}
 
 	@Override
@@ -53,11 +58,12 @@ public class Location {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Location other = (Location) obj;
+		TLocation other = (TLocation) obj;
 		if (Double.doubleToLongBits(latitude) != Double.doubleToLongBits(other.latitude))
 			return false;
 		if (Double.doubleToLongBits(longitude) != Double.doubleToLongBits(other.longitude))
 			return false;
 		return true;
 	}
+
 }

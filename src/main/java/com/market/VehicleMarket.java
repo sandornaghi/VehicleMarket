@@ -19,7 +19,8 @@ import com.rulebeans.Correction;
 import com.services.RuleService;
 import com.services.TransformationService;
 import com.services.VSEService;
-import com.vehiclebeans.Vehicles;
+import com.transformedvehicles.TVehicles;
+import com.vsevehiclebeans.Vehicles;
 
 @Path("/vehicle")
 public class VehicleMarket {
@@ -53,23 +54,20 @@ public class VehicleMarket {
 		// if the vehicles is not empty:
 		if (vehicles != null) {
 			// get the correction rules for the country and vehicleCategory
+			// not used yet...
 			List<Correction> corrections = ruleService.getCorrectionRules(country, vehicleCategory);
 
 			// get the configuration rules for the country and vehicleCategory
 			List<Configuration> configurations = ruleService.getConfigurationRules(country, vehicleCategory);
 
 			// set the language for this country and vehicleCategoty category
-			List<Vehicles> configuredVehicles = transService.setLanguages(vehicles, configurations);
+			TVehicles configuredVehicle = transService.setLanguages(vehicles, configurations);
 
-			// apply the rules for the vehicles...
-			List<Vehicles> correctedVehicles = transService.applyRules(configuredVehicles, corrections);
-			
-			
 			// transform the object to a JSON object
 			ObjectMapper mapper = new ObjectMapper();
 			String s = null;
 			try {
-				s = mapper.writeValueAsString(correctedVehicles);
+				s = mapper.writeValueAsString(configuredVehicle);
 			} catch (JsonProcessingException e) {
 				e.printStackTrace();
 			}

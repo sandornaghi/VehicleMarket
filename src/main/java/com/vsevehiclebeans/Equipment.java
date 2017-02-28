@@ -1,16 +1,16 @@
-package com.vehiclebeans;
+package com.vsevehiclebeans;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Paint {
+public class Equipment {
 
 	@XmlElement
 	private String code;
 	@XmlElement
-	private String groupCode;
+	private String description;
 
 	public String getCode() {
 		return code;
@@ -20,17 +20,17 @@ public class Paint {
 		this.code = code;
 	}
 
-	public String getGroupCode() {
-		return groupCode;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setGroupCode(String groupCode) {
-		this.groupCode = groupCode;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	@Override
 	public String toString() {
-		return "Paint [code=" + code + ", groupCode=" + groupCode + "]";
+		return "Equipment [code=" + code + ", description=" + description + "]";
 	}
 
 	@Override
@@ -38,7 +38,7 @@ public class Paint {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((code == null) ? 0 : code.hashCode());
-		result = prime * result + ((groupCode == null) ? 0 : groupCode.hashCode());
+		result = prime * result + ((description == null) ? 0 : description.hashCode());
 		return result;
 	}
 
@@ -50,16 +50,16 @@ public class Paint {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Paint other = (Paint) obj;
+		Equipment other = (Equipment) obj;
 		if (code == null) {
 			if (other.code != null)
 				return false;
 		} else if (!code.equals(other.code))
 			return false;
-		if (groupCode == null) {
-			if (other.groupCode != null)
+		if (description == null) {
+			if (other.description != null)
 				return false;
-		} else if (!groupCode.equals(other.groupCode))
+		} else if (!description.equals(other.description))
 			return false;
 		return true;
 	}

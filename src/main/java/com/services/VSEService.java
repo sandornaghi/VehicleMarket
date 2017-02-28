@@ -7,7 +7,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
-import com.vehiclebeans.Vehicles;
+import com.vsevehiclebeans.Vehicles;
 
 public class VSEService {
 

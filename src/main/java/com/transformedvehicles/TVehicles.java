@@ -1,26 +1,14 @@
-package com.vehiclebeans;
+package com.transformedvehicles;
 
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
+public class TVehicles {
 
-@XmlRootElement(name = "vseVehicles")
-@XmlAccessorType(XmlAccessType.FIELD)
-public class Vehicles {
-
-	@XmlElement(name = "country")
 	private int countryCode;
 
-	@XmlElement
 	private String vehicleCategory;
 
-	private String language;
-
-	@XmlElement(name = "vseVehicle")
-	private List<Vehicle> vehicleList;
+	private List<TLanguageAndVehicles> vehicleList;
 
 	public int getCountryCode() {
 		return countryCode;
@@ -38,26 +26,18 @@ public class Vehicles {
 		this.vehicleCategory = vehicleCategory;
 	}
 
-	public String getLanguage() {
-		return language;
-	}
-
-	public void setLanguage(String language) {
-		this.language = language;
-	}
-
-	public List<Vehicle> getVehicleList() {
+	public List<TLanguageAndVehicles> getVehicleList() {
 		return vehicleList;
 	}
 
-	public void setVehicleList(List<Vehicle> vehicleList) {
+	public void setVehicleList(List<TLanguageAndVehicles> vehicleList) {
 		this.vehicleList = vehicleList;
 	}
 
 	@Override
 	public String toString() {
-		return "Vehicles [countryCode=" + countryCode + ", vehicleCategory=" + vehicleCategory + ", language="
-				+ language + ", vehicleList=" + vehicleList + "]";
+		return "TVehicles [countryCode=" + countryCode + ", vehicleCategory=" + vehicleCategory + ", vehicleList="
+				+ vehicleList + "]";
 	}
 
 	@Override
@@ -65,7 +45,6 @@ public class Vehicles {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + countryCode;
-		result = prime * result + ((language == null) ? 0 : language.hashCode());
 		result = prime * result + ((vehicleCategory == null) ? 0 : vehicleCategory.hashCode());
 		result = prime * result + ((vehicleList == null) ? 0 : vehicleList.hashCode());
 		return result;
@@ -79,13 +58,8 @@ public class Vehicles {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Vehicles other = (Vehicles) obj;
+		TVehicles other = (TVehicles) obj;
 		if (countryCode != other.countryCode)
-			return false;
-		if (language == null) {
-			if (other.language != null)
-				return false;
-		} else if (!language.equals(other.language))
 			return false;
 		if (vehicleCategory == null) {
 			if (other.vehicleCategory != null)

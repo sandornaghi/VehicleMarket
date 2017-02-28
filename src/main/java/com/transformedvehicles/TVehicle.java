@@ -1,50 +1,26 @@
-package com.vehiclebeans;
+package com.transformedvehicles;
 
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
+public class TVehicle {
 
-@XmlAccessorType(XmlAccessType.FIELD)
-public class Vehicle {
-
-	@XmlElement
 	private String id;
 
-	@XmlElement
-	private Price priceInformation;
+	private TPrice priceInformation;
 
-	@XmlElement
-	private String bodyType;
+	private TBodyType bodyType;
 
-	@XmlElement
-	private Paint paint;
+	private TPaint paint;
 
-	@XmlElement
-	private String fuelType;
+	private TFuelType fuelType;
 
-	@XmlElement
-	private String transmission;
+	private TTransmission transmission;
 
-	@XmlElement
-	private VehicleLocation vehicleLocation;
+	private TVehicleLocation vehicleLocation;
 
-	@XmlElementWrapper(name = "vseEquipments")
-	@XmlElement(name = "vseEquipment")
-	private List<Equipment> equipmentList;
+	private List<TEquipment> equipmentList;
 
-	@XmlElement
 	private String firstRegistrationDate;
-
-	@Override
-	public String toString() {
-		return "Vehicle [id=" + id + ", priceInformation=" + priceInformation + ", bodyType=" + bodyType + ", paint="
-				+ paint + ", fuelType=" + fuelType + ", transmission=" + transmission + ", vehicleLocation="
-				+ vehicleLocation + ", equipmentList=" + equipmentList + ", firstRegistrationDate="
-				+ firstRegistrationDate + "]";
-	}
 
 	public String getId() {
 		return id;
@@ -54,59 +30,59 @@ public class Vehicle {
 		this.id = id;
 	}
 
-	public Price getPriceInformation() {
+	public TPrice getPriceInformation() {
 		return priceInformation;
 	}
 
-	public void setPriceInformation(Price priceInformation) {
+	public void setPriceInformation(TPrice priceInformation) {
 		this.priceInformation = priceInformation;
 	}
 
-	public String getBodyType() {
+	public TBodyType getBodyType() {
 		return bodyType;
 	}
 
-	public void setBodyType(String bodyType) {
+	public void setBodyType(TBodyType bodyType) {
 		this.bodyType = bodyType;
 	}
 
-	public Paint getPaint() {
+	public TPaint getPaint() {
 		return paint;
 	}
 
-	public void setPaint(Paint paint) {
+	public void setPaint(TPaint paint) {
 		this.paint = paint;
 	}
 
-	public String getFuelType() {
+	public TFuelType getFuelType() {
 		return fuelType;
 	}
 
-	public void setFuelType(String fuelType) {
+	public void setFuelType(TFuelType fuelType) {
 		this.fuelType = fuelType;
 	}
 
-	public String getTransmission() {
+	public TTransmission getTransmission() {
 		return transmission;
 	}
 
-	public void setTransmission(String transmission) {
+	public void setTransmission(TTransmission transmission) {
 		this.transmission = transmission;
 	}
 
-	public VehicleLocation getVehicleLocation() {
+	public TVehicleLocation getVehicleLocation() {
 		return vehicleLocation;
 	}
 
-	public void setVehicleLocation(VehicleLocation vehicleLocation) {
+	public void setVehicleLocation(TVehicleLocation vehicleLocation) {
 		this.vehicleLocation = vehicleLocation;
 	}
 
-	public List<Equipment> getEquipmentList() {
+	public List<TEquipment> getEquipmentList() {
 		return equipmentList;
 	}
 
-	public void setEquipmentList(List<Equipment> equipmentList) {
+	public void setEquipmentList(List<TEquipment> equipmentList) {
 		this.equipmentList = equipmentList;
 	}
 
@@ -116,6 +92,14 @@ public class Vehicle {
 
 	public void setFirstRegistrationDate(String firstRegistrationDate) {
 		this.firstRegistrationDate = firstRegistrationDate;
+	}
+
+	@Override
+	public String toString() {
+		return "TVehicle [id=" + id + ", priceInformation=" + priceInformation + ", bodyType=" + bodyType + ", paint="
+				+ paint + ", fuelType=" + fuelType + ", transmission=" + transmission + ", vehicleLocation="
+				+ vehicleLocation + ", equipmentList=" + equipmentList + ", firstRegistrationDate="
+				+ firstRegistrationDate + "]";
 	}
 
 	@Override
@@ -142,7 +126,7 @@ public class Vehicle {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Vehicle other = (Vehicle) obj;
+		TVehicle other = (TVehicle) obj;
 		if (bodyType == null) {
 			if (other.bodyType != null)
 				return false;

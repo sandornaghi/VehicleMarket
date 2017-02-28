@@ -1,16 +1,21 @@
-package com.vehiclebeans;
+package com.transformedvehicles;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
+import com.vsevehiclebeans.VehicleLocation;
 
-@XmlAccessorType(XmlAccessType.FIELD)
-public class VehicleLocation {
+public class TVehicleLocation {
 
-	@XmlElement
 	private String postalCode;
-	@XmlElement
-	private Location location;
+
+	private TLocation location;
+
+	public TVehicleLocation() {
+
+	}
+
+	public TVehicleLocation(VehicleLocation vehicleLocation) {
+		this.postalCode = vehicleLocation.getPostalCode();
+		this.location = new TLocation(vehicleLocation.getLocation());
+	}
 
 	public String getPostalCode() {
 		return postalCode;
@@ -20,17 +25,17 @@ public class VehicleLocation {
 		this.postalCode = postalCode;
 	}
 
-	public Location getLocation() {
+	public TLocation getLocation() {
 		return location;
 	}
 
-	public void setLocation(Location location) {
+	public void setLocation(TLocation location) {
 		this.location = location;
 	}
 
 	@Override
 	public String toString() {
-		return "VehicleLocation [postalCode=" + postalCode + ", location=" + location + "]";
+		return "TVehicleLocation [postalCode=" + postalCode + ", location=" + location + "]";
 	}
 
 	@Override
@@ -50,7 +55,7 @@ public class VehicleLocation {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		VehicleLocation other = (VehicleLocation) obj;
+		TVehicleLocation other = (TVehicleLocation) obj;
 		if (location == null) {
 			if (other.location != null)
 				return false;

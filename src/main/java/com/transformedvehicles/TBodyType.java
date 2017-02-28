@@ -1,16 +1,18 @@
-package com.vehiclebeans;
+package com.transformedvehicles;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
+public class TBodyType {
 
-@XmlAccessorType(XmlAccessType.FIELD)
-public class Equipment {
-
-	@XmlElement
 	private String code;
-	@XmlElement
+
 	private String description;
+
+	public TBodyType() {
+
+	}
+
+	public TBodyType(String code) {
+		this.code = code;
+	}
 
 	public String getCode() {
 		return code;
@@ -30,7 +32,7 @@ public class Equipment {
 
 	@Override
 	public String toString() {
-		return "Equipment [code=" + code + ", description=" + description + "]";
+		return "BodyType [code=" + code + ", description=" + description + "]";
 	}
 
 	@Override
@@ -50,7 +52,7 @@ public class Equipment {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Equipment other = (Equipment) obj;
+		TBodyType other = (TBodyType) obj;
 		if (code == null) {
 			if (other.code != null)
 				return false;
