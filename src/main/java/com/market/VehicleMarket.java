@@ -61,21 +61,25 @@ public class VehicleMarket {
 			List<Configuration> configurations = ruleService.getConfigurationRules(country, vehicleCategory);
 
 			// set the language for this country and vehicleCategoty category
-			TVehicles configuredVehicle = transService.setLanguages(vehicles, configurations);
+			TVehicles configuredTVehicle = transService.setLanguages(vehicles, configurations);
 
-			// transform the object to a JSON object
+			// apply the rules from the mysql database
+			configuredTVehicle = transService.applyRules(configuredTVehicle, corrections);
+
+			// transform the object to a JSON object, just for the visibility
 			ObjectMapper mapper = new ObjectMapper();
 			String s = null;
 			try {
-				s = mapper.writeValueAsString(configuredVehicle);
+				s = mapper.writeValueAsString(configuredTVehicle);
 			} catch (JsonProcessingException e) {
 				e.printStackTrace();
 			}
 
-			return Response.ok(s).build();
+			return Response.status(200).entity(s).build();
 		} else {
 
-			return Response.ok("Invalid parameters!!").build();
+			String response = "{\"Invalid parameters\" : \"Inexistent country code, or wrong vehicle category\"}";
+			return Response.status(400).entity(response).build();
 		}
 
 	}
