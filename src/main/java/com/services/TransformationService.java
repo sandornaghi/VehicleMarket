@@ -30,12 +30,19 @@ public class TransformationService {
 	 * @param vseVehicles
 	 *            Vehicles from the vse system.
 	 * @param configurations
-	 *            List of configurations, from where we extract the languages.
-	 * @return The transformed vehicles, with the language configured.
+	 *            List of configurations, extracted from mysql, from where we
+	 *            extract the languages.
+	 * @param corrections
+	 *            List of correction rules that will be applied to vehicles,
+	 *            extracted from mysql.
+	 * @return A Vehicle with the language adjusted, and with the rules applied.
 	 */
-	public TVehicles setLanguages(Vehicles vseVehicles, List<Configuration> configurations) {
+	public TVehicles applyChanges(Vehicles vseVehicles, List<Configuration> configurations,
+			List<Correction> corrections) {
 
 		List<String> languageList = getRuleLanguages(configurations);
+
+		Set<String> correctionLanguages = getLanguages(corrections);
 
 		TVehicles tVehicles = new TVehicles();
 		tVehicles.setCountryCode(vseVehicles.getCountryCode());
@@ -43,7 +50,6 @@ public class TransformationService {
 
 		List<TLanguageAndVehicles> tLanguageList = new ArrayList<>();
 
-		// populate the list
 		for (String s : languageList) {
 
 			TLanguageAndVehicles tLanguage = new TLanguageAndVehicles();
@@ -51,10 +57,12 @@ public class TransformationService {
 
 			List<TVehicle> tVehicleList = new ArrayList<>();
 			for (Vehicle vehicle : vseVehicles.getVehicleList()) {
+
 				TVehicle tVehicle = new TVehicle();
 				tVehicle.setId(vehicle.getId());
-				tVehicle.setPriceInformation(new TPrice(vehicle.getPriceInformation()));
+				tVehicle.setLanguage(s);
 
+				tVehicle.setPriceInformation(new TPrice(vehicle.getPriceInformation()));
 				tVehicle.setBodyType(new TBodyType(vehicle.getBodyType()));
 				tVehicle.setPaint(new TPaint(vehicle.getPaint().getCode(), vehicle.getPaint().getGroupCode()));
 				tVehicle.setFuelType(new TFuelType(vehicle.getFuelType()));
@@ -68,6 +76,10 @@ public class TransformationService {
 				tVehicle.setEquipmentList(equipmentList);
 
 				tVehicle.setFirstRegistrationDate(vehicle.getFirstRegistrationDate());
+
+				if (correctionLanguages.contains(tLanguage.getLanguage().toLowerCase())) {
+					setRules(tVehicle, corrections, s);
+				}
 
 				tVehicleList.add(tVehicle);
 			}
@@ -112,28 +124,21 @@ public class TransformationService {
 	}
 
 	/**
-	 * Apply the rules for the vehicles with languages configured, rules
-	 * extracted from the mysql database.
+	 * Create a Set of languages extracted from the mysql database.
 	 * 
-	 * @param configured
-	 *            TVehicle Vehicles that will be transformed.
 	 * @param corrections
-	 *            List of rules from the mysql database.
-	 * @return The Vehicle with the rules applied.
+	 *            List of all corrections available in mysql database.
+	 * @return A Set of language(s) existing in the correction list.
 	 */
-	public TVehicles applyRules(TVehicles configuredTVehicle, List<Correction> corrections) {
+	private Set<String> getLanguages(List<Correction> corrections) {
 
-		Set<String> correctionLanguages = getLanguages(corrections);
+		Set<String> result = new HashSet<>();
 
-		for (TLanguageAndVehicles langVegicle : configuredTVehicle.getVehicleList()) {
-
-			if (correctionLanguages.contains(langVegicle.getLanguage().toLowerCase())) {
-				for (TVehicle tVehicle : langVegicle.gettVehicleList()) {
-					setRules(tVehicle, corrections, langVegicle.getLanguage());
-				}
-			}
+		for (Correction correction : corrections) {
+			result.add(correction.getLanguage().toLowerCase());
 		}
-		return configuredTVehicle;
+
+		return result;
 	}
 
 	/**
@@ -231,24 +236,6 @@ public class TransformationService {
 			}
 		}
 
-	}
-
-	/**
-	 * Create a Set of languages extracted from the mysql database.
-	 * 
-	 * @param corrections
-	 *            List of all corrections available in mysql database.
-	 * @return A Set of language(s) existing in the correction list.
-	 */
-	private Set<String> getLanguages(List<Correction> corrections) {
-
-		Set<String> result = new HashSet<>();
-
-		for (Correction correction : corrections) {
-			result.add(correction.getLanguage().toLowerCase());
-		}
-
-		return result;
 	}
 
 }

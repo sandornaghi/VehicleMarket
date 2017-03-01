@@ -1,11 +1,14 @@
 package com.transformedvehicles;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.vsevehiclebeans.Price;
 
 public class TPrice {
 
+	@JsonProperty("basePrice")
 	private long basePrice;
 
+	@JsonProperty("currency")
 	private String currency;
 
 	public TPrice() {

@@ -1,9 +1,13 @@
 package com.transformedvehicles;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class TFuelType {
 
+	@JsonProperty("fuelType_code")
 	private String fuelTypeCode;
 
+	@JsonProperty("fuelType_description")
 	private String fuelTypeDescription;
 
 	public TFuelType() {

@@ -1,13 +1,19 @@
 package com.transformedvehicles;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class TPaint {
 
+	@JsonProperty("paintCode")
 	private String paintCode;
 
+	@JsonProperty("paintDescription")
 	private String paintDescription;
 
+	@JsonProperty("paintGroup_code")
 	private String groupCode;
-
+	
+	@JsonProperty("paintGroup_description")
 	private String groupDescription;
 
 	public TPaint() {

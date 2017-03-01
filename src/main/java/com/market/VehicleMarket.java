@@ -11,11 +11,14 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 import javax.xml.bind.JAXBException;
 
+import org.elasticsearch.client.transport.TransportClient;
+
 import com.annotations.NotEmpty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rulebeans.Configuration;
 import com.rulebeans.Correction;
+import com.services.InsertService;
 import com.services.RuleService;
 import com.services.TransformationService;
 import com.services.VSEService;
@@ -36,6 +39,9 @@ public class VehicleMarket {
 	@Inject
 	private TransformationService transService;
 
+	@Inject
+	private TransportClient client;
+
 	@GET
 	@Path("/{country}/{vehicleCategory}")
 	@Produces("application/json")
@@ -54,23 +60,26 @@ public class VehicleMarket {
 		// if the vehicles is not empty:
 		if (vehicles != null) {
 			// get the correction rules for the country and vehicleCategory
-			// not used yet...
 			List<Correction> corrections = ruleService.getCorrectionRules(country, vehicleCategory);
 
 			// get the configuration rules for the country and vehicleCategory
 			List<Configuration> configurations = ruleService.getConfigurationRules(country, vehicleCategory);
 
 			// set the language for this country and vehicleCategoty category
-			TVehicles configuredTVehicle = transService.setLanguages(vehicles, configurations);
+			TVehicles configuredTVehicle = transService.applyChanges(vehicles, configurations, corrections);
 
-			// apply the rules from the mysql database
-			configuredTVehicle = transService.applyRules(configuredTVehicle, corrections);
+			InsertService insert = new InsertService();
+			insert.insertVehicle(country, configuredTVehicle, client);
 
 			// transform the object to a JSON object, just for the visibility
 			ObjectMapper mapper = new ObjectMapper();
 			String s = null;
 			try {
-				s = mapper.writeValueAsString(configuredTVehicle);
+				if (configuredTVehicle.getVehicleList().size() == 0) {
+					s = mapper.writeValueAsString(vehicles);
+				} else {
+					s = mapper.writeValueAsString(configuredTVehicle);
+				}
 			} catch (JsonProcessingException e) {
 				e.printStackTrace();
 			}

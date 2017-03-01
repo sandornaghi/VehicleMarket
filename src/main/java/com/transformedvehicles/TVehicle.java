@@ -2,24 +2,39 @@ package com.transformedvehicles;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class TVehicle {
 
+	@JsonProperty
 	private String id;
 
+	@JsonProperty
+	private String language;
+
+	@JsonIgnoreProperties(ignoreUnknown = true)
 	private TPrice priceInformation;
 
+	@JsonIgnoreProperties(ignoreUnknown = true)
 	private TBodyType bodyType;
 
+	@JsonIgnoreProperties(ignoreUnknown = true)
 	private TPaint paint;
 
+	@JsonIgnoreProperties(ignoreUnknown = true)
 	private TFuelType fuelType;
 
+	@JsonIgnoreProperties(ignoreUnknown = true)
 	private TTransmission transmission;
 
+	@JsonIgnoreProperties(ignoreUnknown = true)
 	private TVehicleLocation vehicleLocation;
 
+	@JsonIgnoreProperties(ignoreUnknown = true)
 	private List<TEquipment> equipmentList;
 
+	@JsonProperty
 	private String firstRegistrationDate;
 
 	public String getId() {
@@ -28,6 +43,14 @@ public class TVehicle {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public String getLanguage() {
+		return language;
+	}
+
+	public void setLanguage(String language) {
+		this.language = language;
 	}
 
 	public TPrice getPriceInformation() {
@@ -96,10 +119,10 @@ public class TVehicle {
 
 	@Override
 	public String toString() {
-		return "TVehicle [id=" + id + ", priceInformation=" + priceInformation + ", bodyType=" + bodyType + ", paint="
-				+ paint + ", fuelType=" + fuelType + ", transmission=" + transmission + ", vehicleLocation="
-				+ vehicleLocation + ", equipmentList=" + equipmentList + ", firstRegistrationDate="
-				+ firstRegistrationDate + "]";
+		return "TVehicle [id=" + id + ", language=" + language + ", priceInformation=" + priceInformation
+				+ ", bodyType=" + bodyType + ", paint=" + paint + ", fuelType=" + fuelType + ", transmission="
+				+ transmission + ", vehicleLocation=" + vehicleLocation + ", equipmentList=" + equipmentList
+				+ ", firstRegistrationDate=" + firstRegistrationDate + "]";
 	}
 
 	@Override
@@ -111,6 +134,7 @@ public class TVehicle {
 		result = prime * result + ((firstRegistrationDate == null) ? 0 : firstRegistrationDate.hashCode());
 		result = prime * result + ((fuelType == null) ? 0 : fuelType.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((language == null) ? 0 : language.hashCode());
 		result = prime * result + ((paint == null) ? 0 : paint.hashCode());
 		result = prime * result + ((priceInformation == null) ? 0 : priceInformation.hashCode());
 		result = prime * result + ((transmission == null) ? 0 : transmission.hashCode());
@@ -151,6 +175,11 @@ public class TVehicle {
 			if (other.id != null)
 				return false;
 		} else if (!id.equals(other.id))
+			return false;
+		if (language == null) {
+			if (other.language != null)
+				return false;
+		} else if (!language.equals(other.language))
 			return false;
 		if (paint == null) {
 			if (other.paint != null)

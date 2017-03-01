@@ -1,9 +1,13 @@
 package com.transformedvehicles;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class TEquipment {
 
+	@JsonProperty("equipment_code")
 	private String code;
 
+	@JsonProperty("equipment_description")
 	private String description;
 
 	public TEquipment() {

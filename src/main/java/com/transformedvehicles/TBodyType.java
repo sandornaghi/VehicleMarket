@@ -1,9 +1,13 @@
 package com.transformedvehicles;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class TBodyType {
 
+	@JsonProperty("bodyType_code")
 	private String code;
 
+	@JsonProperty("bodyType_description")
 	private String description;
 
 	public TBodyType() {

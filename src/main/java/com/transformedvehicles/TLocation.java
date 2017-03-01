@@ -1,11 +1,14 @@
 package com.transformedvehicles;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.vsevehiclebeans.Location;
 
 public class TLocation {
 
+	@JsonProperty("latitude")
 	private double latitude;
 
+	@JsonProperty("longitude")
 	private double longitude;
 
 	public TLocation() {

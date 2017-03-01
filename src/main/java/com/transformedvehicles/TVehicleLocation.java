@@ -1,9 +1,11 @@
 package com.transformedvehicles;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.vsevehiclebeans.VehicleLocation;
 
 public class TVehicleLocation {
 
+	@JsonProperty("postalCode")
 	private String postalCode;
 
 	private TLocation location;

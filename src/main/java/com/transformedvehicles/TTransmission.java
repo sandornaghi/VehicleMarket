@@ -1,9 +1,13 @@
 package com.transformedvehicles;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class TTransmission {
 
+	@JsonProperty("transmission_code")
 	private String transmissionCode;
 
+	@JsonProperty("transamission_description")
 	private String transmissionDescription;
 
 	public TTransmission() {
