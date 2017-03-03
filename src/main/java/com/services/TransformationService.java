@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.helper.TVehicleHelper;
 import com.rulebeans.Configuration;
 import com.rulebeans.Correction;
 import com.transformedvehicles.TBodyType;
@@ -23,75 +24,60 @@ import com.vsevehiclebeans.Vehicles;
 
 public class TransformationService {
 
-	/**
-	 * Transform the vehicle from vse system, into vehicles with the language
-	 * configured.
-	 * 
-	 * @param vseVehicles
-	 *            Vehicles from the vse system.
-	 * @param configurations
-	 *            List of configurations, extracted from mysql, from where we
-	 *            extract the languages.
-	 * @param corrections
-	 *            List of correction rules that will be applied to vehicles,
-	 *            extracted from mysql.
-	 * @return A Vehicle with the language adjusted, and with the rules applied.
-	 */
-	public TVehicles applyChanges(Vehicles vseVehicles, List<Configuration> configurations,
-			List<Correction> corrections) {
+	public TVehicles transformVehicles(TVehicleHelper helper) {
 
-		List<String> languageList = getRuleLanguages(configurations);
+		TVehicles tVehicles = new TVehicles();
+		tVehicles.setCountry(helper.getCountry());
+		tVehicles.setVehicleCategory(helper.getVehicleCategory());
+
+		List<TLanguageAndVehicles> langVehiclesList = new ArrayList<>();
+
+		for (String language : getRuleLanguages(helper.getConfigurations())) {
+			TLanguageAndVehicles langVehicle = new TLanguageAndVehicles();
+			langVehicle.setLanguage(language);
+			langVehicle.settVehicleList(applyChanges(helper.getVehicles(), helper.getCorrections(), language));
+			langVehiclesList.add(langVehicle);
+		}
+
+		tVehicles.setVehicleList(langVehiclesList);
+
+		return tVehicles;
+	}
+
+	private List<TVehicle> applyChanges(Vehicles vseVehicles, List<Correction> corrections, String language) {
 
 		Set<String> correctionLanguages = getLanguages(corrections);
 
-		TVehicles tVehicles = new TVehicles();
-		tVehicles.setCountryCode(vseVehicles.getCountryCode());
-		tVehicles.setVehicleCategory(vseVehicles.getVehicleCategory());
+		List<TVehicle> tVehicleList = new ArrayList<>();
+		for (Vehicle vehicle : vseVehicles.getVehicleList()) {
 
-		List<TLanguageAndVehicles> tLanguageList = new ArrayList<>();
+			TVehicle tVehicle = new TVehicle();
+			tVehicle.setId(vehicle.getId());
+			tVehicle.setLanguage(language);
+			tVehicle.setPriceInformation(new TPrice(vehicle.getPriceInformation()));
+			tVehicle.setBodyType(new TBodyType(vehicle.getBodyType()));
+			tVehicle.setPaint(new TPaint(vehicle.getPaint().getCode(), vehicle.getPaint().getGroupCode()));
+			tVehicle.setFuelType(new TFuelType(vehicle.getFuelType()));
+			tVehicle.setTransmission(new TTransmission(vehicle.getTransmission()));
+			tVehicle.setVehicleLocation(new TVehicleLocation(vehicle.getVehicleLocation()));
 
-		for (String s : languageList) {
+			List<TEquipment> equipmentList = new ArrayList<>();
+			for (Equipment equipment : vehicle.getEquipmentList()) {
+				equipmentList.add(new TEquipment(equipment.getCode(), equipment.getDescription()));
+			}
+			tVehicle.setEquipmentList(equipmentList);
 
-			TLanguageAndVehicles tLanguage = new TLanguageAndVehicles();
-			tLanguage.setLanguage(s);
+			tVehicle.setFirstRegistrationDate(vehicle.getFirstRegistrationDate());
 
-			List<TVehicle> tVehicleList = new ArrayList<>();
-			for (Vehicle vehicle : vseVehicles.getVehicleList()) {
-
-				TVehicle tVehicle = new TVehicle();
-				tVehicle.setId(vehicle.getId());
-				tVehicle.setLanguage(s);
-
-				tVehicle.setPriceInformation(new TPrice(vehicle.getPriceInformation()));
-				tVehicle.setBodyType(new TBodyType(vehicle.getBodyType()));
-				tVehicle.setPaint(new TPaint(vehicle.getPaint().getCode(), vehicle.getPaint().getGroupCode()));
-				tVehicle.setFuelType(new TFuelType(vehicle.getFuelType()));
-				tVehicle.setTransmission(new TTransmission(vehicle.getTransmission()));
-				tVehicle.setVehicleLocation(new TVehicleLocation(vehicle.getVehicleLocation()));
-
-				List<TEquipment> equipmentList = new ArrayList<>();
-				for (Equipment equipment : vehicle.getEquipmentList()) {
-					equipmentList.add(new TEquipment(equipment.getCode(), equipment.getDescription()));
-				}
-				tVehicle.setEquipmentList(equipmentList);
-
-				tVehicle.setFirstRegistrationDate(vehicle.getFirstRegistrationDate());
-
-				if (correctionLanguages.contains(tLanguage.getLanguage().toLowerCase())) {
-					setRules(tVehicle, corrections, s);
-				}
-
-				tVehicleList.add(tVehicle);
+			if (correctionLanguages.contains(language.toLowerCase())) {
+				setRules(tVehicle, corrections, language);
 			}
 
-			tLanguage.settVehicleList(tVehicleList);
-
-			tLanguageList.add(tLanguage);
+			tVehicleList.add(tVehicle);
 		}
 
-		tVehicles.setVehicleList(tLanguageList);
+		return tVehicleList;
 
-		return tVehicles;
 	}
 
 	/**
@@ -235,7 +221,6 @@ public class TransformationService {
 				break;
 			}
 		}
-
 	}
 
 }

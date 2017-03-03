@@ -11,14 +11,12 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 import javax.xml.bind.JAXBException;
 
-import org.elasticsearch.client.transport.TransportClient;
+import com.helper.TVehicleHelper;
 
-import com.annotations.NotEmpty;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+//import org.elasticsearch.client.transport.TransportClient;
+
 import com.rulebeans.Configuration;
 import com.rulebeans.Correction;
-import com.services.InsertService;
 import com.services.RuleService;
 import com.services.TransformationService;
 import com.services.VSEService;
@@ -39,57 +37,45 @@ public class VehicleMarket {
 	@Inject
 	private TransformationService transService;
 
-	@Inject
-	private TransportClient client;
+	// @Inject
+	// private TransportClient client;
 
 	@GET
 	@Path("/{country}/{vehicleCategory}")
 	@Produces("application/json")
-	public Response getVehicles(@PathParam("country") @NotEmpty String country,
-			@PathParam("vehicleCategory") @NotEmpty String vehicleCategory) {
+	public Response importVehiclesFromVSE(@PathParam("country") String country,
+			@PathParam("vehicleCategory") String vehicleCategory) {
 
 		Vehicles vehicles = null;
 
-		// read the vehicles from vse system
 		try {
 			vehicles = vseService.getVehiclesFromVSE(country, vehicleCategory);
 		} catch (JAXBException e) {
 			LOGGER.severe(e.getMessage());
 		}
 
-		// if the vehicles is not empty:
+		String response = null;
 		if (vehicles != null) {
-			// get the correction rules for the country and vehicleCategory
+
 			List<Correction> corrections = ruleService.getCorrectionRules(country, vehicleCategory);
 
-			// get the configuration rules for the country and vehicleCategory
 			List<Configuration> configurations = ruleService.getConfigurationRules(country, vehicleCategory);
 
-			// set the language for this country and vehicleCategoty category
-			TVehicles configuredTVehicle = transService.applyChanges(vehicles, configurations, corrections);
+			TVehicleHelper helper = new TVehicleHelper(country, vehicleCategory, vehicles, corrections, configurations);
+			TVehicles tVehicles = transService.transformVehicles(helper);
+					
 
-			InsertService insert = new InsertService();
-			insert.insertVehicle(country, configuredTVehicle, client);
-
-			// transform the object to a JSON object, just for the visibility
-			ObjectMapper mapper = new ObjectMapper();
-			String s = null;
-			try {
-				if (configuredTVehicle.getVehicleList().size() == 0) {
-					s = mapper.writeValueAsString(vehicles);
-				} else {
-					s = mapper.writeValueAsString(configuredTVehicle);
-				}
-			} catch (JsonProcessingException e) {
-				e.printStackTrace();
+			if (tVehicles.getVehicleList().isEmpty()) {
+				response = "{\"code\":401, \"text\":\"No rules found for " + country + "/" + vehicleCategory + "\"}";
+			} else {
+				response = "{\"code\":200, \"text\":\"Successful import\"}";
 			}
 
-			return Response.status(200).entity(s).build();
+			return Response.status(200).entity(response).build();
 		} else {
 
-			String response = "{\"Invalid parameters\" : \"Inexistent country code, or wrong vehicle category\"}";
+			response = "{\"code\":400, \"text\":\"Invalid input\"}";
 			return Response.status(400).entity(response).build();
 		}
-
 	}
 }

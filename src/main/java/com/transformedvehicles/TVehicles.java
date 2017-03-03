@@ -4,18 +4,18 @@ import java.util.List;
 
 public class TVehicles {
 
-	private int countryCode;
+	private String country;
 
 	private String vehicleCategory;
 
 	private List<TLanguageAndVehicles> vehicleList;
 
-	public int getCountryCode() {
-		return countryCode;
+	public String getCountry() {
+		return country;
 	}
 
-	public void setCountryCode(int countryCode) {
-		this.countryCode = countryCode;
+	public void setCountry(String country) {
+		this.country = country;
 	}
 
 	public String getVehicleCategory() {
@@ -36,15 +36,15 @@ public class TVehicles {
 
 	@Override
 	public String toString() {
-		return "TVehicles [countryCode=" + countryCode + ", vehicleCategory=" + vehicleCategory + ", vehicleList="
-				+ vehicleList + "]";
+		return "TVehicles [country=" + country + ", vehicleCategory=" + vehicleCategory + ", vehicleList=" + vehicleList
+				+ "]";
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + countryCode;
+		result = prime * result + ((country == null) ? 0 : country.hashCode());
 		result = prime * result + ((vehicleCategory == null) ? 0 : vehicleCategory.hashCode());
 		result = prime * result + ((vehicleList == null) ? 0 : vehicleList.hashCode());
 		return result;
@@ -59,7 +59,10 @@ public class TVehicles {
 		if (getClass() != obj.getClass())
 			return false;
 		TVehicles other = (TVehicles) obj;
-		if (countryCode != other.countryCode)
+		if (country == null) {
+			if (other.country != null)
+				return false;
+		} else if (!country.equals(other.country))
 			return false;
 		if (vehicleCategory == null) {
 			if (other.vehicleCategory != null)

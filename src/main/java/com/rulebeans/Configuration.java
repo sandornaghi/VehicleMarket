@@ -30,7 +30,8 @@ public class Configuration extends Rule {
 
 	@Override
 	public String toString() {
-		return "Configurations [id=" + getId() + ", country=" + getCountry() + ", vehicleCategory=" + getVehicleCategory() + ", code=" + code + ", value=" + value + "]";
+		return "Configurations [id=" + getId() + ", country=" + getCountry() + ", vehicleCategory="
+				+ getVehicleCategory() + ", code=" + code + ", value=" + value + "]";
 	}
 
 	@Override
