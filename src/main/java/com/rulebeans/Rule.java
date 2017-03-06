@@ -1,5 +1,10 @@
 package com.rulebeans;
 
+/**
+ * This is a base class for the rules that will be applied on the vehicles.
+ * It has an id, a country name, and a vehicle category that is new or used.
+ * @author sandor.naghi
+ */
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 

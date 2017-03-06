@@ -9,10 +9,22 @@ import javax.xml.bind.Unmarshaller;
 
 import com.vsevehiclebeans.Vehicles;
 
+/**
+ * In this class we set up the name of the file, from where we read the vehicles.
+ * @author sandor.naghi
+ *
+ */
 public class VSEService {
 
 	public static final Logger LOGGER = Logger.getLogger(VSEService.class.getName());
 
+	/**
+	 * Read the specified file from the resources.
+	 * @param country	The market from where we do the import.
+	 * @param category	The category of the vehicle, new or used.
+	 * @return	The vehicles for the given country and category.
+	 * @throws JAXBException
+	 */
 	public Vehicles getVehiclesFromVSE(String country, String category) throws JAXBException {
 
 		String fileName = buildFilename(country, category);

@@ -1,12 +1,23 @@
 package com.rulebeans;
 
+/**
+ * This class extends the Rule base class, 
+ * and holds the code and the value fields, that is extracted from the MySQL.
+ * The "ConfigurationRules" named query pulls out every row from the database table named "sys_config".
+ * Here can be found every accepted language for every car category (if has one...).
+ * @author sandor.naghi
+ */
 import javax.persistence.Entity;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "sys_config")
-@NamedQuery(name = "ConfigurationRules", query = "SELECT c FROM Configuration c WHERE c.country = :country AND c.vehicleCategory = :vehicleCategory")
+@NamedQueries({
+	@NamedQuery(name = "ConfigurationRules", query = " SELECT c FROM Configuration c WHERE c.country = :country AND c.vehicleCategory = :vehicleCategory "),
+	@NamedQuery(name = "AcceptedLanguages", query = " SELECT c.value FROM Configuration c WHERE c.country = :country AND c.vehicleCategory = :vehicleCategory AND c.code = 'acceptedLanguages' ")
+})
 public class Configuration extends Rule {
 
 	private String code;

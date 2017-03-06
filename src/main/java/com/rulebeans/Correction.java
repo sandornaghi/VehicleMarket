@@ -1,12 +1,22 @@
 package com.rulebeans;
 
+/**
+ * This class is an extension of the Rule class, and has fields like language, type, code and value,
+ * which are pulled out from the "translations_corrections" named table from the MySQL database.
+ * The "CorrectionRules" named query extract all correction rules that will be applied on the Vehicles.
+ * @author sandor.naghi
+ */
 import javax.persistence.Entity;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "translations_corrections")
-@NamedQuery(name = "CorrectionRules", query = "SELECT c FROM Correction c WHERE c.country = :country AND c.vehicleCategory = :vehicleCategory")
+@NamedQueries({
+		@NamedQuery(name = "CorrectionRules", query = "SELECT c FROM Correction c WHERE c.country = :country AND c.vehicleCategory = :vehicleCategory"),
+		@NamedQuery(name = "ContextHasRules", query = "SELECT DISTINCT c.language FROM Correction c "
+				+ "WHERE c.country = :country AND c.vehicleCategory = :vehicleCategory AND c.language = :language") })
 public class Correction extends Rule {
 
 	private String language;

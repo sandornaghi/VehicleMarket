@@ -1,4 +1,4 @@
-package com.connection;
+package com.services;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -10,12 +10,18 @@ import javax.enterprise.inject.Produces;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
 
-public class CreateConnection {
+/**
+ * In this class a connection to the Elasticsearch search engine.
+ * The connection is Produced, and is Injected in the caller class.
+ * The connection is closed automatically.
+ * @author sandor.naghi
+ */
+public class ConnectionService {
 
-	private static final Logger LOGGER = Logger.getLogger(CreateConnection.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(ConnectionService.class.getName());
 
 	@Produces
-	public TransportClient createConnection() {
+	private TransportClient connectionsToElasticsearch() {
 		TransportClient client = null;
 
 		try {
@@ -34,4 +40,5 @@ public class CreateConnection {
 			client.close();
 		}
 	}
+
 }

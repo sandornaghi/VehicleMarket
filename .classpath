@@ -38,5 +38,15 @@
 			<attribute name="owner.project.facets" value="java"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/sandor.naghi/.m2/repository/org/elasticsearch/elasticsearch/2.4.0/elasticsearch-2.4.0.jar" sourcepath="C:/Users/sandor.naghi/.m2/repository/org/elasticsearch/elasticsearch/2.4.0/elasticsearch-2.4.0-sources.jar">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+			<attribute name="org.eclipse.jst.component.archivename" value="elasticsearch-2.4.0.jar"/>
+			<attribute name="maven.groupId" value="org.elasticsearch"/>
+			<attribute name="maven.artifactId" value="elasticsearch"/>
+			<attribute name="maven.version" value="2.4.0"/>
+			<attribute name="maven.scope" value="compile"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
