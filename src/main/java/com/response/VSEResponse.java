@@ -1,4 +1,4 @@
-package com.helper;
+package com.response;
 
 public class VSEResponse {
 

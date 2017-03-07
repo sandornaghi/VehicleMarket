@@ -5,10 +5,10 @@ import com.vsevehiclebeans.Location;
 
 public class TLocation {
 
-	@JsonProperty("latitude")
+	@JsonProperty
 	private double latitude;
 
-	@JsonProperty("longitude")
+	@JsonProperty
 	private double longitude;
 
 	public TLocation() {

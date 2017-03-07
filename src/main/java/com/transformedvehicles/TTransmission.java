@@ -4,10 +4,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class TTransmission {
 
-	@JsonProperty("transmission_code")
+	@JsonProperty
 	private String transmissionCode;
 
-	@JsonProperty("transamission_description")
+	@JsonProperty
 	private String transmissionDescription;
 
 	public TTransmission() {

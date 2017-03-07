@@ -5,7 +5,7 @@ import com.vsevehiclebeans.VehicleLocation;
 
 public class TVehicleLocation {
 
-	@JsonProperty("postalCode")
+	@JsonProperty
 	private String postalCode;
 
 	private TLocation location;

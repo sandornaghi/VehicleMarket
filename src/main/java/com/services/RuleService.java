@@ -60,11 +60,12 @@ public class RuleService {
 	 *            Category of vehicle, new or used.
 	 * @return List of corrections, that will be applied on the Vehicle.
 	 */
-	public List<Correction> getCorrectionRules(String country, String vehicleCategory) {
+	public List<Correction> getCorrectionRules(String country, String vehicleCategory, String language) {
 
 		TypedQuery<Correction> query = em.createNamedQuery("CorrectionRules", Correction.class);
 		query.setParameter("country", country);
 		query.setParameter("vehicleCategory", vehicleCategory);
+		query.setParameter("language", language);
 
 		List<Correction> corrList = query.getResultList();
 
@@ -131,10 +132,6 @@ public class RuleService {
 			LOGGER.severe(e.getMessage());
 		}
 
-		if (res != null) {
-			return true;
-		} else {
-			return false;
-		}
+		return res != null;
 	}
 }

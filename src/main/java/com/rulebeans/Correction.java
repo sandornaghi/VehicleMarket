@@ -14,7 +14,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "translations_corrections")
 @NamedQueries({
-		@NamedQuery(name = "CorrectionRules", query = "SELECT c FROM Correction c WHERE c.country = :country AND c.vehicleCategory = :vehicleCategory"),
+		@NamedQuery(name = "CorrectionRules", query = "SELECT c FROM Correction c WHERE c.country = :country AND c.vehicleCategory = :vehicleCategory AND c.language = :language"),
 		@NamedQuery(name = "ContextHasRules", query = "SELECT DISTINCT c.language FROM Correction c "
 				+ "WHERE c.country = :country AND c.vehicleCategory = :vehicleCategory AND c.language = :language") })
 public class Correction extends Rule {

@@ -1,14 +1,28 @@
-package com.transformedvehicles;
+package com.elasticsearch;
 
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class TVehicles {
+public class Context {
 
+	@JsonProperty
 	private String country;
 
+	@JsonProperty
 	private String vehicleCategory;
 
-	private List<TLanguageAndVehicles> vehicleList;
+	@JsonProperty
+	private String language;
+
+	public Context() {
+
+	}
+
+	public Context(String country, String vehicleCategory, String language) {
+		super();
+		this.country = country;
+		this.vehicleCategory = vehicleCategory;
+		this.language = language;
+	}
 
 	public String getCountry() {
 		return country;
@@ -26,18 +40,12 @@ public class TVehicles {
 		this.vehicleCategory = vehicleCategory;
 	}
 
-	public List<TLanguageAndVehicles> getVehicleList() {
-		return vehicleList;
+	public String getLanguage() {
+		return language;
 	}
 
-	public void setVehicleList(List<TLanguageAndVehicles> vehicleList) {
-		this.vehicleList = vehicleList;
-	}
-
-	@Override
-	public String toString() {
-		return "TVehicles [country=" + country + ", vehicleCategory=" + vehicleCategory + ", vehicleList=" + vehicleList
-				+ "]";
+	public void setLanguage(String language) {
+		this.language = language;
 	}
 
 	@Override
@@ -45,8 +53,8 @@ public class TVehicles {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((country == null) ? 0 : country.hashCode());
+		result = prime * result + ((language == null) ? 0 : language.hashCode());
 		result = prime * result + ((vehicleCategory == null) ? 0 : vehicleCategory.hashCode());
-		result = prime * result + ((vehicleList == null) ? 0 : vehicleList.hashCode());
 		return result;
 	}
 
@@ -58,21 +66,21 @@ public class TVehicles {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		TVehicles other = (TVehicles) obj;
+		Context other = (Context) obj;
 		if (country == null) {
 			if (other.country != null)
 				return false;
 		} else if (!country.equals(other.country))
 			return false;
+		if (language == null) {
+			if (other.language != null)
+				return false;
+		} else if (!language.equals(other.language))
+			return false;
 		if (vehicleCategory == null) {
 			if (other.vehicleCategory != null)
 				return false;
 		} else if (!vehicleCategory.equals(other.vehicleCategory))
-			return false;
-		if (vehicleList == null) {
-			if (other.vehicleList != null)
-				return false;
-		} else if (!vehicleList.equals(other.vehicleList))
 			return false;
 		return true;
 	}

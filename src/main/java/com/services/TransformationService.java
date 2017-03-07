@@ -1,10 +1,5 @@
 package com.services;
 
-/**
- * This class is for transformation of the Vehicles extracted from the VSE system.
- * Sets up in which languages can be found information about the Vehicle.
- * Transform the vehicles, apply the rules from the Mysql database.
- */
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,21 +9,26 @@ import com.rulebeans.Correction;
 import com.transformedvehicles.TBodyType;
 import com.transformedvehicles.TEquipment;
 import com.transformedvehicles.TFuelType;
-import com.transformedvehicles.TLanguageAndVehicles;
 import com.transformedvehicles.TPaint;
 import com.transformedvehicles.TPrice;
 import com.transformedvehicles.TTransmission;
 import com.transformedvehicles.TVehicle;
 import com.transformedvehicles.TVehicleLocation;
-import com.transformedvehicles.TVehicles;
 import com.vsevehiclebeans.Equipment;
 import com.vsevehiclebeans.Vehicle;
 import com.vsevehiclebeans.Vehicles;
 
+/**
+ * Sets up in which languages can be found information about the Vehicle.
+ * Transform the vehicles, apply the rules from the Mysql database.
+ */
 public class TransformationService {
 
 	@Inject
-	RuleService ruleService;
+	private RuleService ruleService;
+
+	@Inject
+	private ElasticsearchService insertServce;
 
 	/**
 	 * Set up the country, vehicle category and the languages for the Vehicles.
@@ -44,27 +44,20 @@ public class TransformationService {
 	 */
 	public int transformVehicles(String country, String vehicleCategory, Vehicles vehicles) {
 
-		TVehicles tVehicles = new TVehicles();
-		tVehicles.setCountry(country);
-		tVehicles.setVehicleCategory(vehicleCategory);
+		List<TVehicle> tVehicleList = new ArrayList<>();
 
-		List<TLanguageAndVehicles> langVehiclesList = new ArrayList<>();
+		List<String> acceptedLanguages = ruleService.acceptedLanguages(country, vehicleCategory);
 
-		List<String> acceptedLanguages = ruleService.acceptedLanguages(tVehicles.getCountry(),
-				tVehicles.getVehicleCategory());
-		for (String language : acceptedLanguages) {
-			TLanguageAndVehicles langVehicle = new TLanguageAndVehicles();
-			langVehicle.setLanguage(language);
-			langVehicle.settVehicleList(
-					applyChanges(vehicles, language, tVehicles.getCountry(), tVehicles.getVehicleCategory()));
-			langVehiclesList.add(langVehicle);
-		}
-
-		tVehicles.setVehicleList(langVehiclesList);
-
-		if (tVehicles.getVehicleList().isEmpty()) {
+		if (acceptedLanguages.isEmpty()) {
 			return 401;
 		} else {
+			for (String language : acceptedLanguages) {
+				tVehicleList.addAll(applyChanges(vehicles, language, country, vehicleCategory));
+			}
+
+			// maybe check here if index exists??
+			insertServce.insertTVehiclesToElasticsearch(country, vehicleCategory, tVehicleList);
+
 			return 200;
 		}
 	}
@@ -74,26 +67,11 @@ public class TransformationService {
 		List<TVehicle> tVehicleList = new ArrayList<>();
 		for (Vehicle vehicle : vseVehicles.getVehicleList()) {
 
-			TVehicle tVehicle = new TVehicle();
-			tVehicle.setId(vehicle.getId());
+			TVehicle tVehicle = transformSingleVehicle(vehicle);
 			tVehicle.setLanguage(language);
-			tVehicle.setPriceInformation(new TPrice(vehicle.getPriceInformation()));
-			tVehicle.setBodyType(new TBodyType(vehicle.getBodyType()));
-			tVehicle.setPaint(new TPaint(vehicle.getPaint().getCode(), vehicle.getPaint().getGroupCode()));
-			tVehicle.setFuelType(new TFuelType(vehicle.getFuelType()));
-			tVehicle.setTransmission(new TTransmission(vehicle.getTransmission()));
-			tVehicle.setVehicleLocation(new TVehicleLocation(vehicle.getVehicleLocation()));
-
-			List<TEquipment> equipmentList = new ArrayList<>();
-			for (Equipment equipment : vehicle.getEquipmentList()) {
-				equipmentList.add(new TEquipment(equipment.getCode(), equipment.getDescription()));
-			}
-			tVehicle.setEquipmentList(equipmentList);
-
-			tVehicle.setFirstRegistrationDate(vehicle.getFirstRegistrationDate());
 
 			if (ruleService.hasRules(country, vehicleCategory, tVehicle.getLanguage())) {
-				setRules(tVehicle, ruleService.getCorrectionRules(country, vehicleCategory));
+				setRules(tVehicle, ruleService.getCorrectionRules(country, vehicleCategory, tVehicle.getLanguage()));
 			}
 
 			tVehicleList.add(tVehicle);
@@ -103,7 +81,30 @@ public class TransformationService {
 
 	}
 
+	private TVehicle transformSingleVehicle(Vehicle vehicle) {
+
+		TVehicle tVehicle = new TVehicle();
+		tVehicle.setId(vehicle.getId());
+		tVehicle.setPriceInformation(new TPrice(vehicle.getPriceInformation()));
+		tVehicle.setBodyType(new TBodyType(vehicle.getBodyType()));
+		tVehicle.setPaint(new TPaint(vehicle.getPaint().getCode(), vehicle.getPaint().getGroupCode()));
+		tVehicle.setFuelType(new TFuelType(vehicle.getFuelType()));
+		tVehicle.setTransmission(new TTransmission(vehicle.getTransmission()));
+		tVehicle.setVehicleLocation(new TVehicleLocation(vehicle.getVehicleLocation()));
+
+		List<TEquipment> equipmentList = new ArrayList<>();
+		for (Equipment equipment : vehicle.getEquipmentList()) {
+			equipmentList.add(new TEquipment(equipment.getCode(), equipment.getDescription()));
+		}
+		tVehicle.setEquipmentList(equipmentList);
+
+		tVehicle.setFirstRegistrationDate(vehicle.getFirstRegistrationDate());
+
+		return tVehicle;
+	}
+
 	private void setRules(TVehicle tVehicle, List<Correction> corrections) {
+		// am schimbat sql scriptul sa dea corrections-urile si dupa language
 
 		for (Correction correction : corrections) {
 			switch (correction.getType()) {
@@ -111,8 +112,7 @@ public class TransformationService {
 				TPrice tPrice = new TPrice();
 				tPrice.setCurrency(tVehicle.getPriceInformation().getCurrency());
 
-				if (tPrice.getCurrency().equalsIgnoreCase(correction.getCode())
-						&& tVehicle.getLanguage().equalsIgnoreCase(correction.getLanguage())) {
+				if (tPrice.getCurrency().equalsIgnoreCase(correction.getCode())) {
 					tPrice.setBasePrice(Long.parseLong(correction.getValue()));
 					tVehicle.setPriceInformation(tPrice);
 				}
@@ -121,8 +121,7 @@ public class TransformationService {
 			case "BODY_TYPE":
 				TBodyType tBody = new TBodyType(tVehicle.getBodyType().getCode());
 
-				if (tBody.getCode().equalsIgnoreCase(correction.getCode())
-						&& tVehicle.getLanguage().equalsIgnoreCase(correction.getLanguage())) {
+				if (tBody.getCode().equalsIgnoreCase(correction.getCode())) {
 					tBody.setDescription(correction.getValue());
 
 					tVehicle.setBodyType(tBody);
@@ -132,8 +131,7 @@ public class TransformationService {
 			case "PAINT":
 				TPaint tPaint = tVehicle.getPaint();
 
-				if (tPaint.getPaintCode().equalsIgnoreCase(correction.getCode())
-						&& tVehicle.getLanguage().equalsIgnoreCase(correction.getLanguage())) {
+				if (tPaint.getPaintCode().equalsIgnoreCase(correction.getCode())) {
 					tPaint.setPaintDescription(correction.getValue());
 
 					tVehicle.setPaint(tPaint);
@@ -143,8 +141,7 @@ public class TransformationService {
 			case "PAINT_GROUP":
 				TPaint tPaintGroup = tVehicle.getPaint();
 
-				if (tPaintGroup.getGroupCode().equalsIgnoreCase(correction.getCode())
-						&& tVehicle.getLanguage().equalsIgnoreCase(correction.getLanguage())) {
+				if (tPaintGroup.getGroupCode().equalsIgnoreCase(correction.getCode())) {
 					tPaintGroup.setGroupDescription(correction.getValue());
 
 					tVehicle.setPaint(tPaintGroup);
@@ -154,8 +151,7 @@ public class TransformationService {
 			case "FUEL_TYPE":
 				TFuelType tFuel = new TFuelType(tVehicle.getFuelType().getFuelTypeCode());
 
-				if (tFuel.getFuelTypeCode().equalsIgnoreCase(correction.getCode())
-						&& tVehicle.getLanguage().equalsIgnoreCase(correction.getLanguage())) {
+				if (tFuel.getFuelTypeCode().equalsIgnoreCase(correction.getCode())) {
 					tFuel.setFuelTypeDescription(correction.getValue());
 					tVehicle.setFuelType(tFuel);
 				}
@@ -164,8 +160,7 @@ public class TransformationService {
 			case "TRANSMISSION":
 				TTransmission transmission = new TTransmission(tVehicle.getTransmission().getTransmissionCode());
 
-				if (transmission.getTransmissionCode().equalsIgnoreCase(correction.getCode())
-						&& tVehicle.getLanguage().equalsIgnoreCase(correction.getLanguage())) {
+				if (transmission.getTransmissionCode().equalsIgnoreCase(correction.getCode())) {
 					transmission.setTransmissionDescription(correction.getValue());
 					tVehicle.setTransmission(transmission);
 				}
@@ -175,8 +170,7 @@ public class TransformationService {
 				List<TEquipment> equipments = new ArrayList<>();
 
 				for (TEquipment equipment : tVehicle.getEquipmentList()) {
-					if (equipment.getCode().equalsIgnoreCase(correction.getCode())
-							&& tVehicle.getLanguage().equalsIgnoreCase(correction.getLanguage())) {
+					if (equipment.getCode().equalsIgnoreCase(correction.getCode())) {
 						equipment.setDescription(correction.getValue());
 					}
 					equipments.add(equipment);
@@ -189,5 +183,4 @@ public class TransformationService {
 			}
 		}
 	}
-
 }

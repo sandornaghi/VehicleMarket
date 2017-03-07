@@ -4,10 +4,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class TFuelType {
 
-	@JsonProperty("fuelType_code")
+	@JsonProperty
 	private String fuelTypeCode;
 
-	@JsonProperty("fuelType_description")
+	@JsonProperty
 	private String fuelTypeDescription;
 
 	public TFuelType() {

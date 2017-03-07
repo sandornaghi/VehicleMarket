@@ -4,10 +4,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class TBodyType {
 
-	@JsonProperty("bodyType_code")
+	@JsonProperty
 	private String code;
 
-	@JsonProperty("bodyType_description")
+	@JsonProperty
 	private String description;
 
 	public TBodyType() {

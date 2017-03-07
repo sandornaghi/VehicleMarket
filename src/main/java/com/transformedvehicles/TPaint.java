@@ -4,16 +4,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class TPaint {
 
-	@JsonProperty("paintCode")
+	@JsonProperty
 	private String paintCode;
 
-	@JsonProperty("paintDescription")
+	@JsonProperty
 	private String paintDescription;
 
-	@JsonProperty("paintGroup_code")
+	@JsonProperty
 	private String groupCode;
 	
-	@JsonProperty("paintGroup_description")
+	@JsonProperty
 	private String groupDescription;
 
 	public TPaint() {

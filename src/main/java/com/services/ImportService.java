@@ -5,7 +5,7 @@ import java.util.logging.Logger;
 import javax.inject.Inject;
 import javax.xml.bind.JAXBException;
 
-import com.helper.VSEResponse;
+import com.response.VSEResponse;
 import com.vsevehiclebeans.Vehicles;
 
 /**
@@ -24,7 +24,7 @@ public class ImportService {
 
 	@Inject
 	private TransformationService transService;
-
+	
 	/**
 	 * This method do the import from the VSE system, and builds the response
 	 * for the REST service.

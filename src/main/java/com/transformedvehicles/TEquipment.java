@@ -4,10 +4,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class TEquipment {
 
-	@JsonProperty("equipment_code")
+	@JsonProperty
 	private String code;
 
-	@JsonProperty("equipment_description")
+	@JsonProperty
 	private String description;
 
 	public TEquipment() {

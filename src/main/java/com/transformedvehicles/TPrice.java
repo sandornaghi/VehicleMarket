@@ -5,10 +5,10 @@ import com.vsevehiclebeans.Price;
 
 public class TPrice {
 
-	@JsonProperty("basePrice")
+	@JsonProperty
 	private long basePrice;
 
-	@JsonProperty("currency")
+	@JsonProperty
 	private String currency;
 
 	public TPrice() {
