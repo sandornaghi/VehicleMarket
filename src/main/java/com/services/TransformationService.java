@@ -27,9 +27,6 @@ public class TransformationService {
 	@Inject
 	private RuleService ruleService;
 
-	@Inject
-	private ElasticsearchService insertServce;
-
 	/**
 	 * Set up the country, vehicle category and the languages for the Vehicles.
 	 * 
@@ -39,27 +36,22 @@ public class TransformationService {
 	 *            Category of the Vehicle, new or used.
 	 * @param vehicles
 	 *            The vehicles that are transformed.
-	 * @return A status code of 200 if the import have been made and the rules
-	 *         has been applied, or 401 if there has been no rules to apply.
+	 * @return List of transformed vehicles, with language setup, and rules
+	 *         applied.
 	 */
-	public int transformVehicles(String country, String vehicleCategory, Vehicles vehicles) {
+	public List<TVehicle> transformVehicles(String country, String vehicleCategory, Vehicles vehicles) {
 
 		List<TVehicle> tVehicleList = new ArrayList<>();
 
 		List<String> acceptedLanguages = ruleService.acceptedLanguages(country, vehicleCategory);
 
-		if (acceptedLanguages.isEmpty()) {
-			return 401;
-		} else {
+		if (!acceptedLanguages.isEmpty()) {
 			for (String language : acceptedLanguages) {
 				tVehicleList.addAll(applyChanges(vehicles, language, country, vehicleCategory));
 			}
-
-			// maybe check here if index exists??
-			insertServce.insertTVehiclesToElasticsearch(country, vehicleCategory, tVehicleList);
-
-			return 200;
 		}
+
+		return tVehicleList;
 	}
 
 	private List<TVehicle> applyChanges(Vehicles vseVehicles, String language, String country, String vehicleCategory) {

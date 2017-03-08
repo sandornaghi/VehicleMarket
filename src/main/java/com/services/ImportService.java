@@ -1,11 +1,13 @@
 package com.services;
 
+import java.util.List;
 import java.util.logging.Logger;
 
 import javax.inject.Inject;
 import javax.xml.bind.JAXBException;
 
 import com.response.VSEResponse;
+import com.transformedvehicles.TVehicle;
 import com.vsevehiclebeans.Vehicles;
 
 /**
@@ -25,6 +27,9 @@ public class ImportService {
 	@Inject
 	private TransformationService transService;
 	
+	@Inject
+	private ElasticsearchService insertServce;
+
 	/**
 	 * This method do the import from the VSE system, and builds the response
 	 * for the REST service.
@@ -49,11 +54,12 @@ public class ImportService {
 		}
 
 		if (vehicles != null) {
-			int statusCode = transService.transformVehicles(country, vehicleCategory, vehicles);
-			if (statusCode == 401) {
-				response = new VSEResponse(statusCode, "No rules found for " + country + "/" + vehicleCategory);
+			List<TVehicle> tVehicleList = transService.transformVehicles(country, vehicleCategory, vehicles);
+			if (tVehicleList.isEmpty()) {
+				response = new VSEResponse(401, "No rules found for " + country + "/" + vehicleCategory);
 			} else { // else the status code is 200
-				response = new VSEResponse(statusCode, "Successful import");
+				insertServce.insertTVehiclesToElasticsearch(country, vehicleCategory, tVehicleList);
+				response = new VSEResponse(200, "Successful import");
 			}
 		} else {
 
