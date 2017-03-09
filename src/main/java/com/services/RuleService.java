@@ -134,4 +134,17 @@ public class RuleService {
 
 		return res != null;
 	}
+
+	/**
+	 * Read the time when the import will be done automatically.
+	 * 
+	 * @return List of Configuration objects, that contain country, vehicle
+	 *         category and the time.
+	 */
+	public List<Configuration> getImportTimeInterval() {
+
+		TypedQuery<Configuration> query = em.createNamedQuery("ImportTimeInterval", Configuration.class);
+
+		return query.getResultList();
+	}
 }

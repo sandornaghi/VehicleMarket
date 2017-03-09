@@ -48,31 +48,39 @@ public class ElasticsearchService {
 	 */
 	public void insertTVehiclesToElasticsearch(String country, String vehicleCategory, List<TVehicle> tVehicleList) {
 
-		String alias = country + "_" + vehicleCategory;
+		String alias = country.toLowerCase() + "_" + vehicleCategory.toLowerCase();
 		String index = alias + "_" + DateTimeFormatter.ofPattern("yyyyMMdd").format(LocalDate.now());
 
-		// check is alias exist 
-		boolean exists = transportClient.admin().indices().prepareExists(alias).execute().actionGet().isExists();
-		
-		if (exists) {
-			// find the index for the alias 
-			SortedMap<String, AliasOrIndex> lookup = transportClient.admin().cluster().prepareState().execute().actionGet().getState().getMetaData().getAliasAndIndexLookup();
-			
-			// if index exists remove alias
-			if (lookup.containsKey(alias)) {
-				String existentIndex = lookup.get(alias).getIndices().get(0).getIndex();
-				transportClient.admin().indices().prepareAliases().removeAlias(existentIndex, alias).execute().actionGet();
+		boolean indexExists = transportClient.admin().indices().prepareExists(index).execute().actionGet().isExists();
+
+		if (!indexExists) {
+
+			// check is alias exist
+			boolean aliasExists = transportClient.admin().indices().prepareExists(alias).execute().actionGet()
+					.isExists();
+
+			if (aliasExists) {
+				// find the index for the alias
+				SortedMap<String, AliasOrIndex> lookup = transportClient.admin().cluster().prepareState().execute()
+						.actionGet().getState().getMetaData().getAliasAndIndexLookup();
+
+				// if index exists remove alias
+				if (lookup.containsKey(alias)) {
+					String existentIndex = lookup.get(alias).getIndices().get(0).getIndex();
+					transportClient.admin().indices().prepareAliases().removeAlias(existentIndex, alias).execute()
+							.actionGet();
+				}
 			}
+			transportClient.admin().indices().prepareCreate(index).addAlias(new Alias(alias)).get();
+
+			BulkRequestBuilder bulkRequest = transportClient.prepareBulk();
+
+			for (TVehicle tVehicle : tVehicleList) {
+				bulkRequest.add(transportClient.prepareIndex(index, "vehicle").setSource(new Gson().toJson(tVehicle)));
+			}
+
+			bulkRequest.get();
 		}
-		transportClient.admin().indices().prepareCreate(index).addAlias(new Alias(alias)).get();
-		
-		BulkRequestBuilder bulkRequest = transportClient.prepareBulk();
-		
-		for(TVehicle tVehicle : tVehicleList) {
-			bulkRequest.add(transportClient.prepareIndex(index, "vehicle").setSource(new Gson().toJson(tVehicle)));
-		}
-		
-		bulkRequest.get();
 	}
 
 	/**
@@ -80,8 +88,10 @@ public class ElasticsearchService {
 	 * 
 	 * @param alias
 	 *            The alias that we search.
-	 * @param language	The language we search.
-	 * @return	A List of Vehicles that fits for the given alias(which is build for the market and category) and language.
+	 * @param language
+	 *            The language we search.
+	 * @return A List of Vehicles that fits for the given alias(which is build
+	 *         for the market and category) and language.
 	 */
 	public List<TVehicle> readTVehiclesFromElasticsearch(String alias, String language) {
 

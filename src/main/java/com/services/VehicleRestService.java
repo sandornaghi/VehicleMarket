@@ -24,13 +24,13 @@ public class VehicleRestService {
 	
 	@Inject
 	private SearchService searchService;
-
+	
 	@GET
 	@Path("importvehicle/{country}/{vehicleCategory}")
 	@Produces("application/json")
 	public Response importVehiclesFromVSE(@PathParam("country") String country,
 			@PathParam("vehicleCategory") String vehicleCategory) {
-
+		
 		VSEResponse response = importService.importVseVehicle(country, vehicleCategory);
 
 		switch (response.getCode()) {

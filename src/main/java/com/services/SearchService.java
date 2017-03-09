@@ -2,9 +2,9 @@ package com.services;
 
 import javax.inject.Inject;
 
-import com.elasticsearch.Context;
-import com.elasticsearch.StatusInfo;
+import com.response.Context;
 import com.response.ElasticsearchResponse;
+import com.response.StatusInfo;
 
 /**
  * In this class the response in build for the REST service, for a given market,

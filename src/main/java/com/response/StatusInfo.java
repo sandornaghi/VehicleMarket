@@ -1,4 +1,4 @@
-package com.elasticsearch;
+package com.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

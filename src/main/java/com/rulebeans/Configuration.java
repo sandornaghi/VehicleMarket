@@ -15,8 +15,9 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "sys_config")
 @NamedQueries({
-	@NamedQuery(name = "ConfigurationRules", query = " SELECT c FROM Configuration c WHERE c.country = :country AND c.vehicleCategory = :vehicleCategory "),
-	@NamedQuery(name = "AcceptedLanguages", query = " SELECT c.value FROM Configuration c WHERE c.country = :country AND c.vehicleCategory = :vehicleCategory AND c.code = 'acceptedLanguages' ")
+		@NamedQuery(name = "ConfigurationRules", query = " SELECT c FROM Configuration c WHERE c.country = :country AND c.vehicleCategory = :vehicleCategory "),
+		@NamedQuery(name = "AcceptedLanguages", query = " SELECT c.value FROM Configuration c WHERE c.country = :country AND c.vehicleCategory = :vehicleCategory AND c.code = 'acceptedLanguages' "),
+		@NamedQuery(name = "ImportTimeInterval", query = "SELECT c FROM Configuration c WHERE c.code = 'importTimeInterval' ")
 })
 public class Configuration extends Rule {
 

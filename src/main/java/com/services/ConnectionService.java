@@ -37,7 +37,12 @@ public class ConnectionService {
 	@SuppressWarnings("unused")
 	private void closeConnection(@Disposes TransportClient client) {
 		if (client != null) {
-			client.close();
+			try {
+				client.close();
+			} catch (Exception e) {
+				LOGGER.severe(e.getMessage());
+			}
+			
 		}
 	}
 

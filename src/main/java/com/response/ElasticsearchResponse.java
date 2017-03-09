@@ -2,8 +2,6 @@ package com.response;
 
 import java.util.List;
 
-import com.elasticsearch.Context;
-import com.elasticsearch.StatusInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.transformedvehicles.TVehicle;
 
