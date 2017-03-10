@@ -10,8 +10,8 @@ import java.util.logging.Logger;
 
 import javax.inject.Inject;
 
-import org.elasticsearch.action.admin.indices.alias.Alias;
 import org.elasticsearch.action.bulk.BulkRequestBuilder;
+import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.cluster.metadata.AliasOrIndex;
@@ -28,9 +28,9 @@ import com.transformedvehicles.TVehicle;
  * @author sandor.naghi
  *
  */
-public class ElasticsearchService {
+public class ElasticsearchVehicleService {
 
-	private static final Logger LOGGER = Logger.getLogger(ElasticsearchService.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(ElasticsearchVehicleService.class.getName());
 
 	@Inject
 	private TransportClient transportClient;
@@ -51,35 +51,45 @@ public class ElasticsearchService {
 		String alias = country.toLowerCase() + "_" + vehicleCategory.toLowerCase();
 		String index = alias + "_" + DateTimeFormatter.ofPattern("yyyyMMdd").format(LocalDate.now());
 
+		// check if index exists
 		boolean indexExists = transportClient.admin().indices().prepareExists(index).execute().actionGet().isExists();
 
 		if (!indexExists) {
 
-			// check is alias exist
-			boolean aliasExists = transportClient.admin().indices().prepareExists(alias).execute().actionGet()
-					.isExists();
+			// create index
+			transportClient.admin().indices().prepareCreate(index).get();
 
-			if (aliasExists) {
-				// find the index for the alias
-				SortedMap<String, AliasOrIndex> lookup = transportClient.admin().cluster().prepareState().execute()
-						.actionGet().getState().getMetaData().getAliasAndIndexLookup();
-
-				// if index exists remove alias
-				if (lookup.containsKey(alias)) {
-					String existentIndex = lookup.get(alias).getIndices().get(0).getIndex();
-					transportClient.admin().indices().prepareAliases().removeAlias(existentIndex, alias).execute()
-							.actionGet();
-				}
-			}
-			transportClient.admin().indices().prepareCreate(index).addAlias(new Alias(alias)).get();
-
+			// insert into index
 			BulkRequestBuilder bulkRequest = transportClient.prepareBulk();
 
 			for (TVehicle tVehicle : tVehicleList) {
 				bulkRequest.add(transportClient.prepareIndex(index, "vehicle").setSource(new Gson().toJson(tVehicle)));
 			}
 
-			bulkRequest.get();
+			BulkResponse resp = bulkRequest.get();
+			
+			// if has no errors in insertion remove alias from old index
+			if (!resp.hasFailures()) {
+				boolean aliasExists = transportClient.admin().indices().prepareExists(alias).execute().actionGet()
+						.isExists();
+
+				if (aliasExists) {
+					// find the index for the alias
+					SortedMap<String, AliasOrIndex> lookup = transportClient.admin().cluster().prepareState().execute()
+							.actionGet().getState().getMetaData().getAliasAndIndexLookup();
+
+					// if index exists remove alias
+					if (lookup.containsKey(alias)) {
+						String existentIndex = lookup.get(alias).getIndices().get(0).getIndex();
+						transportClient.admin().indices().prepareAliases().removeAlias(existentIndex, alias).execute()
+								.actionGet();
+					}
+				}
+				
+				// add alias to new index
+				transportClient.admin().indices().prepareAliases().addAlias(index, alias).execute().actionGet();
+			}
+			
 		}
 	}
 

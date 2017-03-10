@@ -28,7 +28,7 @@ public class ImportService {
 	private TransformationService transService;
 	
 	@Inject
-	private ElasticsearchService insertServce;
+	private ElasticsearchVehicleService insertServce;
 
 	/**
 	 * This method do the import from the VSE system, and builds the response

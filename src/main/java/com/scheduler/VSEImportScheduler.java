@@ -49,12 +49,12 @@ public class VSEImportScheduler {
 			context.setCountry(conf.getCountry());
 			context.setVehicleCategory(conf.getVehicleCategory());
 
-			TimerConfig timerConfig = new TimerConfig(context, false);
-
 			String[] dayHourMin = conf.getValue().split(" ");
 
 			ScheduleExpression exp = new ScheduleExpression();
 			exp.dayOfWeek(dayHourMin[0]).hour(dayHourMin[1]).minute(dayHourMin[2]).second(0);
+			
+			TimerConfig timerConfig = new TimerConfig(context, false);
 			timerService.createCalendarTimer(exp, timerConfig);
 		}
 	}

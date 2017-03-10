@@ -16,7 +16,7 @@ import com.response.StatusInfo;
 public class SearchService {
 
 	@Inject
-	private ElasticsearchService elasticService;
+	private ElasticsearchVehicleService elasticService;
 
 	/**
 	 * Create a list of vehicles for the given market, category and language if

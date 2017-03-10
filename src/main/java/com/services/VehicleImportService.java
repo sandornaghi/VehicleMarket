@@ -7,30 +7,26 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
-import com.response.ElasticsearchResponse;
 import com.response.VSEResponse;
 
 /**
- * This class is used for REST Services, to communicate with the front through
- * json objects.
+ * This class is used for REST Service, get the country and the category from
+ * the front, through the path. It produces a json object for response.
  * 
  * @author sandor.naghi
  */
-@Path("/")
-public class VehicleRestService {
+@Path("/importvehicle")
+public class VehicleImportService {
 
 	@Inject
 	private ImportService importService;
-	
-	@Inject
-	private SearchService searchService;
-	
+
 	@GET
-	@Path("importvehicle/{country}/{vehicleCategory}")
+	@Path("/{country}/{vehicleCategory}")
 	@Produces("application/json")
 	public Response importVehiclesFromVSE(@PathParam("country") String country,
 			@PathParam("vehicleCategory") String vehicleCategory) {
-		
+
 		VSEResponse response = importService.importVseVehicle(country, vehicleCategory);
 
 		switch (response.getCode()) {
@@ -41,16 +37,5 @@ public class VehicleRestService {
 		default:
 			return Response.status(400).entity(response).build();
 		}
-	}
-
-	@GET
-	@Path("searchvehicle/{country}/{vehicleCategory}/{language}")
-	@Produces("application/json")
-	public Response searchVehicles(@PathParam("country") String country,
-			@PathParam("vehicleCategory") String vehicleCategory, @PathParam("language") String language) {
-
-		ElasticsearchResponse elasticResponse = searchService.searchTVehicles(country, vehicleCategory, language);
-				
-		return Response.status(200).entity(elasticResponse).build();
 	}
 }
