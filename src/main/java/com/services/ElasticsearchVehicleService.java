@@ -55,7 +55,7 @@ public class ElasticsearchVehicleService {
 		boolean indexExists = transportClient.admin().indices().prepareExists(index).execute().actionGet().isExists();
 
 		boolean successfulInsert = false;
-		
+
 		if (!indexExists) {
 
 			// create index
@@ -69,7 +69,7 @@ public class ElasticsearchVehicleService {
 			}
 
 			BulkResponse resp = bulkRequest.get();
-			
+
 			// if has no errors in insertion remove alias from old index
 			if (!resp.hasFailures()) {
 				boolean aliasExists = transportClient.admin().indices().prepareExists(alias).execute().actionGet()
@@ -86,9 +86,9 @@ public class ElasticsearchVehicleService {
 						transportClient.admin().indices().prepareAliases().removeAlias(existentIndex, alias).execute()
 								.actionGet();
 					}
-					
+
 				}
-				
+
 				// add alias to new index
 				transportClient.admin().indices().prepareAliases().addAlias(index, alias).execute().actionGet();
 				successfulInsert = true;

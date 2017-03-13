@@ -46,7 +46,7 @@ public class SearchService {
 		StatusInfo statusInfo = new StatusInfo();
 		if (elasticResp.gettVehicleList().isEmpty()) {
 			statusInfo.setCode(401);
-			statusInfo.setText("No result for " + country + "/" + vehicleCategory + "/" + language);
+			statusInfo.setText(String.format("No result for %s/%s/%s", country, vehicleCategory, language));
 		} else {
 			statusInfo.setCode(200);
 			statusInfo.setText("OK");

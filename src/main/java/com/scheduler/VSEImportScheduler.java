@@ -53,7 +53,7 @@ public class VSEImportScheduler {
 
 			ScheduleExpression exp = new ScheduleExpression();
 			exp.dayOfWeek(dayHourMin[0]).hour(dayHourMin[1]).minute(dayHourMin[2]).second(0);
-			
+
 			TimerConfig timerConfig = new TimerConfig(context, false);
 			timerService.createCalendarTimer(exp, timerConfig);
 		}
@@ -66,8 +66,8 @@ public class VSEImportScheduler {
 
 		try {
 			importService.importVseVehicle(context.getCountry(), context.getVehicleCategory());
-			LOGGER.info("The import for market " + context.getCountry() + "/" + context.getVehicleCategory()
-					+ " has been made!");
+			LOGGER.info(String.format("The import for market %s/%s has been made!", context.getCountry(),
+					context.getVehicleCategory()));
 		} catch (Exception e) {
 			LOGGER.severe(e.getMessage());
 		}

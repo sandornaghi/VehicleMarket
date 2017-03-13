@@ -11,9 +11,10 @@ import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
 
 /**
- * In this class a connection to the Elasticsearch search engine.
- * The connection is Produced, and is Injected in the caller class.
- * The connection is closed automatically.
+ * In this class a connection to the Elasticsearch search engine. The connection
+ * is Produced, and is Injected in the caller class. The connection is closed
+ * automatically.
+ * 
  * @author sandor.naghi
  */
 public class ConnectionService {
@@ -42,7 +43,7 @@ public class ConnectionService {
 			} catch (Exception e) {
 				LOGGER.severe(e.getMessage());
 			}
-			
+
 		}
 	}
 

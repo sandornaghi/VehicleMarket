@@ -7,6 +7,7 @@ public class SchedulerContext implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private String country;
+
 	private String vehicleCategory;
 
 	public String getCountry() {
