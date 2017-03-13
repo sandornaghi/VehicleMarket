@@ -46,7 +46,7 @@ public class ElasticsearchVehicleService {
 	 * @param tVehicleList
 	 *            The List of Vehicles that will be inserted.
 	 */
-	public boolean insertTVehiclesToElasticsearch(String country, String vehicleCategory, List<TVehicle> tVehicleList) {
+	public int insertTVehiclesToElasticsearch(String country, String vehicleCategory, List<TVehicle> tVehicleList) {
 
 		String alias = country.toLowerCase() + "_" + vehicleCategory.toLowerCase();
 		String index = alias + "_" + DateTimeFormatter.ofPattern("yyyyMMddhhmm").format(LocalDateTime.now());
@@ -54,7 +54,7 @@ public class ElasticsearchVehicleService {
 		// check if index exists
 		boolean indexExists = transportClient.admin().indices().prepareExists(index).execute().actionGet().isExists();
 
-		boolean successfulInsert = false;
+		int result = 404;
 
 		if (!indexExists) {
 
@@ -91,10 +91,12 @@ public class ElasticsearchVehicleService {
 
 				// add alias to new index
 				transportClient.admin().indices().prepareAliases().addAlias(index, alias).execute().actionGet();
-				successfulInsert = true;
+				result = 200;
+			} else {
+				result = 405;
 			}
 		}
-		return successfulInsert;
+		return result;
 	}
 
 	/**

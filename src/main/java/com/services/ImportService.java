@@ -44,31 +44,37 @@ public class ImportService {
 	 */
 	public VSEResponse importVseVehicle(String country, String vehicleCategory) {
 
-		VSEResponse response;
+		VSEResponse response = null;
 
 		Vehicles vehicles = null;
 		try {
 			vehicles = vseService.getVehiclesFromVSE(country, vehicleCategory);
+			if (vehicles == null ) {
+				response = new VSEResponse(401, "Invalid input, inexistent country or vehicle category in the VSE system.");
+			}
 		} catch (JAXBException e) {
 			LOGGER.severe(e.getMessage());
-			response = new VSEResponse(401, "Getting vehicles from VSE system failed!");
+			response = new VSEResponse(402, "Getting vehicles from VSE system failed!");
 		}
 
 		if (vehicles != null) {
 			List<TVehicle> tVehicleList = transService.transformVehicles(country, vehicleCategory, vehicles);
 			if (tVehicleList.isEmpty()) {
-				response = new VSEResponse(402, String.format("No rules found for %s / %s", country, vehicleCategory));
+				response = new VSEResponse(403, String.format("No rules found for %s / %s", country, vehicleCategory));
 			} else { // else the status code is 200
-				if (insertServce.insertTVehiclesToElasticsearch(country, vehicleCategory,tVehicleList)) {
+				switch (insertServce.insertTVehiclesToElasticsearch(country, vehicleCategory,tVehicleList)) {
+				case 200:
 					response = new VSEResponse(200, "Successful import");
-				} else {
-					response = new VSEResponse(403, "Insertion to Elasticsearch failed, due the existence of a same index.");
+					break;
+				case 404:
+					response = new VSEResponse(404, "Insertion to Elasticsearch failed due the existence of same index.");
+					break;
+				case 405:
+					response = new VSEResponse(404, "Insertion to Elasticsearch failed due an internal error.");
+					break;
 				}
 			}
-		} else {
-			response = new VSEResponse(404, "Invalid input, inexistent country or vehicle category in the VSE system.");
 		}
-
 		return response;
 	}
 
