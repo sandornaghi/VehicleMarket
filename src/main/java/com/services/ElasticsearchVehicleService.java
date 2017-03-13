@@ -49,7 +49,7 @@ public class ElasticsearchVehicleService {
 	public void insertTVehiclesToElasticsearch(String country, String vehicleCategory, List<TVehicle> tVehicleList) {
 
 		String alias = country.toLowerCase() + "_" + vehicleCategory.toLowerCase();
-		String index = alias + "_" + DateTimeFormatter.ofPattern("yyyyMMddhh").format(LocalDateTime.now());
+		String index = alias + "_" + DateTimeFormatter.ofPattern("yyyyMMddhhmm").format(LocalDateTime.now());
 
 		// check if index exists
 		boolean indexExists = transportClient.admin().indices().prepareExists(index).execute().actionGet().isExists();
