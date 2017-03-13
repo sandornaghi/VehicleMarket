@@ -44,30 +44,29 @@ public class ImportService {
 	 */
 	public VSEResponse importVseVehicle(String country, String vehicleCategory) {
 
-		VSEResponse response = null;
+		VSEResponse response;
 
 		Vehicles vehicles = null;
 		try {
 			vehicles = vseService.getVehiclesFromVSE(country, vehicleCategory);
 		} catch (JAXBException e) {
 			LOGGER.severe(e.getMessage());
-			return new VSEResponse(400, "Import failed!");
+			response = new VSEResponse(401, "Getting vehicles from VSE system failed!");
 		}
 
 		if (vehicles != null) {
 			List<TVehicle> tVehicleList = transService.transformVehicles(country, vehicleCategory, vehicles);
 			if (tVehicleList.isEmpty()) {
-				response = new VSEResponse(401, "No rules found for " + country + "/" + vehicleCategory);
+				response = new VSEResponse(402, String.format("No rules found for %s / %s", country, vehicleCategory));
 			} else { // else the status code is 200
 				if (insertServce.insertTVehiclesToElasticsearch(country, vehicleCategory,tVehicleList)) {
 					response = new VSEResponse(200, "Successful import");
 				} else {
-					response = new VSEResponse(200, "Insertion failed!");
+					response = new VSEResponse(403, "Insertion to Elasticsearch failed, due the existence of a same index.");
 				}
 			}
 		} else {
-
-			response = new VSEResponse(400, "Invalid input");
+			response = new VSEResponse(404, "Invalid input, inexistent country or vehicle category in the VSE system.");
 		}
 
 		return response;

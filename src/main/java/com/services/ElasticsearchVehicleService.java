@@ -86,6 +86,7 @@ public class ElasticsearchVehicleService {
 						transportClient.admin().indices().prepareAliases().removeAlias(existentIndex, alias).execute()
 								.actionGet();
 					}
+					
 				}
 				
 				// add alias to new index
@@ -120,7 +121,7 @@ public class ElasticsearchVehicleService {
 			if (hits.length != 0) {
 				for (SearchHit hit : hits) {
 
-					String source = new String(hit.getSourceAsString());
+					String source = hit.getSourceAsString();
 
 					ObjectMapper mapper = new ObjectMapper();
 					try {
