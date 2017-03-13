@@ -1,7 +1,7 @@
 package com.services;
 
 import java.io.IOException;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +49,7 @@ public class ElasticsearchVehicleService {
 	public void insertTVehiclesToElasticsearch(String country, String vehicleCategory, List<TVehicle> tVehicleList) {
 
 		String alias = country.toLowerCase() + "_" + vehicleCategory.toLowerCase();
-		String index = alias + "_" + DateTimeFormatter.ofPattern("yyyyMMdd").format(LocalDate.now());
+		String index = alias + "_" + DateTimeFormatter.ofPattern("yyyyMMddhh").format(LocalDateTime.now());
 
 		// check if index exists
 		boolean indexExists = transportClient.admin().indices().prepareExists(index).execute().actionGet().isExists();
@@ -117,11 +117,11 @@ public class ElasticsearchVehicleService {
 			if (hits.length != 0) {
 				for (SearchHit hit : hits) {
 
-					String s = new String(hit.getSourceAsString());
+					String source = new String(hit.getSourceAsString());
 
 					ObjectMapper mapper = new ObjectMapper();
 					try {
-						TVehicle tVehicle = mapper.readValue(s, TVehicle.class);
+						TVehicle tVehicle = mapper.readValue(source, TVehicle.class);
 						tVehicleList.add(tVehicle);
 					} catch (IOException e) {
 						LOGGER.severe(e.getMessage());
