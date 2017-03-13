@@ -26,7 +26,7 @@ public class ImportService {
 
 	@Inject
 	private TransformationService transService;
-	
+
 	@Inject
 	private ElasticsearchVehicleService insertServce;
 
@@ -51,6 +51,7 @@ public class ImportService {
 			vehicles = vseService.getVehiclesFromVSE(country, vehicleCategory);
 		} catch (JAXBException e) {
 			LOGGER.severe(e.getMessage());
+			return new VSEResponse(400, "Import failed!");
 		}
 
 		if (vehicles != null) {
@@ -58,8 +59,11 @@ public class ImportService {
 			if (tVehicleList.isEmpty()) {
 				response = new VSEResponse(401, "No rules found for " + country + "/" + vehicleCategory);
 			} else { // else the status code is 200
-				insertServce.insertTVehiclesToElasticsearch(country, vehicleCategory, tVehicleList);
-				response = new VSEResponse(200, "Successful import");
+				if (insertServce.insertTVehiclesToElasticsearch(country, vehicleCategory,tVehicleList)) {
+					response = new VSEResponse(200, "Successful import");
+				} else {
+					response = new VSEResponse(200, "Insertion failed!");
+				}
 			}
 		} else {
 
