@@ -20,6 +20,7 @@ import org.elasticsearch.search.SearchHit;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
+import com.response.ResponseCodeAndDescription;
 import com.transformedvehicles.TVehicle;
 
 /**
@@ -46,7 +47,8 @@ public class ElasticsearchVehicleService {
 	 * @param tVehicleList
 	 *            The List of Vehicles that will be inserted.
 	 */
-	public int insertTVehiclesToElasticsearch(String country, String vehicleCategory, List<TVehicle> tVehicleList) {
+	public ResponseCodeAndDescription insertTVehiclesToElasticsearch(String country, String vehicleCategory,
+			List<TVehicle> tVehicleList) {
 
 		String alias = country.toLowerCase() + "_" + vehicleCategory.toLowerCase();
 		String index = alias + "_" + DateTimeFormatter.ofPattern("yyyyMMddhhmm").format(LocalDateTime.now());
@@ -54,7 +56,7 @@ public class ElasticsearchVehicleService {
 		// check if index exists
 		boolean indexExists = transportClient.admin().indices().prepareExists(index).execute().actionGet().isExists();
 
-		int result = 404;
+		ResponseCodeAndDescription response = new ResponseCodeAndDescription(401);
 
 		if (!indexExists) {
 
@@ -86,17 +88,18 @@ public class ElasticsearchVehicleService {
 						transportClient.admin().indices().prepareAliases().removeAlias(existentIndex, alias).execute()
 								.actionGet();
 					}
-
 				}
 
 				// add alias to new index
 				transportClient.admin().indices().prepareAliases().addAlias(index, alias).execute().actionGet();
-				result = 200;
+				response = new ResponseCodeAndDescription(200);
+
 			} else {
-				result = 405;
+				response = new ResponseCodeAndDescription(402);
 			}
 		}
-		return result;
+
+		return response;
 	}
 
 	/**
@@ -135,7 +138,7 @@ public class ElasticsearchVehicleService {
 				}
 			}
 		}
+
 		return tVehicleList;
 	}
-
 }

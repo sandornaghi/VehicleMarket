@@ -7,6 +7,8 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
+import com.response.ResponseCodeAndDescription;
+import com.response.VehicleResponse;
 import com.vsevehiclebeans.Vehicles;
 
 /**
@@ -25,9 +27,12 @@ public class VSEService {
 	 * @return	The vehicles for the given country and category.
 	 * @throws JAXBException
 	 */
-	public Vehicles getVehiclesFromVSE(String country, String category) throws JAXBException {
+	public VehicleResponse getVehiclesFromVSE(String country, String category) throws JAXBException {
 
 		String fileName = buildFilename(country, category);
+		
+		ResponseCodeAndDescription respAndDesc = null;
+		
 		Vehicles vehicles = null;
 
 		ClassLoader classLoader = getClass().getClassLoader();
@@ -37,6 +42,7 @@ public class VSEService {
 			file = new File(classLoader.getResource(fileName).getFile());
 		} catch (NullPointerException e) {
 			LOGGER.severe(e.getMessage());
+			respAndDesc = new ResponseCodeAndDescription(601);
 		}
 
 		if (file != null) {
@@ -46,7 +52,11 @@ public class VSEService {
 			vehicles = (Vehicles) unmarshaller.unmarshal(file);
 		}
 
-		return vehicles;
+		VehicleResponse response = new VehicleResponse();
+		response.setRespCodeDesc(respAndDesc);
+		response.setVehicles(vehicles);
+		
+		return response;
 	}
 
 	private String buildFilename(String country, String category) {

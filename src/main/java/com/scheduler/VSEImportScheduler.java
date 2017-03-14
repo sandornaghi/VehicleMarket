@@ -72,5 +72,4 @@ public class VSEImportScheduler {
 			LOGGER.severe(e.getMessage());
 		}
 	}
-
 }

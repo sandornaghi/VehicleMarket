@@ -7,7 +7,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
-import com.response.VSEResponse;
+import com.response.ResponseCodeAndDescription;
 
 /**
  * This class is used for REST Service, get the country and the category from
@@ -27,15 +27,8 @@ public class VehicleImportService {
 	public Response importVehiclesFromVSE(@PathParam("country") String country,
 			@PathParam("vehicleCategory") String vehicleCategory) {
 
-		VSEResponse response = importService.importVseVehicle(country, vehicleCategory);
+		ResponseCodeAndDescription response = importService.importVseVehicle(country, vehicleCategory);
 
-		switch (response.getCode()) {
-		case 200:
-			return Response.status(200).entity(response).build();
-		case 401:
-			return Response.status(200).entity(response).build();
-		default:
-			return Response.status(400).entity(response).build();
-		}
+		return Response.status(response.getCode()).entity(response).build();
 	}
 }

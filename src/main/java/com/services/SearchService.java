@@ -55,5 +55,4 @@ public class SearchService {
 
 		return elasticResp;
 	}
-
 }

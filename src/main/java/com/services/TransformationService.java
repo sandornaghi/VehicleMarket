@@ -96,7 +96,6 @@ public class TransformationService {
 	}
 
 	private void setRules(TVehicle tVehicle, List<Correction> corrections) {
-		// am schimbat sql scriptul sa dea corrections-urile si dupa language
 
 		for (Correction correction : corrections) {
 			switch (correction.getType()) {
