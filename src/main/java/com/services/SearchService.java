@@ -15,6 +15,12 @@ import com.response.StatusInfo;
  */
 public class SearchService {
 
+	private static final int SUCCESS_CODE = 200;
+	private static final String SUCCESS_TEXT = "OK";
+
+	private static final int NO_RESULT_CODE = 701;
+	private static final String NO_RESULT_TEXT = "No result for %s/%s/%s";
+
 	@Inject
 	private ElasticsearchVehicleService elasticService;
 
@@ -45,11 +51,11 @@ public class SearchService {
 
 		StatusInfo statusInfo = new StatusInfo();
 		if (elasticResp.gettVehicleList().isEmpty()) {
-			statusInfo.setCode(401);
-			statusInfo.setText(String.format("No result for %s/%s/%s", country, vehicleCategory, language));
+			statusInfo.setCode(NO_RESULT_CODE);
+			statusInfo.setText(String.format(NO_RESULT_TEXT, country, vehicleCategory, language));
 		} else {
-			statusInfo.setCode(200);
-			statusInfo.setText("OK");
+			statusInfo.setCode(SUCCESS_CODE);
+			statusInfo.setText(SUCCESS_TEXT);
 		}
 		elasticResp.setStatusInfo(statusInfo);
 

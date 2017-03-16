@@ -31,6 +31,8 @@ public class VSEImportScheduler {
 
 	private static final Logger LOGGER = Logger.getLogger(VSEImportScheduler.class.getName());
 
+	private static final String IMPORT_RESPONSE = "The import for market %s/%s has been made!";
+
 	@Inject
 	private RuleService ruleService;
 
@@ -66,8 +68,7 @@ public class VSEImportScheduler {
 
 		try {
 			importService.importVseVehicle(context.getCountry(), context.getVehicleCategory());
-			LOGGER.info(String.format("The import for market %s/%s has been made!", context.getCountry(),
-					context.getVehicleCategory()));
+			LOGGER.info(String.format(IMPORT_RESPONSE, context.getCountry(), context.getVehicleCategory()));
 		} catch (Exception e) {
 			LOGGER.severe(e.getMessage());
 		}

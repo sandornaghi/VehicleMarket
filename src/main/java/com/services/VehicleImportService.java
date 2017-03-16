@@ -29,6 +29,6 @@ public class VehicleImportService {
 
 		ResponseCodeAndDescription response = importService.importVseVehicle(country, vehicleCategory);
 
-		return Response.status(response.getCode()).entity(response).build();
+		return Response.status(200).entity(response).build();
 	}
 }

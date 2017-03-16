@@ -98,7 +98,7 @@ public class TransformationService {
 	private void setRules(TVehicle tVehicle, List<Correction> corrections) {
 
 		for (Correction correction : corrections) {
-			switch (correction.getType()) {
+			switch (correction.getType().toUpperCase()) {
 			case "PRICE_INFORMATION":
 				TPrice tPrice = new TPrice();
 				tPrice.setCurrency(tVehicle.getPriceInformation().getCurrency());

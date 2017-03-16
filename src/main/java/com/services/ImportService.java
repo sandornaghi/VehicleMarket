@@ -6,6 +6,8 @@ import java.util.logging.Logger;
 import javax.inject.Inject;
 import javax.xml.bind.JAXBException;
 
+import static com.response.ResponseCodeAndDescription.*;
+
 import com.response.ResponseCodeAndDescription;
 import com.response.VehicleResponse;
 import com.transformedvehicles.TVehicle;
@@ -54,17 +56,17 @@ public class ImportService {
 			vehicleResponse = vseService.getVehiclesFromVSE(country, vehicleCategory);
 			vehicles = vehicleResponse.getVehicles();
 			if (vehicles == null) {
-				response = new ResponseCodeAndDescription(301);
+				response = new ResponseCodeAndDescription(VSE_INEXISTENT);
 			}
 		} catch (JAXBException e) {
 			LOGGER.severe(e.getMessage());
-			response = new ResponseCodeAndDescription(302);
+			response = new ResponseCodeAndDescription(VSE_FAILED);
 		}
 
 		if (vehicles != null) {
 			List<TVehicle> tVehicleList = transService.transformVehicles(country, vehicleCategory, vehicles);
 			if (tVehicleList.isEmpty()) {
-				response = new ResponseCodeAndDescription(303);
+				response = new ResponseCodeAndDescription(VSE_NO_RULES);
 			} else {
 				response = insertServce.insertTVehiclesToElasticsearch(country, vehicleCategory, tVehicleList);
 			}

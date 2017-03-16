@@ -11,6 +11,8 @@ import com.response.ResponseCodeAndDescription;
 import com.response.VehicleResponse;
 import com.vsevehiclebeans.Vehicles;
 
+import static com.response.ResponseCodeAndDescription.FILE_NOT_FOUND;
+
 /**
  * In this class we set up the name of the file, from where we read the vehicles.
  * @author sandor.naghi
@@ -18,8 +20,10 @@ import com.vsevehiclebeans.Vehicles;
  */
 public class VSEService {
 
-	public static final Logger LOGGER = Logger.getLogger(VSEService.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(VSEService.class.getName());
 
+	private static final String FILE_BASE = "vseResources\\vse_vehicles_";
+	
 	/**
 	 * Read the specified file from the resources.
 	 * @param country	The market from where we do the import.
@@ -42,7 +46,7 @@ public class VSEService {
 			file = new File(classLoader.getResource(fileName).getFile());
 		} catch (NullPointerException e) {
 			LOGGER.severe(e.getMessage());
-			respAndDesc = new ResponseCodeAndDescription(601);
+			respAndDesc = new ResponseCodeAndDescription(FILE_NOT_FOUND);
 		}
 
 		if (file != null) {
@@ -63,7 +67,7 @@ public class VSEService {
 
 		StringBuilder sb = new StringBuilder();
 
-		sb.append("vseResources\\vse_vehicles_");
+		sb.append(FILE_BASE);
 
 		sb.append(country.toUpperCase());
 		sb.append("_");

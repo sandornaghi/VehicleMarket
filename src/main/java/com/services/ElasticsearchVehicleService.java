@@ -23,6 +23,10 @@ import com.google.gson.Gson;
 import com.response.ResponseCodeAndDescription;
 import com.transformedvehicles.TVehicle;
 
+import static com.response.ResponseCodeAndDescription.SUCCESS_IMPORT;
+import static com.response.ResponseCodeAndDescription.ELASTIC_DUPLICATE_INDEX;
+import static com.response.ResponseCodeAndDescription.ELASTIC_INTSERTION_ERROR;
+
 /**
  * This class is used to insert and read vehicles from Elasticsearch.
  * 
@@ -33,6 +37,10 @@ public class ElasticsearchVehicleService {
 
 	private static final Logger LOGGER = Logger.getLogger(ElasticsearchVehicleService.class.getName());
 
+	private static final String DATE_TIME_FORMAT = "yyyyMMddhhmm";
+	
+	private static final String INDEX_TYPE = "vehicle";
+	
 	@Inject
 	private TransportClient transportClient;
 
@@ -51,12 +59,12 @@ public class ElasticsearchVehicleService {
 			List<TVehicle> tVehicleList) {
 
 		String alias = country.toLowerCase() + "_" + vehicleCategory.toLowerCase();
-		String index = alias + "_" + DateTimeFormatter.ofPattern("yyyyMMddhhmm").format(LocalDateTime.now());
+		String index = alias + "_" + DateTimeFormatter.ofPattern(DATE_TIME_FORMAT).format(LocalDateTime.now());
 
 		// check if index exists
 		boolean indexExists = transportClient.admin().indices().prepareExists(index).execute().actionGet().isExists();
 
-		ResponseCodeAndDescription response = new ResponseCodeAndDescription(401);
+		ResponseCodeAndDescription response = new ResponseCodeAndDescription(ELASTIC_DUPLICATE_INDEX);
 
 		if (!indexExists) {
 
@@ -67,7 +75,7 @@ public class ElasticsearchVehicleService {
 			BulkRequestBuilder bulkRequest = transportClient.prepareBulk();
 
 			for (TVehicle tVehicle : tVehicleList) {
-				bulkRequest.add(transportClient.prepareIndex(index, "vehicle").setSource(new Gson().toJson(tVehicle)));
+				bulkRequest.add(transportClient.prepareIndex(index, INDEX_TYPE).setSource(new Gson().toJson(tVehicle)));
 			}
 
 			BulkResponse resp = bulkRequest.get();
@@ -92,10 +100,10 @@ public class ElasticsearchVehicleService {
 
 				// add alias to new index
 				transportClient.admin().indices().prepareAliases().addAlias(index, alias).execute().actionGet();
-				response = new ResponseCodeAndDescription(200);
+				response = new ResponseCodeAndDescription(SUCCESS_IMPORT);
 
 			} else {
-				response = new ResponseCodeAndDescription(402);
+				response = new ResponseCodeAndDescription(ELASTIC_INTSERTION_ERROR);
 			}
 		}
 
