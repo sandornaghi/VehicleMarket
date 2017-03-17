@@ -23,18 +23,22 @@ import org.elasticsearch.common.transport.InetSocketTransportAddress;
 public class ConnectionService {
 
 	private static final Logger LOGGER = Logger.getLogger(ConnectionService.class.getName());
+	
+	private static final String HOST_NAME = "elasticsearchHost";
+	private static final String PORT_NUMBER = "elasticsearchPort";
+	private static final String CONFIG = "config.properties";
 
 	@Produces
 	private TransportClient connectionsToElasticsearch() {
 		TransportClient client = null;
 
-		String[] array = getHostAndPortnumber();
-		String host = array[0];
-		int port = Integer.parseInt(array[1]);
+		String[] esConnectionProperties = getHostAndPortnumber();
+		String esHost = esConnectionProperties[0];
+		int esPort = Integer.parseInt(esConnectionProperties[1]);
 
 		try {
 			client = TransportClient.builder().build()
-					.addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName(host), port));
+					.addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName(esHost), esPort));
 		} catch (UnknownHostException e) {
 			LOGGER.severe(e.getMessage());
 		}
@@ -57,21 +61,21 @@ public class ConnectionService {
 
 	private String[] getHostAndPortnumber() {
 
-		String[] array = new String[2];
+		String[] esConProp = new String[2];
 
 		Properties prop = new Properties();
 		InputStream input = null;
 
-		input = getClass().getClassLoader().getResourceAsStream("config.properties");
+		input = getClass().getClassLoader().getResourceAsStream(CONFIG);
 		try {
 			prop.load(input);
 
-			array[0] = prop.getProperty("host");
-			array[1] = prop.getProperty("port");
+			esConProp[0] = prop.getProperty(HOST_NAME); 
+			esConProp[1] = prop.getProperty(PORT_NUMBER);
 		} catch (IOException e) {
 			LOGGER.severe(e.getMessage());
 		}
 
-		return array;
+		return esConProp;
 	}
 }

@@ -25,13 +25,13 @@ public class ImportService {
 	private static final Logger LOGGER = Logger.getLogger(ImportService.class.getName());
 
 	@Inject
-	private VSEService vseService;
+	private VSEDataRetrievelService vseService;
 
 	@Inject
-	private TransformationService transService;
+	private TransformationService transformationService;
 
 	@Inject
-	private ElasticsearchVehicleService insertServce;
+	private ElasticsearchVehicleService insertService;
 
 	/**
 	 * This method do the import from the VSE system, and builds the response
@@ -64,11 +64,11 @@ public class ImportService {
 		}
 
 		if (vehicles != null) {
-			List<TVehicle> tVehicleList = transService.transformVehicles(country, vehicleCategory, vehicles);
+			List<TVehicle> tVehicleList = transformationService.transformVehicles(country, vehicleCategory, vehicles);
 			if (tVehicleList.isEmpty()) {
 				response = new ResponseCodeAndDescription(VSE_NO_RULES);
 			} else {
-				response = insertServce.insertTVehiclesToElasticsearch(country, vehicleCategory, tVehicleList);
+				response = insertService.insertTVehiclesToElasticsearch(country, vehicleCategory, tVehicleList);
 			}
 		}
 

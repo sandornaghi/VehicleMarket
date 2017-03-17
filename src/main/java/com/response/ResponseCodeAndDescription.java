@@ -3,79 +3,75 @@ package com.response;
 public class ResponseCodeAndDescription {
 
 	// response code and description for successful import
+	private static final String SUCCES_IMPORT_DESCRIPTION = "Successful import.";
 	public static final int SUCCESS_IMPORT = 200;
-	private static final String SUCCES_IMPORT_TEXT = "Successful import.";
-
+	
 	// response codes and description for VSE system starting with 300
+	private static final String VSE_INEXISTENT_DESCRIPTION = "Invalid input, inexistent country or vehicle category in the VSE system.";
+	private static final String VSE_FAILED_DESCRIPTION = "Import vehicles from VSE system failed.";
+	private static final String VSE_NO_RULES_DESCRIPTION = "Inexistent rules for this context (country and vehicle category).";
 	public static final int VSE_INEXISTENT = 301;
-	private static final String VSE_TEXT_INEXISTENT = "Invalid input, inexistent country or vehicle category in the VSE system.";
 	public static final int VSE_FAILED = 302;
-	private static final String VSE_TEXT_FAILED = "Import vehicles from VSE system failed.";
 	public static final int VSE_NO_RULES = 303;
-	private static final String VSE_TEXT_NO_RULES = "Inexistent rules for this context (country and vehicle category).";
-
+	
 	// response code and description for Elasticsearch operation
+	private static final String ELASTIC_DUPLICATE_INDEX_DESCRIPTION = "Insertion to Elasticsearch failed due the existence of same index.";
+	private static final String ELASTIC_INSERTION_ERROR_DESCRIPTION = "Insertion to Elasticsearch failed due an internal error.";
 	public static final int ELASTIC_DUPLICATE_INDEX = 401;
-	private static final String ELASTIC_TEXT_DUPLICATE_INDEX = "Insertion to Elasticsearch failed due the existence of same index.";
 	public static final int ELASTIC_INTSERTION_ERROR = 402;
-	private static final String ELASTIC_TEXT_INSERTION_ERROR = "Insertion to Elasticsearch failed due an internal error.";
-
+	
 	// response code and description for some internal error...
+	private static final String INTERNAL_ERROR_DESCRIPTION = "Internal error.";
 	public static final int INTERNAL_ERROR = 501;
-	private static final String INTERNAL_ERROR_TEXT = "Internal error.";
 
 	// response code and description for file reading errors
+	private static final String FILE_NOT_FOUND_DESCRIPTION = "File for this context not found.";
 	public static final int FILE_NOT_FOUND = 601;
-	private static final String FILE_NOT_FOUND_TEXT = "File for this context not found.";
 
 	private int code;
 	private String text;
-
-	public ResponseCodeAndDescription() {
-
-	}
 
 	public ResponseCodeAndDescription(int code) {
 
 		switch (code) {
 		case SUCCESS_IMPORT:
 			this.code = SUCCESS_IMPORT;
-			this.text = SUCCES_IMPORT_TEXT;
+			this.text = SUCCES_IMPORT_DESCRIPTION;
 			break;
 
 		case VSE_INEXISTENT:
 			this.code = VSE_INEXISTENT;
-			this.text = VSE_TEXT_INEXISTENT;
+			this.text = VSE_INEXISTENT_DESCRIPTION;
 			break;
 
 		case VSE_FAILED:
 			this.code = VSE_FAILED;
-			this.text = VSE_TEXT_FAILED;
+			this.text = VSE_FAILED_DESCRIPTION;
 			break;
 
 		case VSE_NO_RULES:
 			this.code = VSE_NO_RULES;
-			this.text = VSE_TEXT_NO_RULES;
+			this.text = VSE_NO_RULES_DESCRIPTION;
 			break;
 
 		case ELASTIC_DUPLICATE_INDEX:
 			this.code = ELASTIC_DUPLICATE_INDEX;
-			this.text = ELASTIC_TEXT_DUPLICATE_INDEX;
+			this.text = ELASTIC_DUPLICATE_INDEX_DESCRIPTION;
 			break;
 
 		case ELASTIC_INTSERTION_ERROR:
 			this.code = ELASTIC_INTSERTION_ERROR;
-			this.text = ELASTIC_TEXT_INSERTION_ERROR;
+			this.text = ELASTIC_INSERTION_ERROR_DESCRIPTION;
 			break;
 
 		case FILE_NOT_FOUND:
 			this.code = FILE_NOT_FOUND;
-			this.text = FILE_NOT_FOUND_TEXT;
+			this.text = FILE_NOT_FOUND_DESCRIPTION;
 			break;
 
 		default:
 			this.code = INTERNAL_ERROR;
-			this.text = INTERNAL_ERROR_TEXT;
+			this.text = INTERNAL_ERROR_DESCRIPTION;
 		}
 	}
 

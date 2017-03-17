@@ -28,6 +28,17 @@ public class RuleService {
 
 	private static final Logger LOGGER = Logger.getLogger(RuleService.class.getName());
 
+	private static final String CONFIGURATION_RULES = "ConfigurationRules";
+	private static final String CORRECTION_RULES = "CorrectionRules";
+	private static final String ACCEPTED_LANGUAGES = "AcceptedLanguages";
+	private static final String CONTEXT_HAS_RULES = "ContextHasRules";
+	private static final String IMPORT_TIME_INTERVAL = "ImportTimeInterval";
+	
+		
+	private static final String COUNTRY = "country";
+	private static final String VEHICLE_CATEGORY = "vehicleCategory";
+	private static final String LANGUAGE = "language";
+	
 	@PersistenceContext(unitName = "vehicle-rules")
 	private EntityManager em;
 
@@ -42,9 +53,9 @@ public class RuleService {
 	 */
 	public List<Configuration> getConfigurationRules(String country, String vehicleCategory) {
 
-		TypedQuery<Configuration> query = em.createNamedQuery("ConfigurationRules", Configuration.class);
-		query.setParameter("country", country);
-		query.setParameter("vehicleCategory", vehicleCategory);
+		TypedQuery<Configuration> query = em.createNamedQuery(CONFIGURATION_RULES, Configuration.class);
+		query.setParameter(COUNTRY, country);
+		query.setParameter(VEHICLE_CATEGORY, vehicleCategory);
 
 		List<Configuration> confList = query.getResultList();
 
@@ -62,10 +73,10 @@ public class RuleService {
 	 */
 	public List<Correction> getCorrectionRules(String country, String vehicleCategory, String language) {
 
-		TypedQuery<Correction> query = em.createNamedQuery("CorrectionRules", Correction.class);
-		query.setParameter("country", country);
-		query.setParameter("vehicleCategory", vehicleCategory);
-		query.setParameter("language", language);
+		TypedQuery<Correction> query = em.createNamedQuery(CORRECTION_RULES, Correction.class);
+		query.setParameter(COUNTRY, country);
+		query.setParameter(VEHICLE_CATEGORY, vehicleCategory);
+		query.setParameter(LANGUAGE, language);
 
 		List<Correction> corrList = query.getResultList();
 
@@ -83,9 +94,9 @@ public class RuleService {
 	 */
 	public List<String> acceptedLanguages(String country, String vehicleCategory) {
 
-		TypedQuery<String> query = em.createNamedQuery("AcceptedLanguages", String.class);
-		query.setParameter("country", country);
-		query.setParameter("vehicleCategory", vehicleCategory);
+		TypedQuery<String> query = em.createNamedQuery(ACCEPTED_LANGUAGES, String.class);
+		query.setParameter(COUNTRY, country);
+		query.setParameter(VEHICLE_CATEGORY, vehicleCategory);
 
 		String res = null;
 		try {
@@ -120,10 +131,10 @@ public class RuleService {
 	 */
 	public boolean hasRules(String country, String vehicleCategory, String language) {
 
-		TypedQuery<String> query = em.createNamedQuery("ContextHasRules", String.class);
-		query.setParameter("country", country);
-		query.setParameter("vehicleCategory", vehicleCategory);
-		query.setParameter("language", language);
+		TypedQuery<String> query = em.createNamedQuery(CONTEXT_HAS_RULES, String.class);
+		query.setParameter(COUNTRY, country);
+		query.setParameter(VEHICLE_CATEGORY, vehicleCategory);
+		query.setParameter(LANGUAGE, language);
 
 		String res = null;
 		try {
@@ -143,7 +154,7 @@ public class RuleService {
 	 */
 	public List<Configuration> getImportTimeInterval() {
 
-		TypedQuery<Configuration> query = em.createNamedQuery("ImportTimeInterval", Configuration.class);
+		TypedQuery<Configuration> query = em.createNamedQuery(IMPORT_TIME_INTERVAL, Configuration.class);
 
 		return query.getResultList();
 	}

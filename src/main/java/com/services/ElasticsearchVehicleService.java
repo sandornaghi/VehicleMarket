@@ -64,7 +64,7 @@ public class ElasticsearchVehicleService {
 		// check if index exists
 		boolean indexExists = transportClient.admin().indices().prepareExists(index).execute().actionGet().isExists();
 
-		ResponseCodeAndDescription response = new ResponseCodeAndDescription(ELASTIC_DUPLICATE_INDEX);
+		ResponseCodeAndDescription response;
 
 		if (!indexExists) {
 
@@ -105,6 +105,8 @@ public class ElasticsearchVehicleService {
 			} else {
 				response = new ResponseCodeAndDescription(ELASTIC_INTSERTION_ERROR);
 			}
+		} else {
+			 response = new ResponseCodeAndDescription(ELASTIC_DUPLICATE_INDEX);
 		}
 
 		return response;

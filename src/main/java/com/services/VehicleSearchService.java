@@ -6,6 +6,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 
 import com.response.ElasticsearchResponse;
 
@@ -29,6 +30,6 @@ public class VehicleSearchService {
 
 		ElasticsearchResponse elasticResponse = searchService.searchTVehicles(country, vehicleCategory, language);
 
-		return Response.status(200).entity(elasticResponse).build();
+		return Response.status(Status.OK).entity(elasticResponse).build();
 	}
 }

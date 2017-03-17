@@ -6,6 +6,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 
 import com.response.ResponseCodeAndDescription;
 
@@ -29,6 +30,6 @@ public class VehicleImportService {
 
 		ResponseCodeAndDescription response = importService.importVseVehicle(country, vehicleCategory);
 
-		return Response.status(200).entity(response).build();
+		return Response.status(Status.OK).entity(response).build();
 	}
 }

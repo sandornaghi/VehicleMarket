@@ -18,9 +18,9 @@ import static com.response.ResponseCodeAndDescription.FILE_NOT_FOUND;
  * @author sandor.naghi
  *
  */
-public class VSEService {
+public class VSEDataRetrievelService {
 
-	private static final Logger LOGGER = Logger.getLogger(VSEService.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(VSEDataRetrievelService.class.getName());
 
 	private static final String FILE_BASE = "vseResources\\vse_vehicles_";
 	
