@@ -6,7 +6,7 @@
 	<vseVehicle>
         	<id>LD2134thg10</id>
                 <priceInformation> 
-                    <basePrice>9210</basePrice>
+                    <basePrice>8000</basePrice>
                     <currency>euro</currency> 
                 </priceInformation>
                 <bodyType>1</bodyType>
@@ -34,7 +34,7 @@
 	<vseVehicle>
         	<id>LD2134thg11</id>
                 <priceInformation> 
-                    <basePrice>9211</basePrice>
+                    <basePrice>9000</basePrice>
                     <currency>euro</currency> 
                 </priceInformation>
                 <bodyType>1</bodyType>
@@ -43,7 +43,7 @@
                     <groupCode>234</groupCode>
                 </paint>
                 <fuelType>1</fuelType>
-                <transmission>1</transmission>
+                <transmission>2</transmission>
                 <vehicleLocation>
                       <postalCode>DE1 4DU</postalCode>
                       <location>
@@ -62,7 +62,7 @@
     <vseVehicle>
         	<id>LD2134thg12</id>
                 <priceInformation> 
-                    <basePrice>9212</basePrice>
+                    <basePrice>10000</basePrice>
                     <currency>euro</currency> 
                 </priceInformation>
                 <bodyType>1</bodyType>
@@ -71,7 +71,7 @@
                     <groupCode>234</groupCode>
                 </paint>
                 <fuelType>1</fuelType>
-                <transmission>1</transmission>
+                <transmission>2</transmission>
                 <vehicleLocation>
                       <postalCode>DE1 4DU</postalCode>
                       <location>

@@ -18,6 +18,9 @@ import org.elasticsearch.cluster.metadata.AliasOrIndex;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 
+import com.elasticsearchfacets.ElasticsearchFacetResponse;
+import com.elasticsearchfacets.ElasticHelper;
+import com.elasticsearchfacets.UserInput;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.response.ResponseCodeAndDescription;
@@ -26,6 +29,10 @@ import com.transformedvehicles.TVehicle;
 import static com.response.ResponseCodeAndDescription.SUCCESS_IMPORT;
 import static com.response.ResponseCodeAndDescription.ELASTIC_DUPLICATE_INDEX;
 import static com.response.ResponseCodeAndDescription.ELASTIC_INTSERTION_ERROR;
+
+import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.bucket.terms.Terms;
+import org.elasticsearch.search.aggregations.metrics.stats.Stats;
 
 /**
  * This class is used to insert and read vehicles from Elasticsearch.
@@ -38,11 +45,20 @@ public class ElasticsearchVehicleService {
 	private static final Logger LOGGER = Logger.getLogger(ElasticsearchVehicleService.class.getName());
 
 	private static final String DATE_TIME_FORMAT = "yyyyMMddhhmm";
-	
+
 	private static final String INDEX_TYPE = "vehicle";
-	
+
+	private static final String COUNT = "count";
+
+	private static final String TERMS = "terms";
+
+	private static final String PRICE = "priceInformation.basePrice";
+
 	@Inject
 	private TransportClient transportClient;
+
+	@Inject
+	private ElasticHelper elasticHelper;
 
 	/**
 	 * Insert a List of Vehicles in Elasticsearch for the given market and
@@ -106,7 +122,7 @@ public class ElasticsearchVehicleService {
 				response = new ResponseCodeAndDescription(ELASTIC_INTSERTION_ERROR);
 			}
 		} else {
-			 response = new ResponseCodeAndDescription(ELASTIC_DUPLICATE_INDEX);
+			response = new ResponseCodeAndDescription(ELASTIC_DUPLICATE_INDEX);
 		}
 
 		return response;
@@ -150,5 +166,32 @@ public class ElasticsearchVehicleService {
 		}
 
 		return tVehicleList;
+	}
+
+	/**
+	 * This method read a facet from Elasticsearch for a given context, based upon the user input.
+	 * @param country	The country based upon the response is build.
+	 * @param vehicleCategory	The vehicle category, that can be new or used.
+	 * @param input	The json object that come from the front by POST request.
+	 * @return	The number of vehicles within this category, and the prices for the vehicles.
+	 */
+	public ElasticsearchFacetResponse getFacetsForVehicles(String country, String vehicleCategory, String input) {
+
+		UserInput userInput = elasticHelper.transformInput(input);
+
+		String alias = country + "_" + vehicleCategory;
+
+		SearchResponse response = transportClient.prepareSearch(alias)
+				.setQuery(QueryBuilders.termQuery(userInput.getKey(), userInput.getValue()))
+				.addAggregation(AggregationBuilders.stats(COUNT).field(PRICE))
+				.addAggregation(AggregationBuilders.terms(TERMS).field(PRICE)).execute().actionGet();
+
+		Stats stats = response.getAggregations().get(COUNT);
+
+		Terms terms = response.getAggregations().get(TERMS);
+
+		ElasticsearchFacetResponse elasticFacetResponse = elasticHelper.buildFacetResponse(stats, terms);
+
+		return elasticFacetResponse;
 	}
 }
