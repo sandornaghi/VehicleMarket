@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class ElasticsearchFacetResponse {
+public class ElasticFacetResponse {
 
 	@JsonProperty
 	private int minPrice;
@@ -68,7 +68,7 @@ public class ElasticsearchFacetResponse {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		ElasticsearchFacetResponse other = (ElasticsearchFacetResponse) obj;
+		ElasticFacetResponse other = (ElasticFacetResponse) obj;
 		if (facetList == null) {
 			if (other.facetList != null)
 				return false;

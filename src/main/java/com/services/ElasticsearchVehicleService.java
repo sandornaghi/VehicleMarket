@@ -18,9 +18,11 @@ import org.elasticsearch.cluster.metadata.AliasOrIndex;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 
-import com.elasticsearchfacets.ElasticsearchFacetResponse;
+import com.elasticsearchfacets.ElasticFacetResponse;
+import com.elasticsearchfacets.ElasticFacetWithPriceResponse;
 import com.elasticsearchfacets.ElasticHelper;
-import com.elasticsearchfacets.UserInput;
+import com.elasticsearchfacets.UserInputWithPrice;
+import com.elasticsearchfacets.SimpleUserInput;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.response.ResponseCodeAndDescription;
@@ -31,6 +33,7 @@ import static com.response.ResponseCodeAndDescription.ELASTIC_DUPLICATE_INDEX;
 import static com.response.ResponseCodeAndDescription.ELASTIC_INTSERTION_ERROR;
 
 import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.bucket.range.Range;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.aggregations.metrics.stats.Stats;
 
@@ -53,6 +56,8 @@ public class ElasticsearchVehicleService {
 	private static final String TERMS = "terms";
 
 	private static final String PRICE = "priceInformation.basePrice";
+
+	private static final String RANGE = "range";
 
 	@Inject
 	private TransportClient transportClient;
@@ -169,17 +174,17 @@ public class ElasticsearchVehicleService {
 	}
 
 	/**
-	 * This method read a facet from Elasticsearch for a given context, based upon the user input.
-	 * @param country	The country based upon the response is build.
-	 * @param vehicleCategory	The vehicle category, that can be new or used.
-	 * @param input	The json object that come from the front by POST request.
-	 * @return	The number of vehicles within this category, and the prices for the vehicles.
+	 * This method read a facet from Elasticsearch for a given context, based
+	 * upon the user input.
+	 * 
+	 * @param alias
+	 *            The context for the given country and vehicle category.
+	 * @param userInput
+	 *            Price interval, and type of facet.
+	 * @return The number of vehicles within this category, and the prices for
+	 *         the vehicles.
 	 */
-	public ElasticsearchFacetResponse getFacetsForVehicles(String country, String vehicleCategory, String input) {
-
-		UserInput userInput = elasticHelper.transformInput(input);
-
-		String alias = country + "_" + vehicleCategory;
+	public ElasticFacetResponse getFacetsForVehicles(String alias, SimpleUserInput userInput) {
 
 		SearchResponse response = transportClient.prepareSearch(alias)
 				.setQuery(QueryBuilders.termQuery(userInput.getKey(), userInput.getValue()))
@@ -190,7 +195,34 @@ public class ElasticsearchVehicleService {
 
 		Terms terms = response.getAggregations().get(TERMS);
 
-		ElasticsearchFacetResponse elasticFacetResponse = elasticHelper.buildFacetResponse(stats, terms);
+		ElasticFacetResponse elasticFacetResponse = elasticHelper.buildFacetResponse(stats, terms);
+
+		return elasticFacetResponse;
+	}
+
+	/**
+	 * This method create a facet from Elasticsearch, for a given country and
+	 * vehicle category context, based upon the price interval the users
+	 * request.
+	 * 
+	 * @param alias
+	 *            The context for the given country and vehicle category.
+	 * @param userInput
+	 *            Price interval, and type of facet.
+	 * @return The number of vehicles for the given context, and price interval.
+	 */
+	public ElasticFacetWithPriceResponse getFacetsWithPriceInterval(String alias, UserInputWithPrice userInput) {
+
+		SearchResponse response = transportClient.prepareSearch(alias)
+				.setQuery(QueryBuilders.termQuery(userInput.getKey(), userInput.getValue()))
+				.addAggregation(AggregationBuilders.range(RANGE)
+						.addRange(userInput.getMinPrice(), userInput.getMaxPrice()).field(PRICE))
+				.execute().actionGet();
+
+		Range range = response.getAggregations().get(RANGE);
+
+		ElasticFacetWithPriceResponse elasticFacetResponse = new ElasticFacetWithPriceResponse();
+		elasticFacetResponse.setVehicleNumbers(range.getBuckets().get(0).getDocCount());
 
 		return elasticFacetResponse;
 	}

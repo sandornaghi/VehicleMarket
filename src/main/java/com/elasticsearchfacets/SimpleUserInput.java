@@ -2,7 +2,7 @@ package com.elasticsearchfacets;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class UserInput {
+public class SimpleUserInput {
 
 	@JsonProperty
 	private String key;
@@ -43,7 +43,7 @@ public class UserInput {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		UserInput other = (UserInput) obj;
+		SimpleUserInput other = (SimpleUserInput) obj;
 		if (key == null) {
 			if (other.key != null)
 				return false;
