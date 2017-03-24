@@ -1,4 +1,4 @@
-package com.services;
+package com.services.importsearchtransform;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,6 +6,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import com.rulebeans.Correction;
+import com.services.RuleService;
 import com.transformedvehicles.TBodyType;
 import com.transformedvehicles.TEquipment;
 import com.transformedvehicles.TFuelType;
@@ -90,7 +91,7 @@ public class TransformationService {
 		}
 		tVehicle.setEquipmentList(equipmentList);
 
-		tVehicle.setFirstRegistrationDate(vehicle.getFirstRegistrationDate());
+		tVehicle.setFirstRegistrationDate(vehicle.getFirstRegistrationDate().toString());
 
 		return tVehicle;
 	}

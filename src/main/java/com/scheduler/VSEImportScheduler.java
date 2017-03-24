@@ -14,8 +14,8 @@ import javax.ejb.TimerService;
 import javax.inject.Inject;
 
 import com.rulebeans.Configuration;
-import com.services.ImportService;
 import com.services.RuleService;
+import com.services.importsearchtransform.ImportService;
 
 /**
  * This class creates an automatic scheduler for the import of vehicles from the

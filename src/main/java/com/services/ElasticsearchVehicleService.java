@@ -18,11 +18,9 @@ import org.elasticsearch.cluster.metadata.AliasOrIndex;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 
-import com.elasticsearchfacets.ElasticFacetResponse;
-import com.elasticsearchfacets.ElasticFacetWithPriceResponse;
-import com.elasticsearchfacets.ElasticHelper;
-import com.elasticsearchfacets.UserInputWithPrice;
-import com.elasticsearchfacets.SimpleUserInput;
+import com.esfacets.ElasticHelper;
+import com.esfacets.FacetResponse;
+import com.esfacets.UserInput;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.response.ResponseCodeAndDescription;
@@ -184,46 +182,26 @@ public class ElasticsearchVehicleService {
 	 * @return The number of vehicles within this category, and the prices for
 	 *         the vehicles.
 	 */
-	public ElasticFacetResponse getFacetsForVehicles(String alias, SimpleUserInput userInput) {
+	public FacetResponse getFacetsForVehicles(String alias, UserInput userInput) {
 
 		SearchResponse response = transportClient.prepareSearch(alias)
 				.setQuery(QueryBuilders.termQuery(userInput.getKey(), userInput.getValue()))
+				.setSize(0)
 				.addAggregation(AggregationBuilders.stats(COUNT).field(PRICE))
-				.addAggregation(AggregationBuilders.terms(TERMS).field(PRICE)).execute().actionGet();
-
-		Stats stats = response.getAggregations().get(COUNT);
-
-		Terms terms = response.getAggregations().get(TERMS);
-
-		ElasticFacetResponse elasticFacetResponse = elasticHelper.buildFacetResponse(stats, terms);
-
-		return elasticFacetResponse;
-	}
-
-	/**
-	 * This method create a facet from Elasticsearch, for a given country and
-	 * vehicle category context, based upon the price interval the users
-	 * request.
-	 * 
-	 * @param alias
-	 *            The context for the given country and vehicle category.
-	 * @param userInput
-	 *            Price interval, and type of facet.
-	 * @return The number of vehicles for the given context, and price interval.
-	 */
-	public ElasticFacetWithPriceResponse getFacetsWithPriceInterval(String alias, UserInputWithPrice userInput) {
-
-		SearchResponse response = transportClient.prepareSearch(alias)
-				.setQuery(QueryBuilders.termQuery(userInput.getKey(), userInput.getValue()))
+				.addAggregation(AggregationBuilders.terms(TERMS).field(PRICE))
 				.addAggregation(AggregationBuilders.range(RANGE)
 						.addRange(userInput.getMinPrice(), userInput.getMaxPrice()).field(PRICE))
 				.execute().actionGet();
 
+		Stats stats = response.getAggregations().get(COUNT);
+
+		Terms terms = response.getAggregations().get(TERMS);
+		
 		Range range = response.getAggregations().get(RANGE);
 
-		ElasticFacetWithPriceResponse elasticFacetResponse = new ElasticFacetWithPriceResponse();
-		elasticFacetResponse.setVehicleNumbers(range.getBuckets().get(0).getDocCount());
+		FacetResponse facetResponse = elasticHelper.buildFacetResponse(stats, terms, range);
 
-		return elasticFacetResponse;
+		return facetResponse;
 	}
+
 }

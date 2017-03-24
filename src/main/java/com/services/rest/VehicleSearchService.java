@@ -1,4 +1,4 @@
-package com.services;
+package com.services.rest;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
@@ -9,6 +9,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import com.response.ElasticsearchResponse;
+import com.services.importsearchtransform.SearchService;
 
 /**
  * This class is used for REST Service, get the country, category and language

@@ -1,21 +1,21 @@
-package com.elasticsearchfacets;
+package com.esfacets;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class ElasticFacetTerms {
+public class ElasticFacetsAndTerms {
 
 	@JsonProperty
-	private String value;
+	private String price;
 
 	@JsonProperty
 	private int vehicleNumbers;
 
-	public String getValue() {
-		return value;
+	public String getPrice() {
+		return price;
 	}
 
-	public void setValue(String value) {
-		this.value = value;
+	public void setPrice(String price) {
+		this.price = price;
 	}
 
 	public int getVehicleNumbers() {
@@ -30,7 +30,7 @@ public class ElasticFacetTerms {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((value == null) ? 0 : value.hashCode());
+		result = prime * result + ((price == null) ? 0 : price.hashCode());
 		result = prime * result + vehicleNumbers;
 		return result;
 	}
@@ -43,14 +43,15 @@ public class ElasticFacetTerms {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		ElasticFacetTerms other = (ElasticFacetTerms) obj;
-		if (value == null) {
-			if (other.value != null)
+		ElasticFacetsAndTerms other = (ElasticFacetsAndTerms) obj;
+		if (price == null) {
+			if (other.price != null)
 				return false;
-		} else if (!value.equals(other.value))
+		} else if (!price.equals(other.price))
 			return false;
 		if (vehicleNumbers != other.vehicleNumbers)
 			return false;
 		return true;
 	}
+
 }

@@ -118,14 +118,6 @@ public class TVehicle {
 	}
 
 	@Override
-	public String toString() {
-		return "TVehicle [id=" + id + ", language=" + language + ", priceInformation=" + priceInformation
-				+ ", bodyType=" + bodyType + ", paint=" + paint + ", fuelType=" + fuelType + ", transmission="
-				+ transmission + ", vehicleLocation=" + vehicleLocation + ", equipmentList=" + equipmentList
-				+ ", firstRegistrationDate=" + firstRegistrationDate + "]";
-	}
-
-	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
@@ -203,5 +195,4 @@ public class TVehicle {
 			return false;
 		return true;
 	}
-
 }

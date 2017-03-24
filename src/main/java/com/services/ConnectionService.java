@@ -29,7 +29,7 @@ public class ConnectionService {
 	private static final String CONFIG = "config.properties";
 
 	@Produces
-	private TransportClient connectionsToElasticsearch() {
+	private TransportClient createConnectionToES() {
 		TransportClient client = null;
 
 		String[] esConnectionProperties = getHostAndPortnumber();
@@ -47,7 +47,7 @@ public class ConnectionService {
 	}
 
 	@SuppressWarnings("unused")
-	private void closeConnection(@Disposes TransportClient client) {
+	private void closeConnectionToES(@Disposes TransportClient client) {
 		if (client == null) {
 			return;
 		}

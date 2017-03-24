@@ -1,10 +1,11 @@
-package com.services;
+package com.services.importsearchtransform;
 
 import javax.inject.Inject;
 
 import com.response.Context;
 import com.response.ElasticsearchResponse;
 import com.response.StatusInfo;
+import com.services.ElasticsearchVehicleService;
 
 /**
  * In this class the response in build for the REST service, for a given market,
