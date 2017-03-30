@@ -1,0 +1,99 @@
+{
+      "vehicle": {
+        "properties": {
+          "bodyType": {
+            "properties": {
+              "code": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              }
+            }
+          },
+          "equipmentList": {
+            "properties": {
+              "code": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              }
+            }
+          },
+          "firstRegistrationDate": {
+            "type": "date",
+            "format": "yyyyMMdd"
+          },
+          "fuelType": {
+            "properties": {
+              "fuelTypeCode": {
+                "type": "string"
+              },
+              "fuelTypeDescription": {
+                "type": "string"
+              }
+            }
+          },
+          "id": {
+            "type": "string"
+          },
+          "language": {
+            "type": "string"
+          },
+          "paint": {
+            "properties": {
+              "groupCode": {
+                "type": "string"
+              },
+              "groupDescription": {
+                "type": "string"
+              },
+              "paintCode": {
+                "type": "string"
+              },
+              "paintDescription": {
+                "type": "string"
+              }
+            }
+          },
+          "priceInformation": {
+            "properties": {
+              "basePrice": {
+                "type": "long"
+              },
+              "currency": {
+                "type": "string"
+              }
+            }
+          },
+          "transmission": {
+            "properties": {
+              "transmissionCode": {
+                "type": "string"
+              },
+              "transmissionDescription": {
+                "type": "string"
+              }
+            }
+          },
+          "vehicleLocation": {
+            "properties": {
+              "location": {
+                "properties": {
+                  "latitude": {
+                    "type": "double"
+                  },
+                  "longitude": {
+                    "type": "double"
+                  }
+                }
+              },
+              "postalCode": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    }

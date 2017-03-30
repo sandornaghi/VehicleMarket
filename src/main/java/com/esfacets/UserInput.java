@@ -16,6 +16,12 @@ public class UserInput {
 	@JsonProperty
 	private long maxPrice;
 
+	@JsonProperty
+	private String minDate;
+
+	@JsonProperty
+	private String maxDate;
+
 	public String getKey() {
 		return key;
 	}
@@ -48,12 +54,30 @@ public class UserInput {
 		this.maxPrice = maxPrice;
 	}
 
+	public String getMinDate() {
+		return minDate;
+	}
+
+	public void setMinDate(String minDate) {
+		this.minDate = minDate;
+	}
+
+	public String getMaxDate() {
+		return maxDate;
+	}
+
+	public void setMaxDate(String maxDate) {
+		this.maxDate = maxDate;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
-		int result = super.hashCode();
+		int result = 1;
 		result = prime * result + ((key == null) ? 0 : key.hashCode());
+		result = prime * result + ((maxDate == null) ? 0 : maxDate.hashCode());
 		result = prime * result + (int) (maxPrice ^ (maxPrice >>> 32));
+		result = prime * result + ((minDate == null) ? 0 : minDate.hashCode());
 		result = prime * result + (int) (minPrice ^ (minPrice >>> 32));
 		result = prime * result + ((value == null) ? 0 : value.hashCode());
 		return result;
@@ -63,7 +87,7 @@ public class UserInput {
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (!super.equals(obj))
+		if (obj == null)
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
@@ -73,7 +97,17 @@ public class UserInput {
 				return false;
 		} else if (!key.equals(other.key))
 			return false;
+		if (maxDate == null) {
+			if (other.maxDate != null)
+				return false;
+		} else if (!maxDate.equals(other.maxDate))
+			return false;
 		if (maxPrice != other.maxPrice)
+			return false;
+		if (minDate == null) {
+			if (other.minDate != null)
+				return false;
+		} else if (!minDate.equals(other.minDate))
 			return false;
 		if (minPrice != other.minPrice)
 			return false;

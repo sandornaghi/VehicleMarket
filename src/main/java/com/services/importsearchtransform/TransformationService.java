@@ -91,7 +91,7 @@ public class TransformationService {
 		}
 		tVehicle.setEquipmentList(equipmentList);
 
-		tVehicle.setFirstRegistrationDate(vehicle.getFirstRegistrationDate().toString());
+		tVehicle.setFirstRegistrationDate(vehicle.getFirstRegistrationDate());
 
 		return tVehicle;
 	}

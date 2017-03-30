@@ -6,16 +6,24 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class FacetResponse {
 
+	@JsonProperty
+	private int totalVehicles;
+
 	private List<ElasticFacetsAndTerms> termsList;
-	
-	@JsonProperty
-	private int vehicleNumbers;
 
 	@JsonProperty
-	private double minPrice;
+	private int vehicleNumWithinPrices;
 
 	@JsonProperty
-	private double maxPrice;
+	private int vehicleNumWithinDates;
+
+	public int getTotalVehicles() {
+		return totalVehicles;
+	}
+
+	public void setTotalVehicles(int totalVehicles) {
+		this.totalVehicles = totalVehicles;
+	}
 
 	public List<ElasticFacetsAndTerms> getTermsList() {
 		return termsList;
@@ -25,41 +33,30 @@ public class FacetResponse {
 		this.termsList = termsList;
 	}
 
-	public int getVehicleNumbers() {
-		return vehicleNumbers;
+	public int getVehicleNumWithinPrices() {
+		return vehicleNumWithinPrices;
 	}
 
-	public void setVehicleNumbers(int vehicleNumbers) {
-		this.vehicleNumbers = vehicleNumbers;
+	public void setVehicleNumWithinPrices(int vehicleNumWithinPrices) {
+		this.vehicleNumWithinPrices = vehicleNumWithinPrices;
 	}
 
-	public double getMinPrice() {
-		return minPrice;
+	public int getVehicleNumWithinDates() {
+		return vehicleNumWithinDates;
 	}
 
-	public void setMinPrice(double minPrice) {
-		this.minPrice = minPrice;
-	}
-
-	public double getMaxPrice() {
-		return maxPrice;
-	}
-
-	public void setMaxPrice(double maxPrice) {
-		this.maxPrice = maxPrice;
+	public void setVehicleNumWithinDates(int vehicleNumWithinDates) {
+		this.vehicleNumWithinDates = vehicleNumWithinDates;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		long temp;
-		temp = Double.doubleToLongBits(maxPrice);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
-		temp = Double.doubleToLongBits(minPrice);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
 		result = prime * result + ((termsList == null) ? 0 : termsList.hashCode());
-		result = prime * result + vehicleNumbers;
+		result = prime * result + totalVehicles;
+		result = prime * result + vehicleNumWithinDates;
+		result = prime * result + vehicleNumWithinPrices;
 		return result;
 	}
 
@@ -72,16 +69,16 @@ public class FacetResponse {
 		if (getClass() != obj.getClass())
 			return false;
 		FacetResponse other = (FacetResponse) obj;
-		if (Double.doubleToLongBits(maxPrice) != Double.doubleToLongBits(other.maxPrice))
-			return false;
-		if (Double.doubleToLongBits(minPrice) != Double.doubleToLongBits(other.minPrice))
-			return false;
 		if (termsList == null) {
 			if (other.termsList != null)
 				return false;
 		} else if (!termsList.equals(other.termsList))
 			return false;
-		if (vehicleNumbers != other.vehicleNumbers)
+		if (totalVehicles != other.totalVehicles)
+			return false;
+		if (vehicleNumWithinDates != other.vehicleNumWithinDates)
+			return false;
+		if (vehicleNumWithinPrices != other.vehicleNumWithinPrices)
 			return false;
 		return true;
 	}

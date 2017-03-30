@@ -1,6 +1,5 @@
 package com.vsevehiclebeans;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -37,7 +36,7 @@ public class Vehicle {
 	private List<Equipment> equipmentList;
 
 	@XmlElement()
-	private Date firstRegistrationDate;
+	private String firstRegistrationDate;
 
 	@Override
 	public String toString() {
@@ -111,11 +110,11 @@ public class Vehicle {
 		this.equipmentList = equipmentList;
 	}
 
-	public Date getFirstRegistrationDate() {
+	public String getFirstRegistrationDate() {
 		return firstRegistrationDate;
 	}
 
-	public void setFirstRegistrationDate(Date firstRegistrationDate) {
+	public void setFirstRegistrationDate(String firstRegistrationDate) {
 		this.firstRegistrationDate = firstRegistrationDate;
 	}
 

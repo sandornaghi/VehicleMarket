@@ -18,7 +18,7 @@ import org.elasticsearch.cluster.metadata.AliasOrIndex;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 
-import com.esfacets.ElasticHelper;
+import com.esfacets.FacetResponseHelper;
 import com.esfacets.FacetResponse;
 import com.esfacets.UserInput;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -54,14 +54,18 @@ public class ElasticsearchVehicleService {
 	private static final String TERMS = "terms";
 
 	private static final String PRICE = "priceInformation.basePrice";
-
-	private static final String RANGE = "range";
+	
+	private static final String PRICE_RANGE = "price_range";
+	
+	private static final String DATE = "firstRegistrationDate";
+	
+	private static final String DATE_RANGE = "date_range";
 
 	@Inject
 	private TransportClient transportClient;
 
 	@Inject
-	private ElasticHelper elasticHelper;
+	private FacetResponseHelper facetHelper;
 
 	/**
 	 * Insert a List of Vehicles in Elasticsearch for the given market and
@@ -89,6 +93,13 @@ public class ElasticsearchVehicleService {
 
 			// create index
 			transportClient.admin().indices().prepareCreate(index).get();
+
+			// add mapping to index
+			MappingReader mapping = new MappingReader();
+			String mappingAsString = mapping.getMapping();
+
+			transportClient.admin().indices().preparePutMapping(index).setType(INDEX_TYPE).setSource(mappingAsString)
+					.execute().actionGet();
 
 			// insert into index
 			BulkRequestBuilder bulkRequest = transportClient.prepareBulk();
@@ -184,22 +195,28 @@ public class ElasticsearchVehicleService {
 	 */
 	public FacetResponse getFacetsForVehicles(String alias, UserInput userInput) {
 
+		double minDate = facetHelper.getDateFromUser(userInput.getMinDate());
+		double maxDate = facetHelper.getDateFromUser(userInput.getMaxDate());
+		
 		SearchResponse response = transportClient.prepareSearch(alias)
-				.setQuery(QueryBuilders.termQuery(userInput.getKey(), userInput.getValue()))
-				.setSize(0)
+				.setQuery(QueryBuilders.termQuery(userInput.getKey(), userInput.getValue())).setSize(0)
 				.addAggregation(AggregationBuilders.stats(COUNT).field(PRICE))
 				.addAggregation(AggregationBuilders.terms(TERMS).field(PRICE))
-				.addAggregation(AggregationBuilders.range(RANGE)
-						.addRange(userInput.getMinPrice(), userInput.getMaxPrice()).field(PRICE))
+				.addAggregation(AggregationBuilders.range(PRICE_RANGE).addRange(userInput.getMinPrice(), userInput.getMaxPrice()).field(PRICE))
+				
+				.addAggregation(AggregationBuilders.range(DATE_RANGE).addRange(minDate, maxDate).field(DATE))
+				
 				.execute().actionGet();
-
+		
 		Stats stats = response.getAggregations().get(COUNT);
 
 		Terms terms = response.getAggregations().get(TERMS);
-		
-		Range range = response.getAggregations().get(RANGE);
 
-		FacetResponse facetResponse = elasticHelper.buildFacetResponse(stats, terms, range);
+		Range priceRange = response.getAggregations().get(PRICE_RANGE);
+		
+		Range dateRange = response.getAggregations().get(DATE_RANGE);
+		
+		FacetResponse facetResponse = facetHelper.buildFacetResponse(stats, terms, priceRange, dateRange);
 
 		return facetResponse;
 	}

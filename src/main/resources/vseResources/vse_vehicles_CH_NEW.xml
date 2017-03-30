@@ -33,7 +33,7 @@
                            <description>Auto climate manual control</description>
 					</vseEquipment>
                 </vseEquipments>   
-                <firstRegistrationDate>2015-01-28</firstRegistrationDate>
+                <firstRegistrationDate>20150128</firstRegistrationDate>
 	</vseVehicle>
 	<vseVehicle>
         	<id>LD2134thg2</id>
@@ -65,7 +65,7 @@
                            <description>Auto climate manual control</description>
                         </vseEquipment>
                 </vseEquipments>   
-                <firstRegistrationDate>2015-01-28</firstRegistrationDate>
+                <firstRegistrationDate>20150128</firstRegistrationDate>
 	</vseVehicle>
     <vseVehicle>
         	<id>LD2134thg3</id>
@@ -93,7 +93,7 @@
                            <description>Auto climate control</description>
                         </vseEquipment>
                 </vseEquipments>   
-                <firstRegistrationDate>2015-01-28</firstRegistrationDate>
+                <firstRegistrationDate>20150128</firstRegistrationDate>
 	</vseVehicle>
 </vseVehicles>
 
