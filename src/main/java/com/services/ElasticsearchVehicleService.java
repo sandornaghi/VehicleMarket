@@ -12,15 +12,17 @@ import javax.inject.Inject;
 
 import org.elasticsearch.action.bulk.BulkRequestBuilder;
 import org.elasticsearch.action.bulk.BulkResponse;
+import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.cluster.metadata.AliasOrIndex;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 
-import com.esfacets.FacetResponseHelper;
+import com.esfacets.FacetResponseUtil;
+import com.esfacets.input.UserInput;
+import com.esfacets.ESFacetConstants;
 import com.esfacets.FacetResponse;
-import com.esfacets.UserInput;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.response.ResponseCodeAndDescription;
@@ -30,7 +32,7 @@ import static com.response.ResponseCodeAndDescription.SUCCESS_IMPORT;
 import static com.response.ResponseCodeAndDescription.ELASTIC_DUPLICATE_INDEX;
 import static com.response.ResponseCodeAndDescription.ELASTIC_INTSERTION_ERROR;
 
-import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.AbstractAggregationBuilder;
 import org.elasticsearch.search.aggregations.bucket.range.Range;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.aggregations.metrics.stats.Stats;
@@ -45,27 +47,11 @@ public class ElasticsearchVehicleService {
 
 	private static final Logger LOGGER = Logger.getLogger(ElasticsearchVehicleService.class.getName());
 
-	private static final String DATE_TIME_FORMAT = "yyyyMMddhhmm";
-
-	private static final String INDEX_TYPE = "vehicle";
-
-	private static final String COUNT = "count";
-
-	private static final String TERMS = "terms";
-
-	private static final String PRICE = "priceInformation.basePrice";
-	
-	private static final String PRICE_RANGE = "price_range";
-	
-	private static final String DATE = "firstRegistrationDate";
-	
-	private static final String DATE_RANGE = "date_range";
-
 	@Inject
 	private TransportClient transportClient;
 
 	@Inject
-	private FacetResponseHelper facetHelper;
+	private FacetResponseUtil facetResponseHelper;
 
 	/**
 	 * Insert a List of Vehicles in Elasticsearch for the given market and
@@ -82,7 +68,8 @@ public class ElasticsearchVehicleService {
 			List<TVehicle> tVehicleList) {
 
 		String alias = country.toLowerCase() + "_" + vehicleCategory.toLowerCase();
-		String index = alias + "_" + DateTimeFormatter.ofPattern(DATE_TIME_FORMAT).format(LocalDateTime.now());
+		String index = alias + "_"
+				+ DateTimeFormatter.ofPattern(ESFacetConstants.DATE_TIME_FORMAT).format(LocalDateTime.now());
 
 		// check if index exists
 		boolean indexExists = transportClient.admin().indices().prepareExists(index).execute().actionGet().isExists();
@@ -98,14 +85,15 @@ public class ElasticsearchVehicleService {
 			MappingReader mapping = new MappingReader();
 			String mappingAsString = mapping.getMapping();
 
-			transportClient.admin().indices().preparePutMapping(index).setType(INDEX_TYPE).setSource(mappingAsString)
-					.execute().actionGet();
+			transportClient.admin().indices().preparePutMapping(index).setType(ESFacetConstants.INDEX_TYPE)
+					.setSource(mappingAsString).execute().actionGet();
 
 			// insert into index
 			BulkRequestBuilder bulkRequest = transportClient.prepareBulk();
 
 			for (TVehicle tVehicle : tVehicleList) {
-				bulkRequest.add(transportClient.prepareIndex(index, INDEX_TYPE).setSource(new Gson().toJson(tVehicle)));
+				bulkRequest.add(transportClient.prepareIndex(index, ESFacetConstants.INDEX_TYPE)
+						.setSource(new Gson().toJson(tVehicle)));
 			}
 
 			BulkResponse resp = bulkRequest.get();
@@ -189,36 +177,32 @@ public class ElasticsearchVehicleService {
 	 * @param alias
 	 *            The context for the given country and vehicle category.
 	 * @param userInput
-	 *            Price interval, and type of facet.
-	 * @return The number of vehicles within this category, and the prices for
-	 *         the vehicles.
+	 *            Data from the user, based upon the facets will be made,
+	 *            language, body type, paint, fuel type, transmission codes, and
+	 *            the price and first registration dates interval.
+	 * @return A FacetResponse object, that contain the facets results.
 	 */
 	public FacetResponse getFacetsForVehicles(String alias, UserInput userInput) {
 
-		double minDate = facetHelper.getDateFromUser(userInput.getMinDate());
-		double maxDate = facetHelper.getDateFromUser(userInput.getMaxDate());
-		
-		SearchResponse response = transportClient.prepareSearch(alias)
-				.setQuery(QueryBuilders.termQuery(userInput.getKey(), userInput.getValue())).setSize(0)
-				.addAggregation(AggregationBuilders.stats(COUNT).field(PRICE))
-				.addAggregation(AggregationBuilders.terms(TERMS).field(PRICE))
-				.addAggregation(AggregationBuilders.range(PRICE_RANGE).addRange(userInput.getMinPrice(), userInput.getMaxPrice()).field(PRICE))
-				
-				.addAggregation(AggregationBuilders.range(DATE_RANGE).addRange(minDate, maxDate).field(DATE))
-				
-				.execute().actionGet();
-		
-		Stats stats = response.getAggregations().get(COUNT);
+		SearchRequestBuilder requestBuilder = transportClient.prepareSearch(alias)
+				.setQuery(facetResponseHelper.buildQuery(userInput)).setSize(0);
 
-		Terms terms = response.getAggregations().get(TERMS);
+		for (AbstractAggregationBuilder aggregationBuilder : facetResponseHelper.buildFacets(userInput)) {
+			requestBuilder.addAggregation(aggregationBuilder);
+		}
 
-		Range priceRange = response.getAggregations().get(PRICE_RANGE);
-		
-		Range dateRange = response.getAggregations().get(DATE_RANGE);
-		
-		FacetResponse facetResponse = facetHelper.buildFacetResponse(stats, terms, priceRange, dateRange);
+		SearchResponse response = requestBuilder.execute().actionGet();
+
+		Stats stats = response.getAggregations().get(ESFacetConstants.COUNT);
+
+		Terms terms = response.getAggregations().get(ESFacetConstants.TERMS);
+
+		Range priceRange = response.getAggregations().get(ESFacetConstants.PRICE_RANGE);
+
+		Range dateRange = response.getAggregations().get(ESFacetConstants.DATE_RANGE);
+
+		FacetResponse facetResponse = facetResponseHelper.buildFacetResponse(stats, terms, priceRange, dateRange);
 
 		return facetResponse;
 	}
-
 }

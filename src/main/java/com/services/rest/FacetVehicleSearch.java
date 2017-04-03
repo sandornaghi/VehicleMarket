@@ -11,7 +11,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import com.esfacets.FacetResponse;
-import com.esfacets.UserInput;
+import com.esfacets.input.UserInput;
 import com.services.ElasticsearchVehicleService;
 
 /**
