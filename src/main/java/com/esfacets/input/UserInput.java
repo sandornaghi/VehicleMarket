@@ -1,5 +1,6 @@
 package com.esfacets.input;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -10,19 +11,22 @@ public class UserInput {
 	private String query;
 
 	@JsonProperty
-	private List<String> language;
+	private boolean withVehicleList;
 
 	@JsonProperty
-	private List<String> bodyType;
+	private List<String> language = new ArrayList<>();
 
 	@JsonProperty
-	private List<String> paint;
+	private List<String> bodyType = new ArrayList<>();
 
 	@JsonProperty
-	private List<String> fuelType;
+	private List<String> paint = new ArrayList<>();
 
 	@JsonProperty
-	private List<String> transmission;
+	private List<String> fuelType = new ArrayList<>();
+
+	@JsonProperty
+	private List<String> transmission = new ArrayList<>();
 
 	private PriceInformation priceInformation;
 
@@ -34,6 +38,14 @@ public class UserInput {
 
 	public void setQuery(String query) {
 		this.query = query;
+	}
+
+	public boolean isWithVehicleList() {
+		return withVehicleList;
+	}
+
+	public void setWithVehicleList(boolean withVehicleList) {
+		this.withVehicleList = withVehicleList;
 	}
 
 	public List<String> getLanguage() {
@@ -104,6 +116,7 @@ public class UserInput {
 		result = prime * result + ((priceInformation == null) ? 0 : priceInformation.hashCode());
 		result = prime * result + ((query == null) ? 0 : query.hashCode());
 		result = prime * result + ((transmission == null) ? 0 : transmission.hashCode());
+		result = prime * result + (withVehicleList ? 1231 : 1237);
 		return result;
 	}
 
@@ -155,6 +168,8 @@ public class UserInput {
 			if (other.transmission != null)
 				return false;
 		} else if (!transmission.equals(other.transmission))
+			return false;
+		if (withVehicleList != other.withVehicleList)
 			return false;
 		return true;
 	}

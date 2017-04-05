@@ -38,24 +38,25 @@ public class FacetResponseUtil {
 	 *            Data from the user, based upon the facets will be made,
 	 *            language, body type, paint, fuel type, transmission codes, and
 	 *            the price and first registration dates interval.
-	 * @return	A query build for OR, or AND.
+	 * @return A query build for OR, or AND.
 	 */
 	public QueryBuilder buildQuery(UserInput userInput) {
 
 		QueryBuilder queryBuilder = null;
+		
 		if (userInput.getLanguage().isEmpty() && userInput.getBodyType().isEmpty() && userInput.getPaint().isEmpty()
 				&& userInput.getFuelType().isEmpty() && userInput.getTransmission().isEmpty()) {
 			queryBuilder = QueryBuilders.matchAllQuery();
-			
-		} else if (userInput.getQuery().equals(ESFacetConstants.OR)){
+
+		} else if (userInput.getQuery().toLowerCase().equals(ESFacetConstants.OR)) {
 			queryBuilder = QueryBuilders.boolQuery()
 					.should(QueryBuilders.termsQuery(ESFacetConstants.LANGUAGE, userInput.getLanguage()))
 					.should(QueryBuilders.termsQuery(ESFacetConstants.BODY_TYPE, userInput.getBodyType()))
 					.should(QueryBuilders.termsQuery(ESFacetConstants.PAINT, userInput.getPaint()))
 					.should(QueryBuilders.termsQuery(ESFacetConstants.FUEL_TYPE, userInput.getFuelType()))
 					.should(QueryBuilders.termsQuery(ESFacetConstants.TRANSMISSION, userInput.getTransmission()));
-			
-		} else if (userInput.getQuery().equals(ESFacetConstants.AND)){
+
+		} else if (userInput.getQuery().toLowerCase().equals(ESFacetConstants.AND)) {
 			queryBuilder = QueryBuilders.boolQuery()
 					.must(QueryBuilders.termsQuery(ESFacetConstants.LANGUAGE, userInput.getLanguage()))
 					.must(QueryBuilders.termsQuery(ESFacetConstants.BODY_TYPE, userInput.getBodyType()))
@@ -63,7 +64,7 @@ public class FacetResponseUtil {
 					.must(QueryBuilders.termsQuery(ESFacetConstants.FUEL_TYPE, userInput.getFuelType()))
 					.must(QueryBuilders.termsQuery(ESFacetConstants.TRANSMISSION, userInput.getTransmission()));
 		}
-		
+
 		return queryBuilder;
 	}
 
@@ -155,11 +156,10 @@ public class FacetResponseUtil {
 
 		// vehicles within the price interval
 		facetResponse.setVehicleNumWithinPrices((int) priceRange.getBuckets().get(0).getDocCount());
-		
+
 		// vehicles within the date interval
 		facetResponse.setVehicleNumWithinDates((int) dateRange.getBuckets().get(0).getDocCount());
-		
+
 		return facetResponse;
 	}
-
 }

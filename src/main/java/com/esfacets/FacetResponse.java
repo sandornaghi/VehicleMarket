@@ -3,6 +3,7 @@ package com.esfacets;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.transformedvehicles.TVehicle;
 
 public class FacetResponse {
 
@@ -16,6 +17,9 @@ public class FacetResponse {
 
 	@JsonProperty
 	private int vehicleNumWithinDates;
+
+	@JsonProperty
+	private List<TVehicle> tVehicleList;
 
 	public int getTotalVehicles() {
 		return totalVehicles;
@@ -49,10 +53,19 @@ public class FacetResponse {
 		this.vehicleNumWithinDates = vehicleNumWithinDates;
 	}
 
+	public List<TVehicle> gettVehicleList() {
+		return tVehicleList;
+	}
+
+	public void settVehicleList(List<TVehicle> tVehicleList) {
+		this.tVehicleList = tVehicleList;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((tVehicleList == null) ? 0 : tVehicleList.hashCode());
 		result = prime * result + ((termsList == null) ? 0 : termsList.hashCode());
 		result = prime * result + totalVehicles;
 		result = prime * result + vehicleNumWithinDates;
@@ -69,6 +82,11 @@ public class FacetResponse {
 		if (getClass() != obj.getClass())
 			return false;
 		FacetResponse other = (FacetResponse) obj;
+		if (tVehicleList == null) {
+			if (other.tVehicleList != null)
+				return false;
+		} else if (!tVehicleList.equals(other.tVehicleList))
+			return false;
 		if (termsList == null) {
 			if (other.termsList != null)
 				return false;

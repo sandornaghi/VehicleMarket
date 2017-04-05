@@ -150,21 +150,7 @@ public class ElasticsearchVehicleService {
 			SearchResponse response = transportClient.prepareSearch(alias)
 					.setQuery(QueryBuilders.termQuery("language", language)).execute().actionGet();
 
-			SearchHit[] hits = response.getHits().getHits();
-			if (hits.length != 0) {
-				for (SearchHit hit : hits) {
-
-					String source = hit.getSourceAsString();
-
-					ObjectMapper mapper = new ObjectMapper();
-					try {
-						TVehicle tVehicle = mapper.readValue(source, TVehicle.class);
-						tVehicleList.add(tVehicle);
-					} catch (IOException e) {
-						LOGGER.severe(e.getMessage());
-					}
-				}
-			}
+			tVehicleList = getTVehiclesFromResponse(response);
 		}
 
 		return tVehicleList;
@@ -185,7 +171,7 @@ public class ElasticsearchVehicleService {
 	public FacetResponse getFacetsForVehicles(String alias, UserInput userInput) {
 
 		SearchRequestBuilder requestBuilder = transportClient.prepareSearch(alias)
-				.setQuery(facetResponseHelper.buildQuery(userInput)).setSize(0);
+				.setQuery(facetResponseHelper.buildQuery(userInput));
 
 		for (AbstractAggregationBuilder aggregationBuilder : facetResponseHelper.buildFacets(userInput)) {
 			requestBuilder.addAggregation(aggregationBuilder);
@@ -200,9 +186,36 @@ public class ElasticsearchVehicleService {
 		Range priceRange = response.getAggregations().get(ESFacetConstants.PRICE_RANGE);
 
 		Range dateRange = response.getAggregations().get(ESFacetConstants.DATE_RANGE);
-
+		
 		FacetResponse facetResponse = facetResponseHelper.buildFacetResponse(stats, terms, priceRange, dateRange);
 
+		if (userInput.isWithVehicleList()) {
+			facetResponse.settVehicleList(getTVehiclesFromResponse(response));
+		}
+		
 		return facetResponse;
 	}
+	
+	private List<TVehicle> getTVehiclesFromResponse(SearchResponse response) {
+		
+		List<TVehicle> tVehicleList = new ArrayList<>();
+		
+		SearchHit[] hits = response.getHits().getHits();
+		if (hits.length != 0) {
+			for (SearchHit hit : hits) {
+
+				String source = hit.getSourceAsString();
+
+				ObjectMapper mapper = new ObjectMapper();
+				try {
+					TVehicle tVehicle = mapper.readValue(source, TVehicle.class);
+					tVehicleList.add(tVehicle);
+				} catch (IOException e) {
+					LOGGER.severe(e.getMessage());
+				}
+			}
+		}
+		return tVehicleList;
+	}
+	
 }
