@@ -8,8 +8,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
-import org.elasticsearch.index.query.QueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.aggregations.AbstractAggregationBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.bucket.range.Range;
@@ -32,43 +30,6 @@ public class FacetResponseUtil {
 	private static final Logger LOGGER = Logger.getLogger(FacetResponseUtil.class.getName());
 
 	/**
-	 * This method build the search query for logical OR, or AND.
-	 * 
-	 * @param userInput
-	 *            Data from the user, based upon the facets will be made,
-	 *            language, body type, paint, fuel type, transmission codes, and
-	 *            the price and first registration dates interval.
-	 * @return A query build for OR, or AND.
-	 */
-	public QueryBuilder buildQuery(UserInput userInput) {
-
-		QueryBuilder queryBuilder = null;
-		
-		if (userInput.getLanguage().isEmpty() && userInput.getBodyType().isEmpty() && userInput.getPaint().isEmpty()
-				&& userInput.getFuelType().isEmpty() && userInput.getTransmission().isEmpty()) {
-			queryBuilder = QueryBuilders.matchAllQuery();
-
-		} else if (userInput.getQuery().toLowerCase().equals(ESFacetConstants.OR)) {
-			queryBuilder = QueryBuilders.boolQuery()
-					.should(QueryBuilders.termsQuery(ESFacetConstants.LANGUAGE, userInput.getLanguage()))
-					.should(QueryBuilders.termsQuery(ESFacetConstants.BODY_TYPE, userInput.getBodyType()))
-					.should(QueryBuilders.termsQuery(ESFacetConstants.PAINT, userInput.getPaint()))
-					.should(QueryBuilders.termsQuery(ESFacetConstants.FUEL_TYPE, userInput.getFuelType()))
-					.should(QueryBuilders.termsQuery(ESFacetConstants.TRANSMISSION, userInput.getTransmission()));
-
-		} else if (userInput.getQuery().toLowerCase().equals(ESFacetConstants.AND)) {
-			queryBuilder = QueryBuilders.boolQuery()
-					.must(QueryBuilders.termsQuery(ESFacetConstants.LANGUAGE, userInput.getLanguage()))
-					.must(QueryBuilders.termsQuery(ESFacetConstants.BODY_TYPE, userInput.getBodyType()))
-					.must(QueryBuilders.termsQuery(ESFacetConstants.PAINT, userInput.getPaint()))
-					.must(QueryBuilders.termsQuery(ESFacetConstants.FUEL_TYPE, userInput.getFuelType()))
-					.must(QueryBuilders.termsQuery(ESFacetConstants.TRANSMISSION, userInput.getTransmission()));
-		}
-
-		return queryBuilder;
-	}
-
-	/**
 	 * This method build the facets, based upon the data from the user.
 	 * 
 	 * @param userInput
@@ -84,15 +45,19 @@ public class FacetResponseUtil {
 		list.add(AggregationBuilders.stats(ESFacetConstants.COUNT).field(ESFacetConstants.PRICE));
 		list.add(AggregationBuilders.terms(ESFacetConstants.TERMS).field(ESFacetConstants.PRICE));
 
-		list.add(AggregationBuilders.range(ESFacetConstants.PRICE_RANGE)
-				.addRange(userInput.getPriceInformation().getMin(), userInput.getPriceInformation().getMax())
-				.field(ESFacetConstants.PRICE));
+		if (userInput.getPriceInformation() != null) {
+			list.add(AggregationBuilders.range(ESFacetConstants.PRICE_RANGE)
+					.addRange(userInput.getPriceInformation().getMin(), userInput.getPriceInformation().getMax())
+					.field(ESFacetConstants.PRICE));
+		}
 
-		double minFirstRegistrationDate = getDateFromUser(userInput.getFirstRegistrationDate().getMin());
-		double maxFirstRegistrationDate = getDateFromUser(userInput.getFirstRegistrationDate().getMax());
-		list.add(AggregationBuilders.range(ESFacetConstants.DATE_RANGE)
-				.addRange(minFirstRegistrationDate, maxFirstRegistrationDate).field(ESFacetConstants.DATE));
-
+		if (userInput.getFirstRegistrationDate() != null){
+			double minFirstRegistrationDate = getDateFromUser(userInput.getFirstRegistrationDate().getMin());
+			double maxFirstRegistrationDate = getDateFromUser(userInput.getFirstRegistrationDate().getMax());
+			list.add(AggregationBuilders.range(ESFacetConstants.DATE_RANGE)
+					.addRange(minFirstRegistrationDate, maxFirstRegistrationDate).field(ESFacetConstants.DATE));
+		}
+		
 		return list;
 	}
 
@@ -155,11 +120,15 @@ public class FacetResponseUtil {
 		facetResponse.setTermsList(facetList);
 
 		// vehicles within the price interval
-		facetResponse.setVehicleNumWithinPrices((int) priceRange.getBuckets().get(0).getDocCount());
+		if (priceRange != null) {
+			facetResponse.setVehicleNumWithinPrices((int) priceRange.getBuckets().get(0).getDocCount());
+		}
 
 		// vehicles within the date interval
-		facetResponse.setVehicleNumWithinDates((int) dateRange.getBuckets().get(0).getDocCount());
-
+		if (dateRange != null) {
+			facetResponse.setVehicleNumWithinDates((int) dateRange.getBuckets().get(0).getDocCount());
+		}
+		
 		return facetResponse;
 	}
 }

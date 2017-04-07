@@ -60,7 +60,7 @@ public class ConnectionService {
 	}
 
 	private String[] getHostAndPortnumber() {
-
+	
 		String[] esConProp = new String[2];
 
 		Properties prop = new Properties();

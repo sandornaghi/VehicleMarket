@@ -20,6 +20,7 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 
 import com.esfacets.FacetResponseUtil;
+import com.esfacets.QueryBuildUtil;
 import com.esfacets.input.UserInput;
 import com.esfacets.ESFacetConstants;
 import com.esfacets.FacetResponse;
@@ -51,7 +52,10 @@ public class ElasticsearchVehicleService {
 	private TransportClient transportClient;
 
 	@Inject
-	private FacetResponseUtil facetResponseHelper;
+	private FacetResponseUtil facetResponseUtil;
+
+	@Inject
+	private QueryBuildUtil queryBuildUtil;
 
 	/**
 	 * Insert a List of Vehicles in Elasticsearch for the given market and
@@ -171,9 +175,9 @@ public class ElasticsearchVehicleService {
 	public FacetResponse getFacetsForVehicles(String alias, UserInput userInput) {
 
 		SearchRequestBuilder requestBuilder = transportClient.prepareSearch(alias)
-				.setQuery(facetResponseHelper.buildQuery(userInput));
+				.setQuery(queryBuildUtil.buildQuery(userInput));
 
-		for (AbstractAggregationBuilder aggregationBuilder : facetResponseHelper.buildFacets(userInput)) {
+		for (AbstractAggregationBuilder aggregationBuilder : facetResponseUtil.buildFacets(userInput)) {
 			requestBuilder.addAggregation(aggregationBuilder);
 		}
 
@@ -186,20 +190,20 @@ public class ElasticsearchVehicleService {
 		Range priceRange = response.getAggregations().get(ESFacetConstants.PRICE_RANGE);
 
 		Range dateRange = response.getAggregations().get(ESFacetConstants.DATE_RANGE);
-		
-		FacetResponse facetResponse = facetResponseHelper.buildFacetResponse(stats, terms, priceRange, dateRange);
+
+		FacetResponse facetResponse = facetResponseUtil.buildFacetResponse(stats, terms, priceRange, dateRange);
 
 		if (userInput.isWithVehicleList()) {
 			facetResponse.settVehicleList(getTVehiclesFromResponse(response));
 		}
-		
+
 		return facetResponse;
 	}
-	
+
 	private List<TVehicle> getTVehiclesFromResponse(SearchResponse response) {
-		
+
 		List<TVehicle> tVehicleList = new ArrayList<>();
-		
+
 		SearchHit[] hits = response.getHits().getHits();
 		if (hits.length != 0) {
 			for (SearchHit hit : hits) {
@@ -217,5 +221,5 @@ public class ElasticsearchVehicleService {
 		}
 		return tVehicleList;
 	}
-	
+
 }
