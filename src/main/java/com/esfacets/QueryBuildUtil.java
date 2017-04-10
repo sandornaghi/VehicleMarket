@@ -31,13 +31,13 @@ public class QueryBuildUtil {
 			return QueryBuilders.matchAllQuery();
 
 		} else if (userInput.getQuery().toLowerCase().equals(ESFacetConstants.OR)) {
-			for (Entry<String, List<String>> s : queries(userInput).entrySet()) {
-				queryBuilder.should(QueryBuilders.termsQuery(s.getKey(), s.getValue()));
+			for (Entry<String, List<String>> query : queries(userInput).entrySet()) {
+				queryBuilder.should(QueryBuilders.termsQuery(query.getKey(), query.getValue()));
 			}
 
 		} else if (userInput.getQuery().toLowerCase().equals(ESFacetConstants.AND)) {
-			for (Entry<String, List<String>> s : queries(userInput).entrySet()) {
-				queryBuilder.must(QueryBuilders.termsQuery(s.getKey(), s.getValue()));
+			for (Entry<String, List<String>> query : queries(userInput).entrySet()) {
+				queryBuilder.must(QueryBuilders.termsQuery(query.getKey(), query.getValue()));
 			}
 		}
 		return queryBuilder;
@@ -50,7 +50,7 @@ public class QueryBuildUtil {
 		fieldnameAndInputMap.put(ESFacetConstants.LANGUAGE, userInput.getLanguage());
 		fieldnameAndInputMap.put(ESFacetConstants.BODY_TYPE, userInput.getBodyType());
 		fieldnameAndInputMap.put(ESFacetConstants.PAINT, userInput.getPaint());
-		fieldnameAndInputMap.put(ESFacetConstants.FUEL_TYPE, userInput.getFuelType());
+		fieldnameAndInputMap.put(ESFacetConstants.FUEL_TYPE, userInput.getFuelType());		
 		fieldnameAndInputMap.put(ESFacetConstants.TRANSMISSION, userInput.getTransmission());
 
 		return fieldnameAndInputMap;

@@ -107,7 +107,10 @@ public class FacetResponseUtil {
 
 		// set the statistics
 		facetResponse.setTotalVehicles((int) stats.getCount());
-
+		facetResponse.setVehicleMinPrice(stats.getMin());
+		facetResponse.setVehicleMaxPrice(stats.getMax());
+		
+		
 		// set vehicle price and number
 		List<ElasticFacetsAndTerms> facetList = new ArrayList<>();
 

@@ -19,6 +19,12 @@ public class FacetResponse {
 	private int vehicleNumWithinDates;
 
 	@JsonProperty
+	private double vehicleMinPrice;
+
+	@JsonProperty
+	private double vehicleMaxPrice;
+
+	@JsonProperty
 	private List<TVehicle> tVehicleList;
 
 	public int getTotalVehicles() {
@@ -53,6 +59,22 @@ public class FacetResponse {
 		this.vehicleNumWithinDates = vehicleNumWithinDates;
 	}
 
+	public double getVehicleMinPrice() {
+		return vehicleMinPrice;
+	}
+
+	public void setVehicleMinPrice(double vehicleMinPrice) {
+		this.vehicleMinPrice = vehicleMinPrice;
+	}
+
+	public double getVehicleMaxPrice() {
+		return vehicleMaxPrice;
+	}
+
+	public void setVehicleMaxPrice(double vehicleMaxPrice) {
+		this.vehicleMaxPrice = vehicleMaxPrice;
+	}
+
 	public List<TVehicle> gettVehicleList() {
 		return tVehicleList;
 	}
@@ -68,6 +90,11 @@ public class FacetResponse {
 		result = prime * result + ((tVehicleList == null) ? 0 : tVehicleList.hashCode());
 		result = prime * result + ((termsList == null) ? 0 : termsList.hashCode());
 		result = prime * result + totalVehicles;
+		long temp;
+		temp = Double.doubleToLongBits(vehicleMaxPrice);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(vehicleMinPrice);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
 		result = prime * result + vehicleNumWithinDates;
 		result = prime * result + vehicleNumWithinPrices;
 		return result;
@@ -93,6 +120,10 @@ public class FacetResponse {
 		} else if (!termsList.equals(other.termsList))
 			return false;
 		if (totalVehicles != other.totalVehicles)
+			return false;
+		if (Double.doubleToLongBits(vehicleMaxPrice) != Double.doubleToLongBits(other.vehicleMaxPrice))
+			return false;
+		if (Double.doubleToLongBits(vehicleMinPrice) != Double.doubleToLongBits(other.vehicleMinPrice))
 			return false;
 		if (vehicleNumWithinDates != other.vehicleNumWithinDates)
 			return false;
