@@ -64,7 +64,7 @@ public class ConnectionService {
 		String[] esConProp = new String[2];
 
 		Properties prop = new Properties();
-		InputStream input = null;
+		InputStream input;
 
 		input = getClass().getClassLoader().getResourceAsStream(CONFIG);
 		try {

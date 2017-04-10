@@ -23,7 +23,7 @@ import com.esfacets.FacetResponseUtil;
 import com.esfacets.QueryBuildUtil;
 import com.esfacets.input.UserInput;
 import com.esfacets.ESFacetConstants;
-import com.esfacets.FacetResponse;
+import com.esfacets.VehicleSearchWithFacetResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.response.ResponseCodeAndDescription;
@@ -67,6 +67,8 @@ public class ElasticsearchVehicleService {
 	 *            Category of the vehicle, that can be new or used.
 	 * @param tVehicleList
 	 *            The List of Vehicles that will be inserted.
+	 * @return Return an object that has the response code, and description of
+	 *         the response.
 	 */
 	public ResponseCodeAndDescription insertTVehiclesToElasticsearch(String country, String vehicleCategory,
 			List<TVehicle> tVehicleList) {
@@ -172,7 +174,7 @@ public class ElasticsearchVehicleService {
 	 *            the price and first registration dates interval.
 	 * @return A FacetResponse object, that contain the facets results.
 	 */
-	public FacetResponse getFacetsForVehicles(String alias, UserInput userInput) {
+	public VehicleSearchWithFacetResponse getFacetsForVehicles(String alias, UserInput userInput) {
 
 		SearchRequestBuilder requestBuilder = transportClient.prepareSearch(alias)
 				.setQuery(queryBuildUtil.buildQuery(userInput));
@@ -191,7 +193,8 @@ public class ElasticsearchVehicleService {
 
 		Range dateRange = response.getAggregations().get(ESFacetConstants.DATE_RANGE);
 
-		FacetResponse facetResponse = facetResponseUtil.buildFacetResponse(stats, terms, priceRange, dateRange);
+		VehicleSearchWithFacetResponse facetResponse = facetResponseUtil.buildFacetResponse(stats, terms, priceRange,
+				dateRange);
 
 		if (userInput.isWithVehicleList()) {
 			facetResponse.settVehicleList(getTVehiclesFromResponse(response));

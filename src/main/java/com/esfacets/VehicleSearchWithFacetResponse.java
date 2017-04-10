@@ -5,7 +5,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.transformedvehicles.TVehicle;
 
-public class FacetResponse {
+public class VehicleSearchWithFacetResponse {
 
 	@JsonProperty
 	private int totalVehicles;
@@ -108,7 +108,7 @@ public class FacetResponse {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		FacetResponse other = (FacetResponse) obj;
+		VehicleSearchWithFacetResponse other = (VehicleSearchWithFacetResponse) obj;
 		if (tVehicleList == null) {
 			if (other.tVehicleList != null)
 				return false;

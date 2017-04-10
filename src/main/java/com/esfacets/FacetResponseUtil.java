@@ -101,9 +101,9 @@ public class FacetResponseUtil {
 	 *            number of vehicles in the given date range.
 	 * @return A FacetResponse Object, containing all the facet responses.
 	 */
-	public FacetResponse buildFacetResponse(Stats stats, Terms terms, Range priceRange, Range dateRange) {
+	public VehicleSearchWithFacetResponse buildFacetResponse(Stats stats, Terms terms, Range priceRange, Range dateRange) {
 
-		FacetResponse facetResponse = new FacetResponse();
+		VehicleSearchWithFacetResponse facetResponse = new VehicleSearchWithFacetResponse();
 
 		// set the statistics
 		facetResponse.setTotalVehicles((int) stats.getCount());

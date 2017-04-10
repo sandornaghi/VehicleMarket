@@ -10,7 +10,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import com.esfacets.FacetResponse;
+import com.esfacets.VehicleSearchWithFacetResponse;
 import com.esfacets.input.UserInput;
 import com.services.ElasticsearchVehicleService;
 
@@ -22,7 +22,7 @@ import com.services.ElasticsearchVehicleService;
  *
  */
 @Path("/facets")
-public class FacetVehicleSearch {
+public class VehicleSearchWithFacets {
 
 	@Inject
 	private ElasticsearchVehicleService elasticService;
@@ -36,7 +36,7 @@ public class FacetVehicleSearch {
 
 		String alias = country + "_" + vehicleCategory;
 
-		FacetResponse facetResponse = elasticService.getFacetsForVehicles(alias, userInput);
+		VehicleSearchWithFacetResponse facetResponse = elasticService.getFacetsForVehicles(alias, userInput);
 
 		return Response.status(Status.OK).entity(facetResponse).build();
 	}
