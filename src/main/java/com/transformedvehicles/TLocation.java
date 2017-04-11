@@ -68,5 +68,4 @@ public class TLocation {
 			return false;
 		return true;
 	}
-
 }

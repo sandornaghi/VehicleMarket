@@ -33,12 +33,11 @@ public class RuleService {
 	private static final String ACCEPTED_LANGUAGES = "AcceptedLanguages";
 	private static final String CONTEXT_HAS_RULES = "ContextHasRules";
 	private static final String IMPORT_TIME_INTERVAL = "ImportTimeInterval";
-	
-		
+
 	private static final String COUNTRY = "country";
 	private static final String VEHICLE_CATEGORY = "vehicleCategory";
 	private static final String LANGUAGE = "language";
-	
+
 	@PersistenceContext(unitName = "vehicle-rules")
 	private EntityManager em;
 

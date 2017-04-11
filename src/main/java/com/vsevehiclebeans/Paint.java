@@ -63,5 +63,4 @@ public class Paint {
 			return false;
 		return true;
 	}
-
 }

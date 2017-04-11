@@ -17,8 +17,7 @@ import javax.persistence.Table;
 @NamedQueries({
 		@NamedQuery(name = "ConfigurationRules", query = " SELECT c FROM Configuration c WHERE c.country = :country AND c.vehicleCategory = :vehicleCategory "),
 		@NamedQuery(name = "AcceptedLanguages", query = " SELECT c.value FROM Configuration c WHERE c.country = :country AND c.vehicleCategory = :vehicleCategory AND c.code = 'acceptedLanguages' "),
-		@NamedQuery(name = "ImportTimeInterval", query = "SELECT c FROM Configuration c WHERE c.code = 'importTimeInterval' ")
-})
+		@NamedQuery(name = "ImportTimeInterval", query = "SELECT c FROM Configuration c WHERE c.code = 'importTimeInterval' ") })
 public class Configuration extends Rule {
 
 	private String code;
@@ -76,5 +75,4 @@ public class Configuration extends Rule {
 			return false;
 		return true;
 	}
-
 }

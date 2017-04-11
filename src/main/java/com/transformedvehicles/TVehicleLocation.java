@@ -70,5 +70,4 @@ public class TVehicleLocation {
 			return false;
 		return true;
 	}
-
 }

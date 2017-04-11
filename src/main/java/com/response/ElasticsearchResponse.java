@@ -76,5 +76,4 @@ public class ElasticsearchResponse {
 			return false;
 		return true;
 	}
-
 }

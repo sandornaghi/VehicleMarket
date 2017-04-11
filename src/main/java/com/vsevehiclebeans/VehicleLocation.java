@@ -63,5 +63,4 @@ public class VehicleLocation {
 			return false;
 		return true;
 	}
-
 }

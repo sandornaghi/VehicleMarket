@@ -68,5 +68,4 @@ public class TPrice {
 			return false;
 		return true;
 	}
-
 }

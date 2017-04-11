@@ -70,5 +70,4 @@ public class TEquipment {
 			return false;
 		return true;
 	}
-
 }

@@ -172,31 +172,27 @@ public class ElasticsearchVehicleService {
 	 *            Data from the user, based upon the facets will be made,
 	 *            language, body type, paint, fuel type, transmission codes, and
 	 *            the price and first registration dates interval.
-	 * @return A FacetResponse object, that contain the facets results.
+	 * @return A VehicleSearchWithFacetResponse object, that contain the facets
+	 *         results.
 	 */
 	public VehicleSearchWithFacetResponse getFacetsForVehicles(String alias, UserInput userInput) {
 
 		SearchRequestBuilder requestBuilder = transportClient.prepareSearch(alias)
-				.setQuery(queryBuildUtil.buildQuery(userInput));
+				.setQuery(queryBuildUtil.buildQuery(userInput.getUserQuery()));
 
 		for (AbstractAggregationBuilder aggregationBuilder : facetResponseUtil.buildFacets(userInput)) {
 			requestBuilder.addAggregation(aggregationBuilder);
 		}
 
 		SearchResponse response = requestBuilder.execute().actionGet();
-
 		Stats stats = response.getAggregations().get(ESFacetConstants.COUNT);
-
 		Terms terms = response.getAggregations().get(ESFacetConstants.TERMS);
-
 		Range priceRange = response.getAggregations().get(ESFacetConstants.PRICE_RANGE);
-
 		Range dateRange = response.getAggregations().get(ESFacetConstants.DATE_RANGE);
-
 		VehicleSearchWithFacetResponse facetResponse = facetResponseUtil.buildFacetResponse(stats, terms, priceRange,
 				dateRange);
 
-		if (userInput.isWithVehicleList()) {
+		if (userInput.getUserQuery().isWithVehicleList()) {
 			facetResponse.settVehicleList(getTVehiclesFromResponse(response));
 		}
 
@@ -224,5 +220,4 @@ public class ElasticsearchVehicleService {
 		}
 		return tVehicleList;
 	}
-
 }

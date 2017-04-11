@@ -53,5 +53,4 @@ public class StatusInfo {
 			return false;
 		return true;
 	}
-
 }

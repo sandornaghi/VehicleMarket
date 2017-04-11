@@ -69,5 +69,4 @@ public class TBodyType {
 			return false;
 		return true;
 	}
-
 }

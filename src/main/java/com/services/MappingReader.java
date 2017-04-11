@@ -27,19 +27,6 @@ public class MappingReader {
 		File file = new File(classLoader.getResource(RESOURCE_NAME).getFile());
 
 		StringBuilder fileContent = new StringBuilder((int) file.length());
-//		Scanner scanner = null;
-//		try {
-//			scanner = new Scanner(file);
-//			String lineSeparator = System.getProperty(LINE_SEPARATOR);
-//			while (scanner.hasNextLine()) {
-//				fileContent.append(scanner.nextLine() + lineSeparator);
-//			}
-//
-//		} catch (FileNotFoundException e) {
-//			LOGGER.severe(e.getMessage());
-//		} finally {
-//			scanner.close();
-//		}
 		
 		try (Scanner scanner = new Scanner(file)){
 			String lineSeparator = System.getProperty(LINE_SEPARATOR);

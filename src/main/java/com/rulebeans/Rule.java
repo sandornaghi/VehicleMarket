@@ -79,5 +79,4 @@ public class Rule {
 			return false;
 		return true;
 	}
-
 }

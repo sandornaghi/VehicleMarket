@@ -2,6 +2,7 @@ package com.esfacets;
 
 /**
  * This class holds all the constant data needed for Elasticsearch facets.
+ * 
  * @author sandor.naghi
  *
  */
@@ -34,8 +35,8 @@ public class ESFacetConstants {
 	public static final String DATE_TIME_FORMAT = "yyyyMMddhhmm";
 
 	public static final String INDEX_TYPE = "vehicle";
-	
+
 	public static final String OR = "or";
-	
+
 	public static final String AND = "and";
 }

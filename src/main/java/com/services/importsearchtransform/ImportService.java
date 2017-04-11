@@ -49,12 +49,10 @@ public class ImportService {
 
 		ResponseCodeAndDescription response = null;
 
-		VehicleResponse vehicleResponse = null;
-
 		Vehicles vehicles = null;
 
 		try {
-			vehicleResponse = vseService.getVehiclesFromVSE(country, vehicleCategory);
+			VehicleResponse vehicleResponse = vseService.getVehiclesFromVSE(country, vehicleCategory);
 			vehicles = vehicleResponse.getVehicles();
 			if (vehicles == null) {
 				response = new ResponseCodeAndDescription(VSE_INEXISTENT);

@@ -1,122 +1,33 @@
 package com.esfacets.input;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 public class UserInput {
 
-	@JsonProperty
-	private String query;
+	private UserQuery userQuery;
 
-	@JsonProperty
-	private boolean withVehicleList;
+	private UserFacet userFacet;
 
-	@JsonProperty
-	private List<String> language = new ArrayList<>();
-
-	@JsonProperty
-	private List<String> bodyType = new ArrayList<>();
-
-	@JsonProperty
-	private List<String> paint = new ArrayList<>();
-
-	@JsonProperty
-	private List<String> fuelType = new ArrayList<>();
-
-	@JsonProperty
-	private List<String> transmission = new ArrayList<>();
-
-	private PriceInformation priceInformation;
-
-	private FirstRegistrationDate firstRegistrationDate;
-
-	public String getQuery() {
-		return query;
+	public UserQuery getUserQuery() {
+		return userQuery;
 	}
 
-	public void setQuery(String query) {
-		this.query = query;
+	public void setUserQuery(UserQuery userQuery) {
+		this.userQuery = userQuery;
 	}
 
-	public boolean isWithVehicleList() {
-		return withVehicleList;
+	public UserFacet getUserFacet() {
+		return userFacet;
 	}
 
-	public void setWithVehicleList(boolean withVehicleList) {
-		this.withVehicleList = withVehicleList;
-	}
-
-	public List<String> getLanguage() {
-		return language;
-	}
-
-	public void setLanguage(List<String> language) {
-		this.language = language;
-	}
-
-	public List<String> getBodyType() {
-		return bodyType;
-	}
-
-	public void setBodyType(List<String> bodyType) {
-		this.bodyType = bodyType;
-	}
-
-	public List<String> getPaint() {
-		return paint;
-	}
-
-	public void setPaint(List<String> paint) {
-		this.paint = paint;
-	}
-
-	public List<String> getFuelType() {
-		return fuelType;
-	}
-
-	public void setFuelType(List<String> fuelType) {
-		this.fuelType = fuelType;
-	}
-
-	public List<String> getTransmission() {
-		return transmission;
-	}
-
-	public void setTransmission(List<String> transmission) {
-		this.transmission = transmission;
-	}
-
-	public PriceInformation getPriceInformation() {
-		return priceInformation;
-	}
-
-	public void setPriceInformation(PriceInformation priceInformation) {
-		this.priceInformation = priceInformation;
-	}
-
-	public FirstRegistrationDate getFirstRegistrationDate() {
-		return firstRegistrationDate;
-	}
-
-	public void setFirstRegistrationDate(FirstRegistrationDate firstRegistrationDate) {
-		this.firstRegistrationDate = firstRegistrationDate;
+	public void setUserFacet(UserFacet userFacet) {
+		this.userFacet = userFacet;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((bodyType == null) ? 0 : bodyType.hashCode());
-		result = prime * result + ((firstRegistrationDate == null) ? 0 : firstRegistrationDate.hashCode());
-		result = prime * result + ((fuelType == null) ? 0 : fuelType.hashCode());
-		result = prime * result + ((language == null) ? 0 : language.hashCode());
-		result = prime * result + ((paint == null) ? 0 : paint.hashCode());
-		result = prime * result + ((priceInformation == null) ? 0 : priceInformation.hashCode());
-		result = prime * result + ((query == null) ? 0 : query.hashCode());
-		result = prime * result + ((transmission == null) ? 0 : transmission.hashCode());
-		result = prime * result + (withVehicleList ? 1231 : 1237);
+		result = prime * result + ((userFacet == null) ? 0 : userFacet.hashCode());
+		result = prime * result + ((userQuery == null) ? 0 : userQuery.hashCode());
 		return result;
 	}
 
@@ -129,47 +40,15 @@ public class UserInput {
 		if (getClass() != obj.getClass())
 			return false;
 		UserInput other = (UserInput) obj;
-		if (bodyType == null) {
-			if (other.bodyType != null)
+		if (userFacet == null) {
+			if (other.userFacet != null)
 				return false;
-		} else if (!bodyType.equals(other.bodyType))
+		} else if (!userFacet.equals(other.userFacet))
 			return false;
-		if (firstRegistrationDate == null) {
-			if (other.firstRegistrationDate != null)
+		if (userQuery == null) {
+			if (other.userQuery != null)
 				return false;
-		} else if (!firstRegistrationDate.equals(other.firstRegistrationDate))
-			return false;
-		if (fuelType == null) {
-			if (other.fuelType != null)
-				return false;
-		} else if (!fuelType.equals(other.fuelType))
-			return false;
-		if (language == null) {
-			if (other.language != null)
-				return false;
-		} else if (!language.equals(other.language))
-			return false;
-		if (paint == null) {
-			if (other.paint != null)
-				return false;
-		} else if (!paint.equals(other.paint))
-			return false;
-		if (priceInformation == null) {
-			if (other.priceInformation != null)
-				return false;
-		} else if (!priceInformation.equals(other.priceInformation))
-			return false;
-		if (query == null) {
-			if (other.query != null)
-				return false;
-		} else if (!query.equals(other.query))
-			return false;
-		if (transmission == null) {
-			if (other.transmission != null)
-				return false;
-		} else if (!transmission.equals(other.transmission))
-			return false;
-		if (withVehicleList != other.withVehicleList)
+		} else if (!userQuery.equals(other.userQuery))
 			return false;
 		return true;
 	}

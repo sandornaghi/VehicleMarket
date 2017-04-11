@@ -53,5 +53,4 @@ public class ElasticFacetsAndTerms {
 			return false;
 		return true;
 	}
-
 }

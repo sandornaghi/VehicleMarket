@@ -104,5 +104,4 @@ public class Correction extends Rule {
 			return false;
 		return true;
 	}
-
 }

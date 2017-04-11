@@ -58,5 +58,4 @@ public class VSEResponse {
 			return false;
 		return true;
 	}
-
 }

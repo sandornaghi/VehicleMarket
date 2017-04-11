@@ -14,6 +14,7 @@ import org.elasticsearch.search.aggregations.bucket.range.Range;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.aggregations.metrics.stats.Stats;
 
+import com.esfacets.input.UserFacet;
 import com.esfacets.input.UserInput;
 
 import org.elasticsearch.search.aggregations.bucket.terms.Terms.Bucket;
@@ -44,16 +45,18 @@ public class FacetResponseUtil {
 
 		list.add(AggregationBuilders.stats(ESFacetConstants.COUNT).field(ESFacetConstants.PRICE));
 		list.add(AggregationBuilders.terms(ESFacetConstants.TERMS).field(ESFacetConstants.PRICE));
+		
+		UserFacet userFacet = userInput.getUserFacet();
 
-		if (userInput.getPriceInformation() != null) {
+		if (userFacet.getPriceInformation() != null) {
 			list.add(AggregationBuilders.range(ESFacetConstants.PRICE_RANGE)
-					.addRange(userInput.getPriceInformation().getMin(), userInput.getPriceInformation().getMax())
+					.addRange(userFacet.getPriceInformation().getMin(), userFacet.getPriceInformation().getMax())
 					.field(ESFacetConstants.PRICE));
 		}
 
-		if (userInput.getFirstRegistrationDate() != null){
-			double minFirstRegistrationDate = getDateFromUser(userInput.getFirstRegistrationDate().getMin());
-			double maxFirstRegistrationDate = getDateFromUser(userInput.getFirstRegistrationDate().getMax());
+		if (userFacet.getFirstRegistrationDate() != null){
+			double minFirstRegistrationDate = getDateFromUser(userFacet.getFirstRegistrationDate().getMin());
+			double maxFirstRegistrationDate = getDateFromUser(userFacet.getFirstRegistrationDate().getMax());
 			list.add(AggregationBuilders.range(ESFacetConstants.DATE_RANGE)
 					.addRange(minFirstRegistrationDate, maxFirstRegistrationDate).field(ESFacetConstants.DATE));
 		}

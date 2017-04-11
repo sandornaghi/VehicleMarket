@@ -60,5 +60,4 @@ public class Price {
 			return false;
 		return true;
 	}
-
 }

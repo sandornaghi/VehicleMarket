@@ -56,5 +56,4 @@ public class SchedulerContext implements Serializable {
 			return false;
 		return true;
 	}
-
 }

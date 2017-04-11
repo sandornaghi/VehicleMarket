@@ -105,5 +105,4 @@ public class TPaint {
 			return false;
 		return true;
 	}
-
 }

@@ -17,8 +17,6 @@ public class Vehicles {
 	@XmlElement
 	private String vehicleCategory;
 
-	//private String language;
-
 	@XmlElement(name = "vseVehicle")
 	private List<Vehicle> vehicleList;
 
@@ -38,14 +36,6 @@ public class Vehicles {
 		this.vehicleCategory = vehicleCategory;
 	}
 
-//	public String getLanguage() {
-//		return language;
-//	}
-//
-//	public void setLanguage(String language) {
-//		this.language = language;
-//	}
-
 	public List<Vehicle> getVehicleList() {
 		return vehicleList;
 	}
@@ -53,7 +43,6 @@ public class Vehicles {
 	public void setVehicleList(List<Vehicle> vehicleList) {
 		this.vehicleList = vehicleList;
 	}
-
 
 	@Override
 	public String toString() {
@@ -66,7 +55,6 @@ public class Vehicles {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + countryCode;
-//		result = prime * result + ((language == null) ? 0 : language.hashCode());
 		result = prime * result + ((vehicleCategory == null) ? 0 : vehicleCategory.hashCode());
 		result = prime * result + ((vehicleList == null) ? 0 : vehicleList.hashCode());
 		return result;
@@ -83,11 +71,6 @@ public class Vehicles {
 		Vehicles other = (Vehicles) obj;
 		if (countryCode != other.countryCode)
 			return false;
-//		if (language == null) {
-//			if (other.language != null)
-//				return false;
-//		} else if (!language.equals(other.language))
-//			return false;
 		if (vehicleCategory == null) {
 			if (other.vehicleCategory != null)
 				return false;
@@ -100,5 +83,4 @@ public class Vehicles {
 			return false;
 		return true;
 	}
-
 }

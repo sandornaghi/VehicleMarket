@@ -70,5 +70,4 @@ public class TTransmission {
 			return false;
 		return true;
 	}
-
 }
