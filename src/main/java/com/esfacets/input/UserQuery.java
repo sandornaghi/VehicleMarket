@@ -29,6 +29,8 @@ public class UserQuery {
 	private List<String> transmission = new ArrayList<>();
 	
 	private PriceInformation priceInformation;
+	
+	private FirstRegistrationDate firstRegistrationDate;
 
 	public String getQuery() {
 		return query;
@@ -94,11 +96,20 @@ public class UserQuery {
 		this.priceInformation = priceInformation;
 	}
 
+	public FirstRegistrationDate getFirstRegistrationDate() {
+		return firstRegistrationDate;
+	}
+
+	public void setFirstRegistrationDate(FirstRegistrationDate firstRegistrationDate) {
+		this.firstRegistrationDate = firstRegistrationDate;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((bodyType == null) ? 0 : bodyType.hashCode());
+		result = prime * result + ((firstRegistrationDate == null) ? 0 : firstRegistrationDate.hashCode());
 		result = prime * result + ((fuelType == null) ? 0 : fuelType.hashCode());
 		result = prime * result + ((language == null) ? 0 : language.hashCode());
 		result = prime * result + ((paint == null) ? 0 : paint.hashCode());
@@ -122,6 +133,11 @@ public class UserQuery {
 			if (other.bodyType != null)
 				return false;
 		} else if (!bodyType.equals(other.bodyType))
+			return false;
+		if (firstRegistrationDate == null) {
+			if (other.firstRegistrationDate != null)
+				return false;
+		} else if (!firstRegistrationDate.equals(other.firstRegistrationDate))
 			return false;
 		if (fuelType == null) {
 			if (other.fuelType != null)

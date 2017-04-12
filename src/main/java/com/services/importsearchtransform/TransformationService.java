@@ -50,6 +50,7 @@ public class TransformationService {
 			for (String language : acceptedLanguages) {
 				tVehicleList.addAll(applyChanges(vehicles, language, country, vehicleCategory));
 			}
+			
 		}
 
 		return tVehicleList;

@@ -14,13 +14,15 @@ import com.esfacets.input.UserQuery;
 public class QueryBuildUtil {
 
 	/**
-	 * This method build the search query for logical OR, or AND.
+	 * This method build the search query based upon the data from the rest
+	 * service.
 	 * 
-	 * @param userInput
-	 *            Data from the user, based upon the facets will be made,
-	 *            language, body type, paint, fuel type, transmission codes, and
-	 *            the price and first registration dates interval.
-	 * @return A query build for OR, or AND.
+	 * @param userQuery
+	 *            Object that contain the information from the rest service,
+	 *            containing language, body type, paint code, price range, and
+	 *            first registration date ranges.
+	 * @return A QueryBuilder object, that contain the query build from the data
+	 *         from rest service.
 	 */
 	public QueryBuilder buildQuery(UserQuery userQuery) {
 
@@ -28,11 +30,13 @@ public class QueryBuildUtil {
 
 		if (userQuery.getLanguage().isEmpty() && userQuery.getBodyType().isEmpty() && userQuery.getPaint().isEmpty()
 				&& userQuery.getFuelType().isEmpty() && userQuery.getTransmission().isEmpty()
-				&& userQuery.getPriceInformation() == null) {
+				&& userQuery.getPriceInformation() == null && userQuery.getFirstRegistrationDate() == null) {
 			return QueryBuilders.matchAllQuery();
 
-		} else if (userQuery.getQuery().toLowerCase().equals(ESFacetConstants.OR)) {
-			
+		}
+
+		if (userQuery.getQuery().toLowerCase().equals(ESFacetConstants.OR)) {
+
 			for (Entry<String, List<String>> query : queries(userQuery).entrySet()) {
 				queryBuilder.should(QueryBuilders.termsQuery(query.getKey(), query.getValue()));
 			}
@@ -42,11 +46,18 @@ public class QueryBuildUtil {
 				queryBuilder.must(QueryBuilders.termsQuery(query.getKey(), query.getValue()));
 			}
 		}
-		
+
 		if (userQuery.getPriceInformation() != null) {
-			queryBuilder.must(QueryBuilders.rangeQuery(ESFacetConstants.PRICE).gt(userQuery.getPriceInformation().getMin()).lt(userQuery.getPriceInformation().getMax()));
+			queryBuilder.must(QueryBuilders.rangeQuery(ESFacetConstants.PRICE)
+					.gt(userQuery.getPriceInformation().getMin()).lt(userQuery.getPriceInformation().getMax()));
 		}
-		
+
+		if (userQuery.getFirstRegistrationDate() != null) {
+			queryBuilder.must(
+					QueryBuilders.rangeQuery(ESFacetConstants.DATE).gt(userQuery.getFirstRegistrationDate().getMin())
+							.lt(userQuery.getFirstRegistrationDate().getMax()));
+		}
+
 		return queryBuilder;
 	}
 

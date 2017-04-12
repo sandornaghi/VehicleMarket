@@ -175,7 +175,7 @@ public class ElasticsearchVehicleService {
 	 * @return A VehicleSearchWithFacetResponse object, that contain the facets
 	 *         results.
 	 */
-	public VehicleSearchWithFacetResponse getFacetsForVehicles(String alias, UserInput userInput) {
+	public VehicleSearchWithFacetResponse getVehiclesWithFacets(String alias, UserInput userInput) {
 
 		SearchRequestBuilder requestBuilder = transportClient.prepareSearch(alias)
 				.setQuery(queryBuildUtil.buildQuery(userInput.getUserQuery()));

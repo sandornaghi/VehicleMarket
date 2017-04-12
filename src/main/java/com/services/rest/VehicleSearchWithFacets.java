@@ -21,7 +21,7 @@ import com.services.ElasticsearchVehicleService;
  * @author sandor.naghi
  *
  */
-@Path("/facets")
+@Path("/wehicleswithfacets")
 public class VehicleSearchWithFacets {
 
 	@Inject
@@ -36,7 +36,7 @@ public class VehicleSearchWithFacets {
 
 		String alias = country + "_" + vehicleCategory;
 
-		VehicleSearchWithFacetResponse facetResponse = elasticService.getFacetsForVehicles(alias, userInput);
+		VehicleSearchWithFacetResponse facetResponse = elasticService.getVehiclesWithFacets(alias, userInput);
 
 		return Response.status(Status.OK).entity(facetResponse).build();
 	}
