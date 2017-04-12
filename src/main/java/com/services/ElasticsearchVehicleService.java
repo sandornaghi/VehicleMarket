@@ -33,7 +33,7 @@ import static com.response.ResponseCodeAndDescription.SUCCESS_IMPORT;
 import static com.response.ResponseCodeAndDescription.ELASTIC_DUPLICATE_INDEX;
 import static com.response.ResponseCodeAndDescription.ELASTIC_INTSERTION_ERROR;
 
-import org.elasticsearch.search.aggregations.AbstractAggregationBuilder;
+//import org.elasticsearch.search.aggregations.AbstractAggregationBuilder;
 import org.elasticsearch.search.aggregations.bucket.range.Range;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.aggregations.metrics.stats.Stats;
@@ -97,10 +97,17 @@ public class ElasticsearchVehicleService {
 			// insert into index
 			BulkRequestBuilder bulkRequest = transportClient.prepareBulk();
 
-			for (TVehicle tVehicle : tVehicleList) {
+			// for (TVehicle tVehicle : tVehicleList) {
+			// bulkRequest.add(transportClient.prepareIndex(index,
+			// ESFacetConstants.INDEX_TYPE)
+			// .setSource(new Gson().toJson(tVehicle)));
+			// }
+
+			// with lambda expression
+			tVehicleList.forEach(tVehicle -> {
 				bulkRequest.add(transportClient.prepareIndex(index, ESFacetConstants.INDEX_TYPE)
 						.setSource(new Gson().toJson(tVehicle)));
-			}
+			});
 
 			BulkResponse resp = bulkRequest.get();
 
@@ -180,9 +187,13 @@ public class ElasticsearchVehicleService {
 		SearchRequestBuilder requestBuilder = transportClient.prepareSearch(alias)
 				.setQuery(queryBuildUtil.buildQuery(userInput.getUserQuery()));
 
-		for (AbstractAggregationBuilder aggregationBuilder : facetResponseUtil.buildFacets(userInput)) {
-			requestBuilder.addAggregation(aggregationBuilder);
-		}
+		// for (AbstractAggregationBuilder aggregationBuilder :
+		// facetResponseUtil.buildFacets(userInput)) {
+		// requestBuilder.addAggregation(aggregationBuilder);
+		// }
+
+		// with lambda expression
+		facetResponseUtil.buildFacets(userInput).forEach(requestBuilder::addAggregation);
 
 		SearchResponse response = requestBuilder.execute().actionGet();
 		Stats stats = response.getAggregations().get(ESFacetConstants.COUNT);

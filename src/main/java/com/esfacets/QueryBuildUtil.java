@@ -3,7 +3,6 @@ package com.esfacets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
@@ -37,14 +36,18 @@ public class QueryBuildUtil {
 
 		if (userQuery.getQuery().toLowerCase().equals(ESFacetConstants.OR)) {
 
-			for (Entry<String, List<String>> query : queries(userQuery).entrySet()) {
-				queryBuilder.should(QueryBuilders.termsQuery(query.getKey(), query.getValue()));
-			}
+//			for (Entry<String, List<String>> query : queries(userQuery).entrySet()) {
+//				queryBuilder.should(QueryBuilders.termsQuery(query.getKey(), query.getValue()));
+//			}
+			// with lambda expressions
+			queries(userQuery).entrySet().forEach(query -> {queryBuilder.should(QueryBuilders.termsQuery(query.getKey(), query.getValue()));});
 
 		} else if (userQuery.getQuery().toLowerCase().equals(ESFacetConstants.AND)) {
-			for (Entry<String, List<String>> query : queries(userQuery).entrySet()) {
-				queryBuilder.must(QueryBuilders.termsQuery(query.getKey(), query.getValue()));
-			}
+//			for (Entry<String, List<String>> query : queries(userQuery).entrySet()) {
+//				queryBuilder.must(QueryBuilders.termsQuery(query.getKey(), query.getValue()));
+//			}
+			// with lambda expressions
+			queries(userQuery).entrySet().forEach(query -> {queryBuilder.must(QueryBuilders.termsQuery(query.getKey(), query.getValue()));});
 		}
 
 		if (userQuery.getPriceInformation() != null) {

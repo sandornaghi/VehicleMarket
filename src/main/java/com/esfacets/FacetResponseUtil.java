@@ -17,7 +17,7 @@ import org.elasticsearch.search.aggregations.metrics.stats.Stats;
 import com.esfacets.input.UserFacet;
 import com.esfacets.input.UserInput;
 
-import org.elasticsearch.search.aggregations.bucket.terms.Terms.Bucket;
+//import org.elasticsearch.search.aggregations.bucket.terms.Terms.Bucket;
 
 /**
  * This is a helper class for transforming the input from the request, and to
@@ -117,12 +117,21 @@ public class FacetResponseUtil {
 		// set vehicle price and number
 		List<ElasticFacetsAndTerms> facetList = new ArrayList<>();
 
-		for (Bucket bucket : terms.getBuckets()) {
+//		for (Bucket bucket : terms.getBuckets()) {
+//			ElasticFacetsAndTerms facetTerms = new ElasticFacetsAndTerms();
+//			facetTerms.setVehicleNumbers((int) bucket.getDocCount());
+//			facetTerms.setPrice(bucket.getKeyAsString());
+//			facetList.add(facetTerms);
+//		}
+		
+		// with lambda expression
+		terms.getBuckets().forEach(bucket -> {
 			ElasticFacetsAndTerms facetTerms = new ElasticFacetsAndTerms();
 			facetTerms.setVehicleNumbers((int) bucket.getDocCount());
 			facetTerms.setPrice(bucket.getKeyAsString());
 			facetList.add(facetTerms);
-		}
+		});
+		
 		facetResponse.setTermsList(facetList);
 
 		// vehicles within the price interval
